@@ -5,8 +5,9 @@
     <dimen name="divider">1dp</dimen>
     <dimen name="film_image_size">60dp</dimen>
     <dimen name="title_size">20sp</dimen>
+    <dimen name="subtitle_size">16sp</dimen>
     <dimen name="text">14sp</dimen>
-    <dimen name="item_height">70dp</dimen>
+    <dimen name="item_height">100dp</dimen>
     <dimen name="box_corner_radius">5dp</dimen>
     <dimen name="box_border">1dp</dimen>
     <dimen name="box_size">160dp</dimen>

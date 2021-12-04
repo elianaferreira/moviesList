@@ -1,5 +1,6 @@
 package com.github.elianaferreira.movieslist.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -22,16 +23,19 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val categories = listOf<Category>(
-            Category("movies", "Popular Movies"),
-            Category("topRateMovies", "Top Rate Movies"),
-            Category("series", "Popular Seriess"),
-            Category("topRateSeries", "Top Rate Series")
+            Category("movie/popular", "Popular Movies"),
+            Category("movie/top_rated", "Top Rate Movies"),
+            Category("tv/popular", "Popular Seriess"),
+            Category("tv/top_rated", "Top Rate Series")
         )
 
         val rvCategories: RecyclerView = findViewById(R.id.list_categories)
         rvCategories.layoutManager = GridLayoutManager(this, 2)
         rvCategories.adapter = CategoriesAdapter(categories) {
-            categoryValue -> Toast.makeText(this@MainActivity, categoryValue, Toast.LENGTH_LONG).show()
+            categoryValue ->
+            val intent = Intent(this@MainActivity, ListActivity::class.java)
+            intent.putExtra(ListActivity.PARAM_LIST_TYPE, categoryValue)
+            startActivity(intent)
         }
     }
 }

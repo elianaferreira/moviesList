@@ -9,7 +9,7 @@ import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.models.Category
 import com.github.elianaferreira.viewholder.GenericViewHolder
 
-class CategoriesAdapter(private val dataSet: List<Category>, private val callback: (String) -> Unit) : RecyclerView.Adapter<GenericViewHolder>() {
+class CategoriesAdapter(private val dataSet: List<Category>, private val callback: (Category) -> Unit) : RecyclerView.Adapter<GenericViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -20,7 +20,7 @@ class CategoriesAdapter(private val dataSet: List<Category>, private val callbac
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
         val category: Category = dataSet[position]
         holder.get(R.id.item_title, TextView::class.java).text = category.categoryName
-        holder.view.setOnClickListener(View.OnClickListener { callback(category.categoryValue) })
+        holder.view.setOnClickListener(View.OnClickListener { callback(category) })
     }
 
     override fun getItemCount(): Int {
