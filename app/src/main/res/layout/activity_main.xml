@@ -14,17 +14,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"/>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_movies"
+        android:id="@+id/list_categories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"/>
+        android:layout_below="@id/toolbar"
+        android:layout_margin="@dimen/medium_margin"/>
 
 </RelativeLayout>
