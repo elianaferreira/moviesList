@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="general_margin">16dp</dimen>
+    <dimen name="divider">1dp</dimen>
+    <dimen name="film_image_size">60dp</dimen>
+    <dimen name="title_size">20sp</dimen>
+    <dimen name="text">14sp</dimen>
+    <dimen name="item_height">70dp</dimen>
+</resources>
