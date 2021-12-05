@@ -22,12 +22,13 @@ class ListActivity : AppCompatActivity() {
     }
 
     private lateinit var rvMovies: RecyclerView
+    private lateinit var category: Category
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        val category = intent.getSerializableExtra(PARAM_LIST_TYPE) as Category
+        category = intent.getSerializableExtra(PARAM_LIST_TYPE) as Category
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = category.categoryName
@@ -56,9 +57,15 @@ class ListActivity : AppCompatActivity() {
     private fun populateList(moviesList: MoviesList) {
         rvMovies.adapter = MoviesAdapter(moviesList.results) {
             movie ->
-            val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)
-            intent.putExtra(MovieDetailActivity.PARAM_MOVIE, movie)
-            startActivity(intent)
+            if (Utils.categoryIsMovie(category.categoryValue)) {
+                val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)
+                intent.putExtra(MovieDetailActivity.PARAM_MOVIE, movie)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this@ListActivity, TVShowDetailActivity::class.java)
+                intent.putExtra(TVShowDetailActivity.PARAM_SHOW, movie)
+                startActivity(intent)
+            }
         }
     }
 

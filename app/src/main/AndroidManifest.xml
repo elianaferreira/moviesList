@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoviesList">
         <activity
+            android:name=".activities.TVShowDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MovieDetailActivity"
             android:exported="false" />
         <activity

@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley
 import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.models.MovieDetail
 import com.github.elianaferreira.movieslist.models.MoviesList
+import com.github.elianaferreira.movieslist.models.TVShowDetail
 import com.github.elianaferreira.movieslist.models.Videos
 import com.google.gson.Gson
 import java.lang.StringBuilder
@@ -19,6 +20,7 @@ import java.lang.StringBuilder
 class RequestManager(private val context: Context) {
 
     private val BASE_URL = "https://api.themoviedb.org/3/"
+    private val API_KEY = "de730ab29c69b11e7f78655f21a4125d"
     private val TAG = RequestManager::class.java.simpleName
 
     fun interface OnSuccessRequestResult<T> {
@@ -64,6 +66,7 @@ class RequestManager(private val context: Context) {
     }
 
 
+    //used for list of TV Shows as well
     fun getMovies(category: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
         sendRequest(progressBar, category, Request.Method.GET, null, MoviesList::class.java, successCallback, errorCallback)
     }
@@ -74,5 +77,9 @@ class RequestManager(private val context: Context) {
 
     fun getVideos(movieID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<Videos>, errorCallback: OnErrorRequestResult) {
         sendRequest(progressBar, "movie/$movieID/videos", Request.Method.GET, null, Videos::class.java, successCallback, errorCallback)
+    }
+
+    fun getTVShow(showID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<TVShowDetail>, errorCallback: OnErrorRequestResult) {
+        sendRequest(progressBar, "tv/$showID", Request.Method.GET, null, TVShowDetail::class.java, successCallback, errorCallback)
     }
 }

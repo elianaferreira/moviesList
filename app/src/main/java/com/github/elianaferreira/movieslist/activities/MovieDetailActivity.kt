@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso
 import java.lang.StringBuilder
 import android.content.Intent
 import android.net.Uri
+import com.github.elianaferreira.movieslist.utils.Utils
 
 
 class MovieDetailActivity : AppCompatActivity() {
@@ -25,7 +26,6 @@ class MovieDetailActivity : AppCompatActivity() {
         val PARAM_MOVIE = "flag:movieSelected"
     }
 
-    val POSTER_URL_BASE = "https://image.tmdb.org/t/p/w500/"
     val YOUTUBE_URL_BASE = "https://www.youtube.com/watch?v="
 
     private lateinit var progressBar: ProgressBar
@@ -88,7 +88,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun loadData(movieDetail: MovieDetail) {
         Picasso.get()
-            .load(getPosterURL(movieDetail.posterPath))
+            .load(Utils.getPosterURL(movieDetail.posterPath))
             .placeholder(R.drawable.img_film)
             .error(R.drawable.img_film)
             .into(imgMovie)
@@ -102,29 +102,14 @@ class MovieDetailActivity : AppCompatActivity() {
         txtRating.text = "$rate ($rateCount)"
 
         rvGenres.layoutManager = GridLayoutManager(this, 3)
-        rvGenres.adapter = GenresAdapter(getGenresNames(movieDetail.genres))
-        txtLanguages.text = getLanguagesConcat(movieDetail.spokenLanguages)
+        rvGenres.adapter = GenresAdapter(Utils.getGenresNames(movieDetail.genres))
+        txtLanguages.text = Utils.getLanguagesConcat(movieDetail.spokenLanguages)
 
         wrapperMovie.visibility = View.VISIBLE
 
         if (movieDetail.video) {
             getVideos(movieDetail.id.toString())
         }
-    }
-
-    private fun getPosterURL(filePath: String): String {
-        return POSTER_URL_BASE + filePath
-    }
-
-    private fun getGenresNames(genres: List<Genre>): List<String> {
-        return genres.map { it.name }
-    }
-
-    private fun getLanguagesConcat(languages: List<SpokenLanguage>): String {
-        val result = StringBuilder()
-        result.append("Languages: ")
-        result.append(if (languages != null && languages.isNotEmpty()) languages.map { it.englishName }.joinToString { ", " } else "--")
-        return result.toString()
     }
 
     private fun getVideos(movieID: String) {
