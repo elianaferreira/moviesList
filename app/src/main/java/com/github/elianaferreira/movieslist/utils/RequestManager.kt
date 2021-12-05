@@ -24,6 +24,7 @@ class RequestManager(private val context: Context) {
     }
 
     fun interface OnErrorRequestResult {
+        //TODO put explanation of this
         fun onError(error: VolleyError): Boolean
     }
 
@@ -33,12 +34,14 @@ class RequestManager(private val context: Context) {
 
         progressBar.visibility = View.VISIBLE
 
-        var absoluteURL = StringBuilder()
+        val absoluteURL = StringBuilder()
         absoluteURL.append(BASE_URL)
         absoluteURL.append(url) //path of request
         absoluteURL.append("?api_key=" + API_KEY)
 
         if (BuildConfig.DEBUG) Log.d(TAG, "send request to " + absoluteURL.toString())
+
+        //TODO transform 'params' into JSON and pass to the object request as parameter
 
         val jsonObjectRequest = JsonObjectRequest(method, absoluteURL.toString(), null,
             { response ->
@@ -60,8 +63,6 @@ class RequestManager(private val context: Context) {
 
 
     fun getMovies(progressBar: ProgressBar, category: String, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
-
         sendRequest(progressBar, category, Request.Method.GET, null, MoviesList::class.java, successCallback, errorCallback)
     }
-
 }

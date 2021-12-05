@@ -2,6 +2,7 @@
 <resources>
     <dimen name="general_margin">16dp</dimen>
     <dimen name="medium_margin">8dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
     <dimen name="divider">1dp</dimen>
     <dimen name="film_image_size">60dp</dimen>
     <dimen name="title_size">20sp</dimen>

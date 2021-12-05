@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MoviesList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.MoviesList" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/peach</item>
         <item name="colorPrimaryVariant">@color/light_peach</item>
@@ -10,6 +10,7 @@
         <item name="colorSecondaryVariant">@color/dark_peach</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorPrimaryDark">@color/dark_peach</item>
+        <item name="colorControlNormal">@color/white</item>
     </style>
 
     <style name="PrimaryTitle" parent="Widget.AppCompat.TextView">
@@ -33,5 +34,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text</item>
+    </style>
+
+    <style name="RatingBar" parent="android:Widget.Holo.RatingBar.Small">
+        <item name="android:progressTint">@color/yellow</item>
+        <item name="android:colorControlNormal">@color/dark_grey</item>
+        <item name="colorControlNormal">@color/dark_grey</item>
     </style>
 </resources>

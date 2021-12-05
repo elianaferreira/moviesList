@@ -50,5 +50,7 @@ data class Movie (
     @SerialName("name")
     val name: String,
     @SerialName("original_name")
-    val originalName: String
+    val originalName: String,
+    @SerialName("first_air_date")
+    val firstAirDate: String
 )

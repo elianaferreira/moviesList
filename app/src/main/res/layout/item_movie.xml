@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/general_margin"
+        android:layout_marginStart="@dimen/medium_margin"
         android:layout_toEndOf="@id/img_cinema"
         android:orientation="vertical">
 
@@ -33,11 +33,33 @@
             android:id="@+id/item_description"
             style="@style/SecondaryText"
             android:text="description" />
-    </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <RatingBar
+                android:id="@+id/item_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="10"
+                android:rating="6"
+                android:isIndicator="true"
+                style="@style/RatingBar"/>
+
+            <TextView
+                android:id="@+id/item_rate_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8 (567)"
+                android:textColor="@color/dark_grey"
+                android:layout_marginStart="@dimen/small_margin"/>
+        </LinearLayout>
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider"
         android:layout_alignParentBottom="true"
-        android:background="@color/gray" />
+        android:background="@color/grey" />
 </RelativeLayout>
