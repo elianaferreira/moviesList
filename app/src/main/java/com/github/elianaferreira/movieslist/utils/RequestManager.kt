@@ -10,7 +10,9 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.github.elianaferreira.movieslist.BuildConfig
+import com.github.elianaferreira.movieslist.models.MovieDetail
 import com.github.elianaferreira.movieslist.models.MoviesList
+import com.github.elianaferreira.movieslist.models.Videos
 import com.google.gson.Gson
 import java.lang.StringBuilder
 
@@ -62,7 +64,15 @@ class RequestManager(private val context: Context) {
     }
 
 
-    fun getMovies(progressBar: ProgressBar, category: String, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
+    fun getMovies(category: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
         sendRequest(progressBar, category, Request.Method.GET, null, MoviesList::class.java, successCallback, errorCallback)
+    }
+
+    fun getMovieByID(movieID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<MovieDetail>, errorCallback: OnErrorRequestResult) {
+        sendRequest(progressBar, "movie/$movieID", Request.Method.GET, null, MovieDetail::class.java, successCallback, errorCallback)
+    }
+
+    fun getVideos(movieID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<Videos>, errorCallback: OnErrorRequestResult) {
+        sendRequest(progressBar, "movie/$movieID/videos", Request.Method.GET, null, Videos::class.java, successCallback, errorCallback)
     }
 }

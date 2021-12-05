@@ -2,10 +2,12 @@ package com.github.elianaferreira.movieslist.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import androidx.annotation.Keep
 
+
+@Keep
 @Serializable
-data class MoviesList (
-
+data class MoviesList(
     @SerialName("page")
     val page: Int,
     @SerialName("results")
@@ -14,10 +16,11 @@ data class MoviesList (
     val totalPages: Int,
     @SerialName("total_results")
     val totalResults: Int
-)
+) : java.io.Serializable
 
+@Keep
 @Serializable
-data class Movie (
+data class Movie(
     @SerialName("adult")
     val adult: Boolean,
     @SerialName("backdrop_path")
@@ -46,11 +49,10 @@ data class Movie (
     val voteAverage: Double,
     @SerialName("vote_count")
     val voteCount: Int,
-    //tv shows different data
     @SerialName("name")
     val name: String,
     @SerialName("original_name")
     val originalName: String,
     @SerialName("first_air_date")
     val firstAirDate: String
-)
+) : java.io.Serializable

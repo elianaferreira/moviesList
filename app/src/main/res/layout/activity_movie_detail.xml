@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.MovieDetailActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
+            android:id="@+id/wrapper_movie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_movie"
+                android:layout_width="@dimen/movie_image_size"
+                android:layout_height="@dimen/movie_image_size"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/img_film" />
+
+            <LinearLayout
+                android:id="@+id/wrapper_vote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:layout_below="@id/img_movie"
+                android:layout_marginEnd="@dimen/general_margin">
+                <RatingBar
+                    android:id="@+id/item_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="10"
+                    android:rating="6"
+                    android:isIndicator="true"
+                    style="@style/RatingBar"/>
+
+                <TextView
+                    android:id="@+id/item_rate_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8 (567)"
+                    android:textColor="@color/dark_grey"
+                    android:layout_marginStart="@dimen/small_margin"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_movie"
+                style="@style/PrimaryTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_movie"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/general_margin"
+                android:layout_toStartOf="@id/wrapper_vote"
+                android:text="Movie title could be long, really long" />
+
+            <TextView
+                android:id="@+id/tv_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_movie"
+                android:layout_marginStart="@dimen/general_margin"
+                android:layout_marginTop="@dimen/general_margin"
+                android:layout_marginEnd="@dimen/general_margin"
+                android:layout_marginBottom="@dimen/general_margin"
+                android:text="@string/overview_sample"
+                android:textColor="@color/black" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_genres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_overview"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/medium_margin" />
+            <TextView
+                android:id="@+id/txt_languages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Languages: "
+                android:textColor="@color/black"
+                android:layout_below="@id/rv_genres"
+                android:layout_margin="@dimen/general_margin"/>
+
+            <Button
+                android:id="@+id/btn_trailer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_languages"
+                android:layout_marginStart="@dimen/general_margin"
+                android:background="@color/white"
+                android:text="@string/trailer"
+                android:textAllCaps="false"
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@color/dark_peach"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/progress_bar"
+        android:visibility="gone"/>
+
+</RelativeLayout>

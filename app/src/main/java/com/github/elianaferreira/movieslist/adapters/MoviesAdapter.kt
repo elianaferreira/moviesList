@@ -2,6 +2,7 @@ package com.github.elianaferreira.movieslist.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
@@ -10,7 +11,7 @@ import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.models.Movie
 import com.github.elianaferreira.viewholder.GenericViewHolder
 
-class MoviesAdapter(private val dataSet: List<Movie>): RecyclerView.Adapter<GenericViewHolder>() {
+class MoviesAdapter(private val dataSet: List<Movie>, private val callback: (Movie) -> Unit): RecyclerView.Adapter<GenericViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
@@ -32,6 +33,8 @@ class MoviesAdapter(private val dataSet: List<Movie>): RecyclerView.Adapter<Gene
         //TODO this is showing 0.0 in every case
         holder.get(R.id.item_rate, RatingBar::class.java).rating = rate.toFloat()
         holder.get(R.id.item_rate_value, TextView::class.java).text = "$rate ($rateCount)"
+
+        holder.view.setOnClickListener(View.OnClickListener { callback(movie) })
     }
 
     override fun getItemCount(): Int {

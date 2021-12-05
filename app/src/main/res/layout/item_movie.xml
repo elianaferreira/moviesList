@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/img_cinema"
-        android:layout_width="@dimen/film_image_size"
-        android:layout_height="@dimen/film_image_size"
+        android:layout_width="@dimen/movie_item_image_size"
+        android:layout_height="@dimen/movie_item_image_size"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:src="@android:drawable/ic_media_play" />

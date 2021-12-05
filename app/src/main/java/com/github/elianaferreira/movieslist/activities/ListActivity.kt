@@ -1,5 +1,6 @@
 package com.github.elianaferreira.movieslist.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import com.github.elianaferreira.movieslist.adapters.MoviesAdapter
 import com.github.elianaferreira.movieslist.models.Category
 import com.github.elianaferreira.movieslist.models.MoviesList
 import com.github.elianaferreira.movieslist.utils.RequestManager
+import com.github.elianaferreira.movieslist.utils.Utils
 
 class ListActivity : AppCompatActivity() {
 
@@ -48,11 +50,16 @@ class ListActivity : AppCompatActivity() {
             true
         }
 
-        request.getMovies(progressBar, category.categoryValue, successCallback, errorCallback)
+        request.getMovies(category.categoryValue, progressBar, successCallback, errorCallback)
     }
 
     private fun populateList(moviesList: MoviesList) {
-        rvMovies.adapter = MoviesAdapter(moviesList.results)
+        rvMovies.adapter = MoviesAdapter(moviesList.results) {
+            movie ->
+            val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)
+            intent.putExtra(MovieDetailActivity.PARAM_MOVIE, movie)
+            startActivity(intent)
+        }
     }
 
 
