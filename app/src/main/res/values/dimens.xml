@@ -13,4 +13,8 @@
     <dimen name="box_border">1dp</dimen>
     <dimen name="box_size">160dp</dimen>
     <dimen name="movie_image_size">220dp</dimen>
+    <dimen name="season_image_size">120dp</dimen>
+    <dimen name="season_card_width">300dp</dimen>
+    <dimen name="season_card_height">120dp</dimen>
+    <dimen name="season_text_max_width">180dp</dimen>
 </resources>

@@ -3,6 +3,7 @@ package com.github.elianaferreira.movieslist.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
@@ -32,6 +33,7 @@ class TVShowDetailActivity : AppCompatActivity() {
     private lateinit var ratingBar: RatingBar
     private lateinit var txtRating: TextView
     private lateinit var txtLanguages: TextView
+    private lateinit var wrapperSeasons: LinearLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +57,7 @@ class TVShowDetailActivity : AppCompatActivity() {
         ratingBar = findViewById(R.id.item_rate)
         txtRating = findViewById(R.id.item_rate_value)
         txtLanguages = findViewById(R.id.txt_languages)
+        wrapperSeasons = findViewById(R.id.wrapper_seasons)
 
         val request = RequestManager(this)
         val successCallback = RequestManager.OnSuccessRequestResult<TVShowDetail> {
@@ -99,8 +102,21 @@ class TVShowDetailActivity : AppCompatActivity() {
 
         wrapperMovie.visibility = View.VISIBLE
 
-        //TODO add viewpager for seasons
+        //seasons
+        for(season in showDetail.seasons) {
+            val card: View = LayoutInflater.from(this@TVShowDetailActivity).inflate(R.layout.card_season, null)
+            val imgPoster: ImageView = card.findViewById(R.id.img_poster)
+            val txtTitle: TextView = card.findViewById(R.id.txt_title)
+            val txtOverview: TextView = card.findViewById(R.id.txt_overview)
+            Picasso.get()
+                .load(Utils.getPosterURL(season.posterPath))
+                .placeholder(R.drawable.img_film)
+                .error(R.drawable.img_film)
+                .into(imgPoster)
+            txtTitle.text = season.name
+            txtOverview.text = season.overview
+            wrapperSeasons.addView(card)
+        }
+
     }
-
-
 }
