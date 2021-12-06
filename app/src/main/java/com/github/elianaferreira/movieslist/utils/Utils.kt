@@ -14,8 +14,8 @@ class Utils {
 
         private val POSTER_URL_BASE = "https://image.tmdb.org/t/p/w500/"
 
-        fun showErrorMessage(context: Context, messsage: String) {
-            Toast.makeText(context, messsage, Toast.LENGTH_LONG).show()
+        fun showErrorMessage(context: Context, message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         }
 
         fun getLanguagesConcat(languages: List<SpokenLanguage>?): String {

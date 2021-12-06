@@ -4,43 +4,91 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.github.elianaferreira.movieslist.BuildConfig
-import com.github.elianaferreira.movieslist.models.MovieDetail
-import com.github.elianaferreira.movieslist.models.MoviesList
-import com.github.elianaferreira.movieslist.models.TVShowDetail
-import com.github.elianaferreira.movieslist.models.Videos
+import com.github.elianaferreira.movieslist.models.*
 import com.google.gson.Gson
 import java.lang.StringBuilder
 
-class RequestManager(private val context: Context) {
-
+class RequestManager {
     private val BASE_URL = "https://api.themoviedb.org/3/"
     private val TAG = RequestManager::class.java.simpleName
+
+    private var context: Context
+    private var queue: RequestQueue
+
+    private val application = App.instance
+
+    constructor(context: Context) {
+        this.context = context
+        queue = Volley.newRequestQueue(context)
+    }
 
     fun interface OnSuccessRequestResult<T> {
         fun onSuccess(response: Any)
     }
 
     fun interface OnErrorRequestResult {
-        //TODO put explanation of this
+        /**
+         * Sometimes is preferred not to show error message to the user,
+         * in this cases this method should return FALSE, in case of return TRUE
+         * the error manager of  makeRequest will execute the callback and then
+         * show the error message to the user.
+         */
         fun onError(error: VolleyError): Boolean
     }
 
-    private fun sendRequest(progressBar: ProgressBar, url: String, method: Int, params: HashMap<String, String>?, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
-                            errorCallback: OnErrorRequestResult) {
-        val queue: RequestQueue = Volley.newRequestQueue(context)
+    fun getApiKey(progressBar: ProgressBar, url: String, method: Int, params: HashMap<String, String>?, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
+                  errorCallback: OnErrorRequestResult) {
 
+        val apiURL = "http://moviedbapikeyprovider.herokuapp.com/api_key"
+
+        progressBar.visibility = View.VISIBLE
+
+        if (BuildConfig.DEBUG) Log.d(TAG, "send request to " + apiURL)
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, apiURL, null,
+            { response ->
+                if (BuildConfig.DEBUG) Log.d(TAG, "response: " + response.toString())
+                //FIXME: it could be just a string
+                val parsedResponse = Gson().fromJson(response.toString(), ApiKey::class.java)
+                application.setApiKey(parsedResponse.apiKey)
+                makeRequest(progressBar, url, method, params, classDTO, successCallback, errorCallback)
+            },
+            { error ->
+                if (errorCallback.onError(error)) {
+                    progressBar.visibility = View.GONE
+                    //show error
+                    Utils.showErrorMessage(context, "Error al obtener los datos")
+                }
+            }
+        )
+        queue.add(jsonObjectRequest)
+    }
+
+
+    private fun sendRequest(progressBar: ProgressBar, url: String, method: Int, params: HashMap<String, String>?, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
+                                        errorCallback: OnErrorRequestResult) {
+        if (application.getApiKey() != null) {
+            makeRequest(progressBar, url, method, params, classDTO, successCallback, errorCallback)
+        } else {
+            getApiKey(progressBar, url, method, params, classDTO, successCallback, errorCallback)
+        }
+    }
+
+
+    private fun makeRequest(progressBar: ProgressBar, url: String, method: Int, params: HashMap<String, String>?, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
+                            errorCallback: OnErrorRequestResult) {
         progressBar.visibility = View.VISIBLE
 
         val absoluteURL = StringBuilder()
         absoluteURL.append(BASE_URL)
         absoluteURL.append(url) //path of request
-        absoluteURL.append("?api_key=" + API_KEY)
+        absoluteURL.append("?api_key=" + application.getApiKey())
 
         if (BuildConfig.DEBUG) Log.d(TAG, "send request to " + absoluteURL.toString())
 
