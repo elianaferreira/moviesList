@@ -1,104 +1,104 @@
 package com.github.elianaferreira.movieslist.models
 import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 
 import kotlinx.serialization.Serializable
 
-import kotlinx.serialization.SerialName
 
 
 @Keep
 @Serializable
 data class MovieDetail(
-    @SerialName("adult")
+    @SerializedName("adult")
     val adult: Boolean,
-    @SerialName("backdrop_path")
+    @SerializedName("backdrop_path")
     val backdropPath: String,
-    @SerialName("belongs_to_collection")
+    @SerializedName("belongs_to_collection")
     val belongsToCollection: Any,
-    @SerialName("budget")
+    @SerializedName("budget")
     val budget: Int,
-    @SerialName("genres")
+    @SerializedName("genres")
     val genres: List<Genre>,
-    @SerialName("homepage")
+    @SerializedName("homepage")
     val homepage: String,
-    @SerialName("id")
+    @SerializedName("id")
     val id: Int,
-    @SerialName("imdb_id")
+    @SerializedName("imdb_id")
     val imdbId: String,
-    @SerialName("original_language")
+    @SerializedName("original_language")
     val originalLanguage: String,
-    @SerialName("original_title")
+    @SerializedName("original_title")
     val originalTitle: String,
-    @SerialName("overview")
+    @SerializedName("overview")
     val overview: String,
-    @SerialName("popularity")
+    @SerializedName("popularity")
     val popularity: Double,
-    @SerialName("poster_path")
+    @SerializedName("poster_path")
     val posterPath: String,
-    @SerialName("production_companies")
+    @SerializedName("production_companies")
     val productionCompanies: List<ProductionCompany>,
-    @SerialName("production_countries")
+    @SerializedName("production_countries")
     val productionCountries: List<ProductionCountry>,
-    @SerialName("release_date")
+    @SerializedName("release_date")
     val releaseDate: String,
-    @SerialName("revenue")
+    @SerializedName("revenue")
     val revenue: Int,
-    @SerialName("runtime")
+    @SerializedName("runtime")
     val runtime: Int,
-    @SerialName("spoken_languages")
+    @SerializedName("spoken_languages")
     val spokenLanguages: List<SpokenLanguage>,
-    @SerialName("status")
+    @SerializedName("status")
     val status: String,
-    @SerialName("tagline")
+    @SerializedName("tagline")
     val tagline: String,
-    @SerialName("title")
+    @SerializedName("title")
     val title: String,
-    @SerialName("video")
+    @SerializedName("video")
     val video: Boolean,
-    @SerialName("vote_average")
+    @SerializedName("vote_average")
     val voteAverage: Double,
-    @SerialName("vote_count")
+    @SerializedName("vote_count")
     val voteCount: Int
 )
 
 @Keep
 @Serializable
 data class Genre(
-    @SerialName("id")
+    @SerializedName("id")
     val id: Int,
-    @SerialName("name")
+    @SerializedName("name")
     val name: String
 )
 
 @Keep
 @Serializable
 data class ProductionCompany(
-    @SerialName("id")
+    @SerializedName("id")
     val id: Int,
-    @SerialName("logo_path")
+    @SerializedName("logo_path")
     val logoPath: Any,
-    @SerialName("name")
+    @SerializedName("name")
     val name: String,
-    @SerialName("origin_country")
+    @SerializedName("origin_country")
     val originCountry: String
 )
 
 @Keep
 @Serializable
 data class ProductionCountry(
-    @SerialName("iso_3166_1")
+    @SerializedName("iso_3166_1")
     val iso31661: String,
-    @SerialName("name")
+    @SerializedName("name")
     val name: String
 )
 
 @Keep
 @Serializable
 data class SpokenLanguage(
-    @SerialName("english_name")
+    @SerializedName("english_name")
     val englishName: String,
-    @SerialName("iso_639_1")
+    @SerializedName("iso_639_1")
     val iso6391: String,
-    @SerialName("name")
+    @SerializedName("name")
     val name: String
 )

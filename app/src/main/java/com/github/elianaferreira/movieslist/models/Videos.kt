@@ -1,41 +1,41 @@
 package com.github.elianaferreira.movieslist.models
 import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 
 import kotlinx.serialization.Serializable
 
-import kotlinx.serialization.SerialName
 
 
 @Keep
 @Serializable
 data class Videos(
-    @SerialName("id")
+    @SerializedName("id")
     val id: Int,
-    @SerialName("results")
+    @SerializedName("results")
     val results: List<Video>
 )
 
 @Keep
 @Serializable
 data class Video(
-    @SerialName("id")
+    @SerializedName("id")
     val id: String,
-    @SerialName("iso_3166_1")
+    @SerializedName("iso_3166_1")
     val iso31661: String,
-    @SerialName("iso_639_1")
+    @SerializedName("iso_639_1")
     val iso6391: String,
-    @SerialName("key")
+    @SerializedName("key")
     val key: String,
-    @SerialName("name")
+    @SerializedName("name")
     val name: String,
-    @SerialName("official")
+    @SerializedName("official")
     val official: Boolean,
-    @SerialName("published_at")
+    @SerializedName("published_at")
     val publishedAt: String,
-    @SerialName("site")
+    @SerializedName("site")
     val site: String,
-    @SerialName("size")
+    @SerializedName("size")
     val size: Int,
-    @SerialName("type")
+    @SerializedName("type")
     val type: String
 )
