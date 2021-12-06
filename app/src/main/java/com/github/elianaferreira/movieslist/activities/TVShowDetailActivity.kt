@@ -25,7 +25,7 @@ class TVShowDetailActivity : AppCompatActivity() {
     }
 
     private lateinit var progressBar: ProgressBar
-    private lateinit var wrapperMovie: RelativeLayout
+    private lateinit var wrapperMovie: LinearLayout
     private lateinit var imgMovie: ImageView
     private lateinit var txtTitle: TextView
     private lateinit var txtOverview: TextView
@@ -83,7 +83,7 @@ class TVShowDetailActivity : AppCompatActivity() {
 
     private fun loadData(showDetail: TVShowDetail) {
         Picasso.get()
-            .load(Utils.getPosterURL(showDetail.posterPath))
+            .load(Utils.getPosterURL(showDetail.backdropPath))
             .placeholder(R.drawable.img_film)
             .error(R.drawable.img_film)
             .into(imgMovie)

@@ -20,7 +20,6 @@ import java.lang.StringBuilder
 class RequestManager(private val context: Context) {
 
     private val BASE_URL = "https://api.themoviedb.org/3/"
-    private val API_KEY = "de730ab29c69b11e7f78655f21a4125d"
     private val TAG = RequestManager::class.java.simpleName
 
     fun interface OnSuccessRequestResult<T> {

@@ -11,10 +11,10 @@
     <ImageView
         android:id="@+id/img_cinema"
         android:layout_width="@dimen/movie_item_image_size"
-        android:layout_height="@dimen/movie_item_image_size"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:src="@android:drawable/ic_media_play" />
+        android:src="@drawable/img_film" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -21,7 +21,7 @@ class Utils {
         fun getLanguagesConcat(languages: List<SpokenLanguage>?): String {
             val result = StringBuilder()
             result.append("Languages: ")
-            result.append(if (languages != null && languages.isNotEmpty()) languages.map { it.englishName }.joinToString { ", " } else "--")
+            result.append(if (languages != null && languages.isNotEmpty()) languages.map { it.englishName }.joinToString( ", " ) else "--")
             return result.toString()
         }
 

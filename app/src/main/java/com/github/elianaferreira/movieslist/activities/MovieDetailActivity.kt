@@ -29,7 +29,7 @@ class MovieDetailActivity : AppCompatActivity() {
     val YOUTUBE_URL_BASE = "https://www.youtube.com/watch?v="
 
     private lateinit var progressBar: ProgressBar
-    private lateinit var wrapperMovie: RelativeLayout
+    private lateinit var wrapperMovie: LinearLayout
     private lateinit var imgMovie: ImageView
     private lateinit var txtTitle: TextView
     private lateinit var txtOverview: TextView
@@ -88,7 +88,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun loadData(movieDetail: MovieDetail) {
         Picasso.get()
-            .load(Utils.getPosterURL(movieDetail.posterPath))
+            .load(Utils.getPosterURL(movieDetail.backdropPath))
             .placeholder(R.drawable.img_film)
             .error(R.drawable.img_film)
             .into(imgMovie)
