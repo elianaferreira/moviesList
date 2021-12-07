@@ -7,14 +7,10 @@
     android:background="@color/white"
     tools:context=".activities.MovieDetailActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:id="@+id/wrapper_movie"
@@ -38,6 +34,13 @@
                 android:textColor="@color/dark_peach"/>
         </LinearLayout>
     </ScrollView>
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general_margin"/>
 
     <include
         android:id="@+id/progress_bar"

@@ -16,7 +16,9 @@ import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.squareup.picasso.Picasso
 import java.lang.StringBuilder
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
+import android.view.WindowManager
 import com.github.elianaferreira.movieslist.utils.Utils
 
 
@@ -44,10 +46,18 @@ class MovieDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_detail)
 
+        window.apply {
+            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            statusBarColor = Color.TRANSPARENT
+        }
+
         val movie = intent.getSerializableExtra(PARAM_MOVIE) as Movie
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.title = movie.title
+        toolbar.title = ""
+        toolbar.setBackgroundColor(Color.TRANSPARENT)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
