@@ -31,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_languages"
                 android:layout_marginEnd="@dimen/general_margin"
-                android:layout_marginStart="@dimen/general_margin"
                 android:layout_marginBottom="@dimen/general_margin">
                 <LinearLayout
                     android:id="@+id/wrapper_seasons"
