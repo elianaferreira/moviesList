@@ -36,5 +36,16 @@ class Utils {
         fun categoryIsMovie(category: String) : Boolean {
             return category.lowercase(Locale.getDefault()).contains("movie")
         }
+
+        fun getGreeting(): String {
+            val calendar = Calendar.getInstance()
+            when (calendar.get(Calendar.HOUR_OF_DAY)) {
+                in 0 until 12 -> return "Good morning,"
+                in 12 until 16 -> return "Good afternoon,"
+                in 16 until 21 -> return "Good evening,"
+                in 21..24 -> return "Good Night,"
+                else -> return "Hi,"
+            }
+        }
     }
 }

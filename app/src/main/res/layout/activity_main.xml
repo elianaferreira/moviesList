@@ -5,20 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity"
-    android:background="@color/white">
+    android:background="@drawable/gradient">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/greeting"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="@dimen/general_margin"
+        android:layout_marginTop="@dimen/big_margin"
+        android:text="@string/sample_greeting"
+        android:textSize="@dimen/title_size" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/greeting"
+        android:layout_marginStart="@dimen/general_margin"
+        android:text="@string/welcome"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/big_title_size"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/title"
+        android:src="@drawable/img_wait" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_categories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_margin="@dimen/medium_margin"/>
+        android:layout_below="@id/logo"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/medium_margin"
+        android:layout_marginBottom="@dimen/medium_margin" />
 
 </RelativeLayout>

@@ -3,6 +3,7 @@
     <string name="trailer"><u>Watch trailer</u></string>
     <string name="general_error_message">An error occurred while getting data from the server.</string>
     <string name="search">Search</string>
+    <string name="welcome">welcome</string>
 
     <!-- labels for layout design -->
     <string name="sample_genre">suspense</string>
@@ -13,4 +14,5 @@
     <string name="sample_season_title">Season 1</string>
     <string name="sample_category">Category</string>
     <string name="sample_description">Description</string>
+    <string name="sample_greeting">Good morning,</string>
 </resources>
