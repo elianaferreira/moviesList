@@ -82,7 +82,6 @@ class MovieDetailActivity : AppCompatActivity() {
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            Log.d(">>>>>", "onCreate: ha ocurrido un error")
             error.printStackTrace()
             true
         }
@@ -143,7 +142,6 @@ class MovieDetailActivity : AppCompatActivity() {
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            Log.d(">>>>>", "onCreate: ha ocurrido un error")
             error.printStackTrace()
             btnTrailer.isEnabled = false
             changeTrailerButtonStyle(false)

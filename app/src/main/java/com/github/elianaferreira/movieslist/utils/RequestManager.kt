@@ -4,13 +4,13 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
-import androidx.core.view.isVisible
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.github.elianaferreira.movieslist.BuildConfig
+import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.models.*
 import com.google.gson.Gson
 import java.lang.StringBuilder
@@ -43,7 +43,7 @@ class RequestManager {
         fun onError(error: VolleyError): Boolean
     }
 
-    fun getApiKey(progressBar: ProgressBar, url: String, method: Int, params: HashMap<String, String>?, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
+    fun getApiKey(progressBar: ProgressBar, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
                   errorCallback: OnErrorRequestResult) {
 
         val apiURL = "http://moviedbapikeyprovider.herokuapp.com/api_key"
@@ -57,13 +57,13 @@ class RequestManager {
                 //FIXME: it could be just a string
                 val parsedResponse = Gson().fromJson(response.toString(), ApiKey::class.java)
                 application.setApiKey(parsedResponse.apiKey)
-                makeRequest(progressBar, url, method, params, classDTO, successCallback, errorCallback)
+                makeRequest(progressBar, url, method, classDTO, successCallback, errorCallback)
             },
             { error ->
                 if (errorCallback.onError(error)) {
                     progressBar.visibility = View.GONE
                     //show error
-                    Utils.showErrorMessage(context, "Error al obtener los datos")
+                    Utils.showErrorMessage(context, context.getString(R.string.general_error_message))
                 }
             }
         )
@@ -71,17 +71,17 @@ class RequestManager {
     }
 
 
-    private fun sendRequest(progressBar: ProgressBar, url: String, method: Int, params: HashMap<String, String>?, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
+    private fun sendRequest(progressBar: ProgressBar, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
                                         errorCallback: OnErrorRequestResult) {
         if (application.getApiKey() != null) {
-            makeRequest(progressBar, url, method, params, classDTO, successCallback, errorCallback)
+            makeRequest(progressBar, url, method, classDTO, successCallback, errorCallback)
         } else {
-            getApiKey(progressBar, url, method, params, classDTO, successCallback, errorCallback)
+            getApiKey(progressBar, url, method, classDTO, successCallback, errorCallback)
         }
     }
 
 
-    private fun makeRequest(progressBar: ProgressBar, url: String, method: Int, params: HashMap<String, String>?, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
+    private fun makeRequest(progressBar: ProgressBar, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
                             errorCallback: OnErrorRequestResult) {
         progressBar.visibility = View.VISIBLE
 
@@ -91,8 +91,6 @@ class RequestManager {
         absoluteURL.append("?api_key=" + application.getApiKey())
 
         if (BuildConfig.DEBUG) Log.d(TAG, "send request to " + absoluteURL.toString())
-
-        //TODO transform 'params' into JSON and pass to the object request as parameter
 
         val jsonObjectRequest = JsonObjectRequest(method, absoluteURL.toString(), null,
             { response ->
@@ -104,8 +102,9 @@ class RequestManager {
             { error ->
                 progressBar.visibility = View.GONE
                 if (errorCallback.onError(error)) {
+                    error.printStackTrace()
                     //show error
-                    Utils.showErrorMessage(context, "Error al obtener los datos")
+                    Utils.showErrorMessage(context, context.getString(R.string.general_error_message))
                 }
             }
         )
@@ -115,18 +114,18 @@ class RequestManager {
 
     //used for list of TV Shows as well
     fun getMovies(category: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
-        sendRequest(progressBar, category, Request.Method.GET, null, MoviesList::class.java, successCallback, errorCallback)
+        sendRequest(progressBar, category, Request.Method.GET, MoviesList::class.java, successCallback, errorCallback)
     }
 
     fun getMovieByID(movieID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<MovieDetail>, errorCallback: OnErrorRequestResult) {
-        sendRequest(progressBar, "movie/$movieID", Request.Method.GET, null, MovieDetail::class.java, successCallback, errorCallback)
+        sendRequest(progressBar, "movie/$movieID", Request.Method.GET,  MovieDetail::class.java, successCallback, errorCallback)
     }
 
     fun getVideos(movieID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<Videos>, errorCallback: OnErrorRequestResult) {
-        sendRequest(progressBar, "movie/$movieID/videos", Request.Method.GET, null, Videos::class.java, successCallback, errorCallback)
+        sendRequest(progressBar, "movie/$movieID/videos", Request.Method.GET, Videos::class.java, successCallback, errorCallback)
     }
 
     fun getTVShow(showID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<TVShowDetail>, errorCallback: OnErrorRequestResult) {
-        sendRequest(progressBar, "tv/$showID", Request.Method.GET, null, TVShowDetail::class.java, successCallback, errorCallback)
+        sendRequest(progressBar, "tv/$showID", Request.Method.GET, TVShowDetail::class.java, successCallback, errorCallback)
     }
 }

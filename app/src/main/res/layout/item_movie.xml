@@ -27,12 +27,12 @@
         <TextView
             android:id="@+id/item_title"
             style="@style/SecondaryTitle"
-            android:text="Title" />
+            android:text="@string/sample_title" />
 
         <TextView
             android:id="@+id/item_description"
             style="@style/SecondaryText"
-            android:text="description" />
+            android:text="@string/sample_description" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:id="@+id/item_rate_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8 (567)"
+                android:text="@string/sample_rate"
                 android:textColor="@color/dark_grey"
                 android:layout_marginStart="@dimen/small_margin"/>
         </LinearLayout>

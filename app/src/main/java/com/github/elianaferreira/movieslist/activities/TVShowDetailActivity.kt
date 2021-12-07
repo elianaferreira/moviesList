@@ -77,7 +77,6 @@ class TVShowDetailActivity : AppCompatActivity() {
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            Log.d(">>>>>", "onCreate: ha ocurrido un error")
             error.printStackTrace()
             true
         }

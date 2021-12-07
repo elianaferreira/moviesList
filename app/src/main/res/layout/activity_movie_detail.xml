@@ -25,7 +25,6 @@
                 android:id="@+id/btn_trailer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txt_languages"
                 android:layout_marginStart="@dimen/general_margin"
                 android:background="@color/white"
                 android:text="@string/trailer"
