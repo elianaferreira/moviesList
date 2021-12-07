@@ -1,12 +1,9 @@
 package com.github.elianaferreira.movieslist.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.models.Movie
@@ -14,8 +11,9 @@ import com.github.elianaferreira.movieslist.utils.Utils
 import com.github.elianaferreira.viewholder.GenericViewHolder
 import com.squareup.picasso.Picasso
 
-class MoviesAdapter(private val dataSet: List<Movie>, private val callback: (Movie) -> Unit): RecyclerView.Adapter<GenericViewHolder>() {
+class MoviesAdapter(private val isForMovies: Boolean, private val dataSet: List<Movie>, private val callback: (Movie) -> Unit): RecyclerView.Adapter<GenericViewHolder>(), Filterable {
 
+    private var filteredList: List<Movie> = dataSet
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -24,10 +22,10 @@ class MoviesAdapter(private val dataSet: List<Movie>, private val callback: (Mov
     }
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
-        val movie = dataSet[position]
-        val title = if (movie.title != null && movie.title.isNotEmpty()) movie.title else movie.name
+        val movie = filteredList[position]
+        val title = if (isForMovies) movie.title else movie.name
         holder.get(R.id.item_title, TextView::class.java).text = title
-        val date = if (movie.releaseDate != null && movie.releaseDate.isNotEmpty()) movie.releaseDate else movie.firstAirDate
+        val date = if (isForMovies) movie.releaseDate else movie.firstAirDate
         holder.get(R.id.item_description, TextView::class.java).text = "Release: $date"
         val rate = movie.voteAverage
         val rateCount = movie.voteCount
@@ -44,7 +42,30 @@ class MoviesAdapter(private val dataSet: List<Movie>, private val callback: (Mov
     }
 
     override fun getItemCount(): Int {
-        return dataSet.size
+        return filteredList.size
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(p0: CharSequence?): FilterResults {
+                val searchValue = p0.toString()
+                filteredList = if (searchValue.isEmpty()) {
+                    dataSet
+                } else {
+                    dataSet.filter { if (isForMovies) it.title.lowercase().contains(searchValue.lowercase()) else it.name.lowercase().contains(searchValue.lowercase()) }
+                }
+                val filterResults = FilterResults()
+                filterResults.values = filteredList
+                return filterResults
+            }
+
+
+            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+               filteredList = p1?.values as List<Movie>
+                notifyDataSetChanged()
+            }
+
+        }
     }
 
 }

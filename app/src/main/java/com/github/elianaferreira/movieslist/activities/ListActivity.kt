@@ -1,10 +1,15 @@
 package com.github.elianaferreira.movieslist.activities
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ProgressBar
+import android.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +28,7 @@ class ListActivity : AppCompatActivity() {
 
     private lateinit var rvMovies: RecyclerView
     private lateinit var category: Category
+    private lateinit var adapter: MoviesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +61,7 @@ class ListActivity : AppCompatActivity() {
     }
 
     private fun populateList(moviesList: MoviesList) {
-        rvMovies.adapter = MoviesAdapter(moviesList.results) {
+        adapter = MoviesAdapter(Utils.categoryIsMovie(category.categoryValue), moviesList.results) {
             movie ->
             if (Utils.categoryIsMovie(category.categoryValue)) {
                 val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)
@@ -67,11 +73,34 @@ class ListActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+        rvMovies.adapter = adapter
     }
 
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_menu, menu)
+
+        val searchItem: MenuItem? = menu?.findItem(R.id.action_search)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView: SearchView = searchItem?.actionView as SearchView
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
     }
 }
