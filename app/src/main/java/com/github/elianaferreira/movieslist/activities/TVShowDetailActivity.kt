@@ -36,6 +36,7 @@ class TVShowDetailActivity : AppCompatActivity() {
     private lateinit var txtRating: TextView
     private lateinit var txtLanguages: TextView
     private lateinit var wrapperSeasons: LinearLayout
+    private lateinit var errorLayout: LinearLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,17 +69,20 @@ class TVShowDetailActivity : AppCompatActivity() {
         txtRating = findViewById(R.id.item_rate_value)
         txtLanguages = findViewById(R.id.txt_languages)
         wrapperSeasons = findViewById(R.id.wrapper_seasons)
+        errorLayout = findViewById(R.id.error_layout)
 
         val request = RequestManager(this)
         val successCallback = RequestManager.OnSuccessRequestResult<TVShowDetail> {
                 response ->
+            errorLayout.visibility = View.GONE
             val tvShow = response as TVShowDetail
             loadData(tvShow)
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
             error.printStackTrace()
-            true
+            errorLayout.visibility = View.VISIBLE
+            false
         }
 
         request.getTVShow(tvShow.id.toString(), progressBar, successCallback, errorCallback)

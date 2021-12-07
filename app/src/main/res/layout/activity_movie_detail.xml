@@ -35,6 +35,11 @@
     </ScrollView>
 
     <include
+        android:id="@+id/error_layout"
+        layout="@layout/error_layout"
+        android:visibility="gone"/>
+
+    <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
@@ -45,5 +50,7 @@
         android:id="@+id/progress_bar"
         layout="@layout/progress_bar"
         android:visibility="gone"/>
+
+
 
 </RelativeLayout>

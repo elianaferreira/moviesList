@@ -40,6 +40,7 @@ class MovieDetailActivity : AppCompatActivity() {
     private lateinit var txtRating: TextView
     private lateinit var txtLanguages: TextView
     private lateinit var btnTrailer: Button
+    private lateinit var errorLayout: LinearLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,18 +73,22 @@ class MovieDetailActivity : AppCompatActivity() {
         txtRating = findViewById(R.id.item_rate_value)
         txtLanguages = findViewById(R.id.txt_languages)
         btnTrailer = findViewById(R.id.btn_trailer)
+        errorLayout = findViewById(R.id.error_layout)
+
         btnTrailer.isEnabled = false
         changeTrailerButtonStyle(false)
 
         val request = RequestManager(this)
         val successCallback = RequestManager.OnSuccessRequestResult<MovieDetail> {
                 response ->
+            errorLayout.visibility = View.GONE
             loadData(response as MovieDetail)
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
             error.printStackTrace()
-            true
+            errorLayout.visibility = View.VISIBLE
+            false
         }
 
         request.getMovieByID(movie.id.toString(), progressBar, successCallback, errorCallback)
