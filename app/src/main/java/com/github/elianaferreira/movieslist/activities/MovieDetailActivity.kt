@@ -1,9 +1,6 @@
 package com.github.elianaferreira.movieslist.activities
 
-import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
@@ -14,21 +11,25 @@ import com.github.elianaferreira.movieslist.adapters.GenresAdapter
 import com.github.elianaferreira.movieslist.models.*
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.squareup.picasso.Picasso
-import java.lang.StringBuilder
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
+import android.view.MenuItem
+import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatCallback
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.view.ActionMode
 import com.github.elianaferreira.movieslist.utils.Utils
+import com.google.android.youtube.player.YouTubeBaseActivity
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerView
 
 
-class MovieDetailActivity : AppCompatActivity() {
+class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener, AppCompatCallback {
 
     companion object {
         val PARAM_MOVIE = "flag:movieSelected"
     }
-
-    val YOUTUBE_URL_BASE = "https://www.youtube.com/watch?v="
 
     private lateinit var progressBar: ProgressBar
     private lateinit var wrapperMovie: LinearLayout
@@ -39,8 +40,12 @@ class MovieDetailActivity : AppCompatActivity() {
     private lateinit var ratingBar: RatingBar
     private lateinit var txtRating: TextView
     private lateinit var txtLanguages: TextView
-    private lateinit var btnTrailer: Button
     private lateinit var errorLayout: LinearLayout
+    private lateinit var trailerPlayer: LinearLayout
+
+    private lateinit var appCompatDelegate: AppCompatDelegate
+    private lateinit var playerView: YouTubePlayerView
+    private lateinit var trailerKey: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,13 +59,17 @@ class MovieDetailActivity : AppCompatActivity() {
             statusBarColor = Color.TRANSPARENT
         }
 
+        appCompatDelegate = AppCompatDelegate.create(this, this)
+        appCompatDelegate.onCreate(savedInstanceState)
+        appCompatDelegate.setContentView(R.layout.activity_movie_detail)
+
         val movie = intent.getSerializableExtra(PARAM_MOVIE) as Movie
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = ""
         toolbar.setBackgroundColor(Color.TRANSPARENT)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        appCompatDelegate.setSupportActionBar(toolbar)
+        appCompatDelegate.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         progressBar = findViewById(R.id.progress_bar)
         wrapperMovie = findViewById(R.id.wrapper_movie)
@@ -72,11 +81,8 @@ class MovieDetailActivity : AppCompatActivity() {
         ratingBar = findViewById(R.id.item_rate)
         txtRating = findViewById(R.id.item_rate_value)
         txtLanguages = findViewById(R.id.txt_languages)
-        btnTrailer = findViewById(R.id.btn_trailer)
         errorLayout = findViewById(R.id.error_layout)
-
-        btnTrailer.isEnabled = false
-        changeTrailerButtonStyle(false)
+        trailerPlayer = findViewById(R.id.player_trailer)
 
         val request = RequestManager(this)
         val successCallback = RequestManager.OnSuccessRequestResult<MovieDetail> {
@@ -92,11 +98,11 @@ class MovieDetailActivity : AppCompatActivity() {
         }
 
         request.getMovieByID(movie.id.toString(), progressBar, successCallback, errorCallback)
-    }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
+        playerView = YouTubePlayerView(this)
+        playerView.layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        trailerPlayer.addView(playerView)
     }
 
 
@@ -121,9 +127,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
         wrapperMovie.visibility = View.VISIBLE
 
-        if (movieDetail.video) {
-            getVideos(movieDetail.id.toString())
-        }
+        getVideos(movieDetail.id.toString())
     }
 
     private fun getVideos(movieID: String) {
@@ -131,38 +135,102 @@ class MovieDetailActivity : AppCompatActivity() {
         val successCallback = RequestManager.OnSuccessRequestResult<Videos> {
                 response ->
             val videosList = response as Videos
-            if (videosList != null && videosList.results.isNotEmpty()) {
-                btnTrailer.isEnabled = true
-                changeTrailerButtonStyle(true)
-                btnTrailer.setOnClickListener(View.OnClickListener {
-                    val firstTrailerPath = videosList.results.first().key
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(YOUTUBE_URL_BASE + firstTrailerPath)
-                        )
-                    )
-                })
+            if (videosList != null && videosList.results != null && videosList.results.isNotEmpty()) {
+                trailerPlayer.visibility = View.VISIBLE
+                trailerKey = Utils.getTrailerKey(videosList.results)
+                playerView.initialize(getString(R.string.youtube_api_key), this)
             }
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
             error.printStackTrace()
-            btnTrailer.isEnabled = false
-            changeTrailerButtonStyle(false)
+            trailerPlayer.visibility = View.GONE
             false
         }
         request.getVideos(movieID, progressBar, successCallback, errorCallback)
     }
 
-    @SuppressLint("ResourceAsColor")
-    private fun changeTrailerButtonStyle(isEnable: Boolean) {
-        if (isEnable) {
-            btnTrailer.setTextColor(R.color.dark_peach)
-        } else {
-            btnTrailer.setTextColor(R.color.dark_grey)
+    override fun onInitializationSuccess(
+        provider: YouTubePlayer.Provider?,
+        youTubePlayer: YouTubePlayer?,
+        wasRestored: Boolean
+    ) {
+        val playerStateChangeListener = object: YouTubePlayer.PlayerStateChangeListener {
+            override fun onLoading() {
+            }
+
+            override fun onLoaded(p0: String?) {
+            }
+
+            override fun onAdStarted() {
+            }
+
+            override fun onVideoStarted() {
+            }
+
+            override fun onVideoEnded() {
+            }
+
+            override fun onError(p0: YouTubePlayer.ErrorReason?) {
+            }
+
+        }
+
+        val playbackEventListener = object: YouTubePlayer.PlaybackEventListener {
+            override fun onPlaying() {
+            }
+
+            override fun onPaused() {
+            }
+
+            override fun onStopped() {
+            }
+
+            override fun onBuffering(p0: Boolean) {
+            }
+
+            override fun onSeekTo(p0: Int) {
+            }
+
+        }
+
+
+        youTubePlayer?.setPlayerStateChangeListener(playerStateChangeListener)
+        youTubePlayer?.setPlaybackEventListener(playbackEventListener)
+
+        if (!wasRestored) {
+            youTubePlayer?.cueVideo(trailerKey)
         }
     }
 
+    override fun onInitializationFailure(
+        provider: YouTubePlayer.Provider?,
+        youTubeInitializationResult: YouTubeInitializationResult?
+    ) {
+        if (youTubeInitializationResult?.isUserRecoverableError == true) {
+            youTubeInitializationResult.getErrorDialog(this, 0).show()
+        } else {
+            val errorMessage = "There was an error initializing the YoutubePlayer ($youTubeInitializationResult)"
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+        }
 
+    }
+
+    override fun onSupportActionModeStarted(mode: ActionMode?) {
+    }
+
+    override fun onSupportActionModeFinished(mode: ActionMode?) {
+    }
+
+    override fun onWindowStartingSupportActionMode(callback: ActionMode.Callback?): ActionMode? {
+        return null
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

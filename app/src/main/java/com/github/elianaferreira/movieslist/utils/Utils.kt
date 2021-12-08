@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.github.elianaferreira.movieslist.models.Genre
 import com.github.elianaferreira.movieslist.models.SpokenLanguage
+import com.github.elianaferreira.movieslist.models.Video
 import java.lang.StringBuilder
 import java.util.*
 
@@ -45,6 +46,29 @@ class Utils {
                 in 16 until 21 -> return "Good evening,"
                 in 21..24 -> return "Good Night,"
                 else -> return "Hi,"
+            }
+        }
+
+        fun getTrailerKey(videos: List<Video>): String {
+            //get only trailer
+            val trailers = videos.filter { it.type.lowercase() == "trailer" }
+            if (trailers != null && trailers.isNotEmpty()) {
+                return trailers.first().key
+            } else {
+                //if there is no trailer, search for teaser
+                val teasers = videos.filter { it.type.lowercase() == "teaser" }
+                if (teasers != null && teasers.isNotEmpty()) {
+                    return teasers.first().key
+                } else {
+                    //ssearch for clips
+                    val clips = videos.filter { it.type.lowercase() == "clip" }
+                    if (clips != null && clips.isNotEmpty()) {
+                        return clips.first().key
+                    } else {
+                        //extreme cases
+                        return ""
+                    }
+                }
             }
         }
     }

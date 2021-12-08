@@ -30,7 +30,18 @@
                 android:text="@string/trailer"
                 android:textAllCaps="false"
                 style="?android:attr/borderlessButtonStyle"
-                android:textColor="@color/dark_peach"/>
+                android:textColor="@color/dark_peach"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/player_trailer"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/trailer_video_height"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/general_margin"
+                android:layout_marginRight="@dimen/general_margin"
+                android:layout_marginBottom="@dimen/general_margin"/>
+
         </LinearLayout>
     </ScrollView>
 

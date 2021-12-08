@@ -12,6 +12,7 @@
     <dimen name="season_card_width">300dp</dimen>
     <dimen name="season_card_height">120dp</dimen>
     <dimen name="season_text_max_width">180dp</dimen>
+    <dimen name="trailer_video_height">250dp</dimen>
 
     <dimen name="title_size">20sp</dimen>
     <dimen name="big_title_size">24sp</dimen>
