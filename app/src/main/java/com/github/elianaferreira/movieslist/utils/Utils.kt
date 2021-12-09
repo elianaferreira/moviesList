@@ -65,8 +65,8 @@ class Utils {
                     if (clips != null && clips.isNotEmpty()) {
                         return clips.first().key
                     } else {
-                        //extreme cases
-                        return ""
+                        //extreme case: return the first element's key
+                        return videos.first().key
                     }
                 }
             }
