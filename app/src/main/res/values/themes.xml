@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorPrimaryDark">@color/dark_peach</item>
         <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">@color/light_peach</item>
     </style>
 
     <style name="PrimaryTitle" parent="Widget.AppCompat.TextView">
