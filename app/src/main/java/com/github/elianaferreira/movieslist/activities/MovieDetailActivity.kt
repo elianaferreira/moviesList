@@ -28,7 +28,7 @@ import com.google.android.youtube.player.YouTubePlayerView
 class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener, AppCompatCallback {
 
     companion object {
-        val PARAM_MOVIE = "flag:movieSelected"
+        const val PARAM_MOVIE = "flag:movieSelected"
     }
 
     private lateinit var progressBar: ProgressBar
@@ -135,7 +135,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         val successCallback = RequestManager.OnSuccessRequestResult<Videos> {
                 response ->
             val videosList = response as Videos
-            if (videosList != null && videosList.results != null && videosList.results.isNotEmpty()) {
+            if (videosList.results.isNotEmpty()) {
                 trailerPlayer.visibility = View.VISIBLE
                 trailerKey = Utils.getTrailerKey(videosList.results)
                 playerView.initialize(getString(R.string.youtube_api_key), this)

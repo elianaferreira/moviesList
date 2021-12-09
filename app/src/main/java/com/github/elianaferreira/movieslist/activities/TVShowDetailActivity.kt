@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.adapters.GenresAdapter
 import com.github.elianaferreira.movieslist.models.Movie
-import com.github.elianaferreira.movieslist.models.MovieDetail
 import com.github.elianaferreira.movieslist.models.TVShowDetail
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
@@ -23,7 +22,7 @@ import com.squareup.picasso.Picasso
 class TVShowDetailActivity : AppCompatActivity() {
 
     companion object {
-        val PARAM_SHOW = "flag:showSelected"
+        const val PARAM_SHOW = "flag:showSelected"
     }
 
     private lateinit var progressBar: ProgressBar
@@ -75,8 +74,8 @@ class TVShowDetailActivity : AppCompatActivity() {
         val successCallback = RequestManager.OnSuccessRequestResult<TVShowDetail> {
                 response ->
             errorLayout.visibility = View.GONE
-            val tvShow = response as TVShowDetail
-            loadData(tvShow)
+            val tvShowDetail = response as TVShowDetail
+            loadData(tvShowDetail)
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->

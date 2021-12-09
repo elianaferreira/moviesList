@@ -1,12 +1,11 @@
 package com.github.elianaferreira.movieslist.models
 
-import kotlinx.serialization.Serializable
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 @Keep
-@Serializable
 data class MoviesList(
     @SerializedName("page")
     val page: Int,
@@ -16,10 +15,9 @@ data class MoviesList(
     val totalPages: Int,
     @SerializedName("total_results")
     val totalResults: Int
-) : java.io.Serializable
+) : Serializable
 
 @Keep
-@Serializable
 data class Movie(
     @SerializedName("adult")
     val adult: Boolean,
@@ -55,4 +53,4 @@ data class Movie(
     val originalName: String,
     @SerializedName("first_air_date")
     val firstAirDate: String
-) : java.io.Serializable
+) : Serializable

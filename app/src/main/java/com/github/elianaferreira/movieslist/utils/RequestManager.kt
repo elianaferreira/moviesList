@@ -15,19 +15,14 @@ import com.github.elianaferreira.movieslist.models.*
 import com.google.gson.Gson
 import java.lang.StringBuilder
 
-class RequestManager {
+class RequestManager(private var context: Context) {
+
     private val BASE_URL = "https://api.themoviedb.org/3/"
     private val TAG = RequestManager::class.java.simpleName
 
-    private var context: Context
-    private var queue: RequestQueue
+    private var queue: RequestQueue = Volley.newRequestQueue(context)
 
     private val application = App.instance
-
-    constructor(context: Context) {
-        this.context = context
-        queue = Volley.newRequestQueue(context)
-    }
 
     fun interface OnSuccessRequestResult<T> {
         fun onSuccess(response: Any)
@@ -43,8 +38,8 @@ class RequestManager {
         fun onError(error: VolleyError): Boolean
     }
 
-    fun getApiKey(progressBar: ProgressBar, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
-                  errorCallback: OnErrorRequestResult) {
+    private fun getApiKey(progressBar: ProgressBar, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
+                          errorCallback: OnErrorRequestResult) {
 
         val apiURL = "http://moviedbapikeyprovider.herokuapp.com/api_key"
 

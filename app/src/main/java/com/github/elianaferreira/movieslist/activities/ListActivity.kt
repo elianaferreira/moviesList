@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ProgressBar
@@ -23,7 +22,7 @@ import com.github.elianaferreira.movieslist.utils.Utils
 class ListActivity : AppCompatActivity() {
 
     companion object {
-        val PARAM_LIST_TYPE = "flag:listType"
+        const val PARAM_LIST_TYPE = "flag:listType"
     }
 
     private lateinit var rvMovies: RecyclerView

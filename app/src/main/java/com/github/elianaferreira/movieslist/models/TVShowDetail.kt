@@ -2,12 +2,8 @@ package com.github.elianaferreira.movieslist.models
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
-import kotlinx.serialization.Serializable
-
-
 
 @Keep
-@Serializable
 data class TVShowDetail(
     @SerializedName("backdrop_path")
     val backdropPath: String,
@@ -74,7 +70,6 @@ data class TVShowDetail(
 )
 
 @Keep
-@Serializable
 data class CreatedBy(
     @SerializedName("credit_id")
     val creditId: String,
@@ -89,7 +84,6 @@ data class CreatedBy(
 )
 
 @Keep
-@Serializable
 data class LastEpisodeToAir(
     @SerializedName("air_date")
     val airDate: String,
@@ -114,7 +108,6 @@ data class LastEpisodeToAir(
 )
 
 @Keep
-@Serializable
 data class Network(
     @SerializedName("id")
     val id: Int,
@@ -127,7 +120,6 @@ data class Network(
 )
 
 @Keep
-@Serializable
 data class Season(
     @SerializedName("air_date")
     val airDate: String,

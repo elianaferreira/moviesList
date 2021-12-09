@@ -2,12 +2,8 @@ package com.github.elianaferreira.movieslist.models
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
-import kotlinx.serialization.Serializable
-
-
 
 @Keep
-@Serializable
 data class MovieDetail(
     @SerializedName("adult")
     val adult: Boolean,
@@ -62,7 +58,6 @@ data class MovieDetail(
 )
 
 @Keep
-@Serializable
 data class Genre(
     @SerializedName("id")
     val id: Int,
@@ -71,7 +66,6 @@ data class Genre(
 )
 
 @Keep
-@Serializable
 data class ProductionCompany(
     @SerializedName("id")
     val id: Int,
@@ -84,7 +78,6 @@ data class ProductionCompany(
 )
 
 @Keep
-@Serializable
 data class ProductionCountry(
     @SerializedName("iso_3166_1")
     val iso31661: String,
@@ -93,7 +86,6 @@ data class ProductionCountry(
 )
 
 @Keep
-@Serializable
 data class SpokenLanguage(
     @SerializedName("english_name")
     val englishName: String,

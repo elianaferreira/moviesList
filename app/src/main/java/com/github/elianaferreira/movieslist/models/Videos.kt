@@ -2,12 +2,8 @@ package com.github.elianaferreira.movieslist.models
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
-import kotlinx.serialization.Serializable
-
-
 
 @Keep
-@Serializable
 data class Videos(
     @SerializedName("id")
     val id: Int,
@@ -16,7 +12,6 @@ data class Videos(
 )
 
 @Keep
-@Serializable
 data class Video(
     @SerializedName("id")
     val id: String,
