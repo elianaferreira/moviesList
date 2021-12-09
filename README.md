@@ -12,6 +12,7 @@ Android application to list movies and TV shows.
 - [Volley](https://developer.android.com/training/volley) for HTTP Requests
 - [Picasso](https://square.github.io/picasso/) and [RoundedImageView](https://github.com/vinc3m1/RoundedImageView) for image manage
 - [GenericViewHolder](https://github.com/elianaferreira/genericviewholder) for RecyclerView Holder
+- [unDraw](https://undraw.co/illustrations) for the cool images.
 
 ## Pending
 ### Transitions
