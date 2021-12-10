@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.models.Category
+import com.github.elianaferreira.movieslist.home.Category
 import com.github.elianaferreira.viewholder.GenericViewHolder
 
 class CategoriesAdapter(private val context: Context, private val dataSet: List<Category>, private val callback: (Category) -> Unit)

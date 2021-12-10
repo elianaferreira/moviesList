@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.activities
+package com.github.elianaferreira.movieslist.home
 
 import android.content.Intent
 import android.graphics.Color
@@ -10,15 +10,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
+import com.github.elianaferreira.movieslist.activities.ListActivity
 import com.github.elianaferreira.movieslist.adapters.CategoriesAdapter
-import com.github.elianaferreira.movieslist.models.Category
 import com.github.elianaferreira.movieslist.utils.Utils
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HomeView {
+
+    private lateinit var homePresenter: HomePresenter
+
+    private lateinit var txtGreeting: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        homePresenter = HomePresenterImpl(this)
 
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -27,23 +33,29 @@ class MainActivity : AppCompatActivity() {
             statusBarColor = Color.TRANSPARENT
         }
 
-        val txtGreting: TextView = findViewById(R.id.greeting)
-        txtGreting.text = Utils.getGreeting()
+        txtGreeting = findViewById(R.id.greeting)
 
-        val categories = listOf<Category>(
-            Category("movie/popular", "Popular Movies", R.drawable.img_movie_popular),
-            Category("movie/top_rated", "Top Rate Movies", R.drawable.img_movie_top_rated),
-            Category("tv/popular", "Popular Series", R.drawable.img_show_popular),
-            Category("tv/top_rated", "Top Rate Series", R.drawable.img_show_top_rated)
-        )
+        homePresenter.loadCategories()
 
+    }
+
+    override fun showWelcomeMessage(message: String) {
+        txtGreeting.text = message
+    }
+
+
+    override fun showCategories(categories: List<Category>) {
         val rvCategories: RecyclerView = findViewById(R.id.list_categories)
         rvCategories.layoutManager = GridLayoutManager(this, 2)
         rvCategories.adapter = CategoriesAdapter(this@MainActivity, categories) {
-            categoryValue ->
-            val intent = Intent(this@MainActivity, ListActivity::class.java)
-            intent.putExtra(ListActivity.PARAM_LIST_TYPE, categoryValue)
-            startActivity(intent)
+                categoryValue -> homePresenter.categorySelected(categoryValue)
         }
+    }
+
+
+    override fun onCategorySelected(category: Category) {
+        val intent = Intent(this@MainActivity, ListActivity::class.java)
+        intent.putExtra(ListActivity.PARAM_LIST_TYPE, category)
+        startActivity(intent)
     }
 }
