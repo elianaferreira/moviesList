@@ -3,7 +3,6 @@ package com.github.elianaferreira.movieslist.activities
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.adapters.GenresAdapter
-import com.github.elianaferreira.movieslist.models.Movie
+import com.github.elianaferreira.movieslist.list.Movie
 import com.github.elianaferreira.movieslist.models.TVShowDetail
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils

@@ -18,7 +18,7 @@
             android:name=".activities.MovieDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ListActivity"
+            android:name=".list.ListActivity"
             android:exported="false" />
         <activity
             android:name=".home.MainActivity"

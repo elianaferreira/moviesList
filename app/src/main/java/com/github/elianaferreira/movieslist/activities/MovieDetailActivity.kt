@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.ActionMode
 import com.github.elianaferreira.movieslist.BuildConfig
+import com.github.elianaferreira.movieslist.list.Movie
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult

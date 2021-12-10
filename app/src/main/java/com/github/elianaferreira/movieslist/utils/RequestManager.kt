@@ -11,6 +11,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.R
+import com.github.elianaferreira.movieslist.list.MoviesList
 import com.github.elianaferreira.movieslist.models.*
 import com.google.gson.Gson
 import java.lang.StringBuilder
@@ -35,21 +36,21 @@ class RequestManager(private var context: Context) {
         fun onError(error: VolleyError): Boolean
     }
 
-    private fun makeRequest(progressBar: ProgressBar, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
+    private fun makeRequest(progressBar: ProgressBar?, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
                             errorCallback: OnErrorRequestResult) {
-        progressBar.visibility = View.VISIBLE
+        progressBar?.visibility = View.VISIBLE
 
         if (BuildConfig.DEBUG) Log.d(TAG, "send request to " + url)
 
         val jsonObjectRequest = JsonObjectRequest(method, url, null,
             { response ->
                 if (BuildConfig.DEBUG) Log.d(TAG, "response: " + response.toString())
-                progressBar.visibility = View.GONE
+                progressBar?.visibility = View.GONE
                 val parsedResponse = Gson().fromJson(response.toString(), classDTO)
                 successCallback.onSuccess(parsedResponse)
             },
             { error ->
-                progressBar.visibility = View.GONE
+                progressBar?.visibility = View.GONE
                 if (errorCallback.onError(error)) {
                     error.printStackTrace()
                     //show error
@@ -79,7 +80,7 @@ class RequestManager(private var context: Context) {
 
 
     //used for list of TV Shows as well
-    fun getMovies(category: String, page: Int, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
+    fun getMovies(category: String, page: Int, progressBar: ProgressBar?, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
         val queryParams = hashMapOf<String, String>()
         queryParams["page"] = page.toString()
         makeRequest(progressBar, getAbsoluteURL(category, queryParams), Request.Method.GET, MoviesList::class.java, successCallback, errorCallback)

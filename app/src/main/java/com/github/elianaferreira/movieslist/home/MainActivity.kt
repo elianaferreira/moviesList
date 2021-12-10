@@ -10,9 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.activities.ListActivity
+import com.github.elianaferreira.movieslist.list.ListActivity
 import com.github.elianaferreira.movieslist.adapters.CategoriesAdapter
-import com.github.elianaferreira.movieslist.utils.Utils
 
 class MainActivity : AppCompatActivity(), HomeView {
 

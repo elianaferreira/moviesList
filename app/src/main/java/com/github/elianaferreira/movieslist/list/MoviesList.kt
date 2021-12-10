@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.models
+package com.github.elianaferreira.movieslist.list
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName

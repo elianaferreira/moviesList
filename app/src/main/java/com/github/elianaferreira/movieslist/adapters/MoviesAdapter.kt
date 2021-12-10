@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.models.Movie
+import com.github.elianaferreira.movieslist.list.Movie
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.github.elianaferreira.viewholder.GenericViewHolder
 import com.squareup.picasso.Picasso
