@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.home
+package com.github.elianaferreira.movieslist.stories.home
 
 import android.content.Intent
 import android.graphics.Color
@@ -10,8 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.list.ListActivity
-import com.github.elianaferreira.movieslist.adapters.CategoriesAdapter
+import com.github.elianaferreira.movieslist.stories.list.ListActivity
 
 class MainActivity : AppCompatActivity(), HomeView {
 

@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.adapters
+package com.github.elianaferreira.movieslist.stories.detail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

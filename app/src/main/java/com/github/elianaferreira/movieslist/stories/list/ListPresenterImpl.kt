@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.list
+package com.github.elianaferreira.movieslist.stories.list
 
 import com.github.elianaferreira.movieslist.utils.RequestManager
 

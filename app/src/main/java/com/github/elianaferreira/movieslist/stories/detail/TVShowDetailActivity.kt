@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.activities
+package com.github.elianaferreira.movieslist.stories.detail
 
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.adapters.GenresAdapter
-import com.github.elianaferreira.movieslist.list.Movie
+import com.github.elianaferreira.movieslist.stories.list.Movie
 import com.github.elianaferreira.movieslist.models.TVShowDetail
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils

@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.home
+package com.github.elianaferreira.movieslist.stories.home
 
 interface HomePresenter {
     fun setWelcomeMessage()

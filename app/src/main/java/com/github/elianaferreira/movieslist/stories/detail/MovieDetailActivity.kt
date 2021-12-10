@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.activities
+package com.github.elianaferreira.movieslist.stories.detail
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.adapters.GenresAdapter
 import com.github.elianaferreira.movieslist.models.*
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.squareup.picasso.Picasso
@@ -19,7 +18,7 @@ import androidx.appcompat.app.AppCompatCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.ActionMode
 import com.github.elianaferreira.movieslist.BuildConfig
-import com.github.elianaferreira.movieslist.list.Movie
+import com.github.elianaferreira.movieslist.stories.list.Movie
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult

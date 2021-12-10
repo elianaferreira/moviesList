@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.list
+package com.github.elianaferreira.movieslist.stories.list
 
 interface ListPresenter {
 

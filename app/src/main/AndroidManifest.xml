@@ -12,16 +12,16 @@
         android:theme="@style/Theme.MoviesList"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activities.TVShowDetailActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.detail.TVShowDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MovieDetailActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.detail.MovieDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".list.ListActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.list.ListActivity"
             android:exported="false" />
         <activity
-            android:name=".home.MainActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.home.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

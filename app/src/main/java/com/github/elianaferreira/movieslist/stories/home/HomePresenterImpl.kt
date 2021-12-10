@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.home
+package com.github.elianaferreira.movieslist.stories.home
 
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.utils.Utils
