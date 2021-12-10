@@ -3,18 +3,22 @@ package com.github.elianaferreira.movieslist.activities
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ProgressBar
 import android.widget.SearchView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.adapters.MoviesAdapter
 import com.github.elianaferreira.movieslist.models.Category
+import com.github.elianaferreira.movieslist.models.Movie
 import com.github.elianaferreira.movieslist.models.MoviesList
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
@@ -26,8 +30,13 @@ class ListActivity : AppCompatActivity() {
     }
 
     private lateinit var rvMovies: RecyclerView
+    private lateinit var progressBar: ProgressBar
+
     private lateinit var category: Category
     private lateinit var adapter: MoviesAdapter
+    private lateinit var request: RequestManager
+
+    private var page = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +49,39 @@ class ListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val progressBar: ProgressBar = findViewById(R.id.progress_bar)
+        progressBar = findViewById(R.id.progress_bar)
         rvMovies = findViewById(R.id.list_movies)
         rvMovies.layoutManager = LinearLayoutManager(this)
 
-        val request = RequestManager(this)
+        request = RequestManager(this)
+
+        getMoviesFromAPI(page)
+
+        rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val visibleItemCount = (rvMovies.layoutManager as LinearLayoutManager).childCount
+                val pastVisibleItem = (rvMovies.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                val total = adapter.itemCount
+
+                if ((visibleItemCount + pastVisibleItem) >= total) {
+                    getMoviesFromAPI(page++)
+                }
+
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+    }
+
+
+    private fun getMoviesFromAPI(page: Int) {
         val successCallback = RequestManager.OnSuccessRequestResult<MoviesList> {
                 response ->
-            populateList(response as MoviesList)
+           if (page == 1) {
+               populateList(response as MoviesList)
+           } else {
+               val moreMovies = response as MoviesList
+               adapter.addData(moreMovies.results as MutableList<Movie>)
+           }
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
@@ -55,11 +89,12 @@ class ListActivity : AppCompatActivity() {
             true
         }
 
-        request.getMovies(category.categoryValue, progressBar, successCallback, errorCallback)
+        request.getMovies(category.categoryValue, page, progressBar, successCallback, errorCallback)
     }
 
+
     private fun populateList(moviesList: MoviesList) {
-        adapter = MoviesAdapter(Utils.categoryIsMovie(category.categoryValue), moviesList.results) {
+        adapter = MoviesAdapter(Utils.categoryIsMovie(category.categoryValue), moviesList.results as MutableList<Movie>) {
             movie ->
             if (Utils.categoryIsMovie(category.categoryValue)) {
                 val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)

@@ -18,6 +18,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.ActionMode
+import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
@@ -138,7 +139,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
             if (videosList.results.isNotEmpty()) {
                 trailerPlayer.visibility = View.VISIBLE
                 trailerKey = Utils.getTrailerKey(videosList.results)
-                playerView.initialize(getString(R.string.youtube_api_key), this)
+                playerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
             }
         }
 

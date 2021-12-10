@@ -2,6 +2,7 @@ package com.github.elianaferreira.movieslist.utils
 
 import android.content.Context
 import android.widget.Toast
+import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.models.Genre
 import com.github.elianaferreira.movieslist.models.SpokenLanguage
 import com.github.elianaferreira.movieslist.models.Video
@@ -11,8 +12,6 @@ import java.util.*
 class Utils {
 
     companion object {
-
-        private const val POSTER_URL_BASE = "https://image.tmdb.org/t/p/w500/"
 
         fun showErrorMessage(context: Context, message: String) {
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
@@ -30,7 +29,7 @@ class Utils {
         }
 
         fun getPosterURL(filePath: String?): String {
-            return POSTER_URL_BASE + filePath
+            return BuildConfig.POSTER_URL_BASE + filePath
         }
 
         fun categoryIsMovie(category: String) : Boolean {

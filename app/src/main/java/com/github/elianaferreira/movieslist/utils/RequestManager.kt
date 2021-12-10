@@ -17,12 +17,9 @@ import java.lang.StringBuilder
 
 class RequestManager(private var context: Context) {
 
-    private val BASE_URL = "https://api.themoviedb.org/3/"
     private val TAG = RequestManager::class.java.simpleName
 
     private var queue: RequestQueue = Volley.newRequestQueue(context)
-
-    private val application = App.instance
 
     fun interface OnSuccessRequestResult<T> {
         fun onSuccess(response: Any)
@@ -38,56 +35,13 @@ class RequestManager(private var context: Context) {
         fun onError(error: VolleyError): Boolean
     }
 
-    private fun getApiKey(progressBar: ProgressBar, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
-                          errorCallback: OnErrorRequestResult) {
-
-        val apiURL = "http://moviedbapikeyprovider.herokuapp.com/api_key"
-
-        progressBar.visibility = View.VISIBLE
-
-        if (BuildConfig.DEBUG) Log.d(TAG, "send request to " + apiURL)
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, apiURL, null,
-            { response ->
-                if (BuildConfig.DEBUG) Log.d(TAG, "response: " + response.toString())
-                //FIXME: it could be just a string
-                val parsedResponse = Gson().fromJson(response.toString(), ApiKey::class.java)
-                application.setApiKey(parsedResponse.apiKey)
-                makeRequest(progressBar, url, method, classDTO, successCallback, errorCallback)
-            },
-            { error ->
-                if (errorCallback.onError(error)) {
-                    progressBar.visibility = View.GONE
-                    //show error
-                    Utils.showErrorMessage(context, context.getString(R.string.general_error_message))
-                }
-            }
-        )
-        queue.add(jsonObjectRequest)
-    }
-
-
-    private fun sendRequest(progressBar: ProgressBar, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
-                                        errorCallback: OnErrorRequestResult) {
-        if (application.getApiKey() != null) {
-            makeRequest(progressBar, url, method, classDTO, successCallback, errorCallback)
-        } else {
-            getApiKey(progressBar, url, method, classDTO, successCallback, errorCallback)
-        }
-    }
-
-
     private fun makeRequest(progressBar: ProgressBar, url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
                             errorCallback: OnErrorRequestResult) {
         progressBar.visibility = View.VISIBLE
 
-        val absoluteURL = StringBuilder()
-        absoluteURL.append(BASE_URL)
-        absoluteURL.append(url) //path of request
-        absoluteURL.append("?api_key=" + application.getApiKey())
+        if (BuildConfig.DEBUG) Log.d(TAG, "send request to " + url)
 
-        if (BuildConfig.DEBUG) Log.d(TAG, "send request to " + absoluteURL.toString())
-
-        val jsonObjectRequest = JsonObjectRequest(method, absoluteURL.toString(), null,
+        val jsonObjectRequest = JsonObjectRequest(method, url, null,
             { response ->
                 if (BuildConfig.DEBUG) Log.d(TAG, "response: " + response.toString())
                 progressBar.visibility = View.GONE
@@ -107,20 +61,39 @@ class RequestManager(private var context: Context) {
     }
 
 
+    private fun getAbsoluteURL(url: String, queryParams: HashMap<String, String>?): String {
+        val absoluteURL = StringBuilder()
+        absoluteURL.append(BuildConfig.BASE_URL)
+        absoluteURL.append(url) //path of request
+        absoluteURL.append("?api_key=" + BuildConfig.API_KEY)
+
+        if (queryParams != null) {
+            for (key in queryParams.keys) {
+                val value = queryParams[key]
+                absoluteURL.append("&$key=$value")
+            }
+        }
+
+        return absoluteURL.toString()
+    }
+
+
     //used for list of TV Shows as well
-    fun getMovies(category: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
-        sendRequest(progressBar, category, Request.Method.GET, MoviesList::class.java, successCallback, errorCallback)
+    fun getMovies(category: String, page: Int, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
+        val queryParams = hashMapOf<String, String>()
+        queryParams["page"] = page.toString()
+        makeRequest(progressBar, getAbsoluteURL(category, queryParams), Request.Method.GET, MoviesList::class.java, successCallback, errorCallback)
     }
 
     fun getMovieByID(movieID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<MovieDetail>, errorCallback: OnErrorRequestResult) {
-        sendRequest(progressBar, "movie/$movieID", Request.Method.GET,  MovieDetail::class.java, successCallback, errorCallback)
+        makeRequest(progressBar, getAbsoluteURL("movie/$movieID", null), Request.Method.GET,  MovieDetail::class.java, successCallback, errorCallback)
     }
 
     fun getVideos(movieID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<Videos>, errorCallback: OnErrorRequestResult) {
-        sendRequest(progressBar, "movie/$movieID/videos", Request.Method.GET, Videos::class.java, successCallback, errorCallback)
+        makeRequest(progressBar, getAbsoluteURL("movie/$movieID/videos", null), Request.Method.GET, Videos::class.java, successCallback, errorCallback)
     }
 
     fun getTVShow(showID: String, progressBar: ProgressBar, successCallback: OnSuccessRequestResult<TVShowDetail>, errorCallback: OnErrorRequestResult) {
-        sendRequest(progressBar, "tv/$showID", Request.Method.GET, TVShowDetail::class.java, successCallback, errorCallback)
+        makeRequest(progressBar, getAbsoluteURL("tv/$showID", null), Request.Method.GET, TVShowDetail::class.java, successCallback, errorCallback)
     }
 }

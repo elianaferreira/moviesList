@@ -68,4 +68,12 @@ class MoviesAdapter(private val isForMovies: Boolean, private val dataSet: List<
         }
     }
 
+
+    fun addData(moreMovies: List<Movie>) {
+        val mutableList = filteredList.toMutableList()
+        mutableList.addAll(moreMovies)
+        filteredList = mutableList.toList()
+        notifyDataSetChanged()
+    }
+
 }

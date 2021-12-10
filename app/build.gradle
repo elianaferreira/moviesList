@@ -13,6 +13,11 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
+        buildConfigField "String", "POSTER_URL_BASE", "\"https://image.tmdb.org/t/p/w500/\""
+        buildConfigField "String", "API_KEY", "\"de730ab29c69b11e7f78655f21a4125d\""
+        buildConfigField "String", "YOUTUBE_API_KEY", "\"AIzaSyC5GUy_0YpXzf__th0aui6EimapxoKp31k\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -44,6 +49,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation "androidx.paging:paging-runtime-ktx:3.1.0"
+
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
 
 

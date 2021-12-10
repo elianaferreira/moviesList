@@ -16,6 +16,4 @@
     <string name="sample_description">Description</string>
     <string name="sample_greeting">Good morning,</string>
 
-    <!--  key -->
-    <string name="youtube_api_key">AIzaSyC5GUy_0YpXzf__th0aui6EimapxoKp31k</string>
 </resources>
