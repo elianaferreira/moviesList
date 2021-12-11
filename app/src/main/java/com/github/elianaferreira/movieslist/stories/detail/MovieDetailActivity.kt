@@ -11,6 +11,7 @@ import com.github.elianaferreira.movieslist.models.*
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.squareup.picasso.Picasso
 import android.graphics.Color
+import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -26,7 +27,8 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerView
 
 
-class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener, AppCompatCallback {
+class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener,
+    AppCompatCallback, MovieDetailView {
 
     companion object {
         const val PARAM_MOVIE = "flag:movieSelected"
@@ -47,6 +49,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     private lateinit var appCompatDelegate: AppCompatDelegate
     private lateinit var playerView: YouTubePlayerView
     private lateinit var trailerKey: String
+    private lateinit var movieDetailPresenter: MovieDetailPresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +66,10 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         appCompatDelegate = AppCompatDelegate.create(this, this)
         appCompatDelegate.onCreate(savedInstanceState)
         appCompatDelegate.setContentView(R.layout.activity_movie_detail)
+
+        val request = RequestManager(this)
+
+        movieDetailPresenter = MovieDetailPresenterImpl(this, request)
 
         val movie = intent.getSerializableExtra(PARAM_MOVIE) as Movie
 
@@ -85,20 +92,20 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         errorLayout = findViewById(R.id.error_layout)
         trailerPlayer = findViewById(R.id.player_trailer)
 
-        val request = RequestManager(this)
-        val successCallback = RequestManager.OnSuccessRequestResult<MovieDetail> {
-                response ->
-            errorLayout.visibility = View.GONE
-            loadData(response as MovieDetail)
-        }
+//        val successCallback = RequestManager.OnSuccessRequestResult<MovieDetail> {
+//                response ->
+//            errorLayout.visibility = View.GONE
+//            loadData(response as MovieDetail)
+//        }
+//
+//        val errorCallback = RequestManager.OnErrorRequestResult { error ->
+//            error.printStackTrace()
+//            errorLayout.visibility = View.VISIBLE
+//            false
+//        }
 
-        val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            error.printStackTrace()
-            errorLayout.visibility = View.VISIBLE
-            false
-        }
-
-        request.getMovieByID(movie.id.toString(), progressBar, successCallback, errorCallback)
+        //TODO
+        movieDetailPresenter.getMovieDetail(movie.id.toString())
 
         playerView = YouTubePlayerView(this)
         playerView.layoutParams = LinearLayout.LayoutParams(
@@ -107,49 +114,25 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     }
 
 
-    private fun loadData(movieDetail: MovieDetail) {
-        Picasso.get()
-            .load(Utils.getPosterURL(movieDetail.backdropPath))
-            .placeholder(R.drawable.img_film)
-            .error(R.drawable.img_film)
-            .into(imgMovie)
-
-        txtTitle.text = movieDetail.title
-        txtOverview.text = movieDetail.overview
-
-        val rate = movieDetail.voteAverage
-        val rateCount = movieDetail.voteCount
-        ratingBar.rating = rate.toFloat()
-        txtRating.text = "$rate ($rateCount)"
-
-        rvGenres.layoutManager = GridLayoutManager(this, 3)
-        rvGenres.adapter = GenresAdapter(Utils.getGenresNames(movieDetail.genres))
-        txtLanguages.text = Utils.getLanguagesConcat(movieDetail.spokenLanguages)
-
-        wrapperMovie.visibility = View.VISIBLE
-
-        getVideos(movieDetail.id.toString())
-    }
-
-    private fun getVideos(movieID: String) {
-        val request = RequestManager(this)
-        val successCallback = RequestManager.OnSuccessRequestResult<Videos> {
-                response ->
-            val videosList = response as Videos
-            if (videosList.results.isNotEmpty()) {
-                trailerPlayer.visibility = View.VISIBLE
-                trailerKey = Utils.getTrailerKey(videosList.results)
-                playerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
-            }
-        }
-
-        val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            error.printStackTrace()
-            trailerPlayer.visibility = View.GONE
-            false
-        }
-        request.getVideos(movieID, progressBar, successCallback, errorCallback)
-    }
+//    private fun getVideos(movieID: String) {
+//        val request = RequestManager(this)
+//        val successCallback = RequestManager.OnSuccessRequestResult<Videos> {
+//                response ->
+//            val videosList = response as Videos
+//            if (videosList.results.isNotEmpty()) {
+//                trailerPlayer.visibility = View.VISIBLE
+//                trailerKey = Utils.getTrailerKey(videosList.results)
+//                playerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
+//            }
+//        }
+//
+//        val errorCallback = RequestManager.OnErrorRequestResult { error ->
+//            error.printStackTrace()
+//            trailerPlayer.visibility = View.GONE
+//            false
+//        }
+//        request.getVideos(movieID, successCallback, errorCallback)
+//    }
 
     override fun onInitializationSuccess(
         provider: YouTubePlayer.Provider?,
@@ -233,5 +216,46 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun showMovieDetail(movieDetail: MovieDetail) {
+        Picasso.get()
+            .load(Utils.getPosterURL(movieDetail.backdropPath))
+            .placeholder(R.drawable.img_film)
+            .error(R.drawable.img_film)
+            .into(imgMovie)
+
+        txtTitle.text = movieDetail.title
+        txtOverview.text = movieDetail.overview
+
+        val rate = movieDetail.voteAverage
+        val rateCount = movieDetail.voteCount
+        ratingBar.rating = rate.toFloat()
+        txtRating.text = "$rate ($rateCount)"
+
+        rvGenres.layoutManager = GridLayoutManager(this, 3)
+        rvGenres.adapter = GenresAdapter(Utils.getGenresNames(movieDetail.genres))
+        txtLanguages.text = Utils.getLanguagesConcat(movieDetail.spokenLanguages)
+
+        wrapperMovie.visibility = View.VISIBLE
+
+        movieDetailPresenter.getTrailerPath(movieDetail)
+    }
+
+    override fun showTrailer(path: String) {
+        trailerKey = path
+        playerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
+    }
+
+    override fun showProgressBar(show: Boolean) {
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    override fun showErrorMessage() {
+        errorLayout.visibility = View.VISIBLE
+    }
+
+    override fun showTrailerView(show: Boolean) {
+        trailerPlayer.visibility = if (show) View.VISIBLE else View.GONE
     }
 }

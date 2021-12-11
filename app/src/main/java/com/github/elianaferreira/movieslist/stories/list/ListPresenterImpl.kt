@@ -6,7 +6,7 @@ class ListPresenterImpl(private val listView: ListView, private val requestManag
 
     private val successCallback = RequestManager.OnSuccessRequestResult<MoviesList> {
             response ->
-        listView.hideProgressBar()
+        listView.showProgressBar(false)
         val moviesList = response as MoviesList
         if (moviesList.page == 1) {
             listView.showList(response)
@@ -17,13 +17,13 @@ class ListPresenterImpl(private val listView: ListView, private val requestManag
 
     private val errorCallback = RequestManager.OnErrorRequestResult { error ->
         error.printStackTrace()
-        listView.hideProgressBar()
+        listView.showProgressBar(false)
         true
     }
 
     override fun getList(category: String, page: Int) {
-        listView.showProgressBar()
-        requestManager.getMovies(category, page, null, successCallback, errorCallback)
+        listView.showProgressBar(true)
+        requestManager.getMovies(category, page, successCallback, errorCallback)
     }
 
     override fun itemSelected(movie: Movie) {

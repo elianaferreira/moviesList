@@ -122,11 +122,7 @@ class ListActivity : AppCompatActivity(), ListView {
     }
 
 
-    override fun showProgressBar() {
-        this.progressBar.visibility = View.VISIBLE
-    }
-
-    override fun hideProgressBar() {
-        this.progressBar.visibility = View.GONE
+    override fun showProgressBar(show: Boolean) {
+        this.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 }

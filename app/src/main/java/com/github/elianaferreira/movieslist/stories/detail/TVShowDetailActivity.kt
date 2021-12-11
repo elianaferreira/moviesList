@@ -82,7 +82,7 @@ class TVShowDetailActivity : AppCompatActivity() {
             false
         }
 
-        request.getTVShow(tvShow.id.toString(), progressBar, successCallback, errorCallback)
+        request.getTVShow(tvShow.id.toString(), successCallback, errorCallback)
     }
 
     override fun onSupportNavigateUp(): Boolean {
