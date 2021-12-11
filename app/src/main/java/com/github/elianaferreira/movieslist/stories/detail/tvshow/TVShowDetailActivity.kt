@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.stories.detail
+package com.github.elianaferreira.movieslist.stories.detail.tvshow
 
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.list.Movie
-import com.github.elianaferreira.movieslist.models.TVShowDetail
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.squareup.picasso.Picasso
 
-class TVShowDetailActivity : AppCompatActivity() {
+class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
     companion object {
         const val PARAM_SHOW = "flag:showSelected"
@@ -35,6 +34,8 @@ class TVShowDetailActivity : AppCompatActivity() {
     private lateinit var wrapperSeasons: LinearLayout
     private lateinit var errorLayout: LinearLayout
 
+    private lateinit var showDetailPresenter: ShowDetailPresenter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +49,8 @@ class TVShowDetailActivity : AppCompatActivity() {
         }
 
         val tvShow = intent.getSerializableExtra(PARAM_SHOW) as Movie
+        val request = RequestManager(this)
+        showDetailPresenter = ShowDetailPresenterImpl(this, request)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = ""
@@ -68,22 +71,9 @@ class TVShowDetailActivity : AppCompatActivity() {
         wrapperSeasons = findViewById(R.id.wrapper_seasons)
         errorLayout = findViewById(R.id.error_layout)
 
-        val request = RequestManager(this)
-        val successCallback = RequestManager.OnSuccessRequestResult<TVShowDetail> {
-                response ->
-            errorLayout.visibility = View.GONE
-            val tvShowDetail = response as TVShowDetail
-            loadData(tvShowDetail)
-        }
-
-        val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            error.printStackTrace()
-            errorLayout.visibility = View.VISIBLE
-            false
-        }
-
-        request.getTVShow(tvShow.id.toString(), successCallback, errorCallback)
+        showDetailPresenter.getShowDetail(tvShow.id.toString())
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -91,29 +81,29 @@ class TVShowDetailActivity : AppCompatActivity() {
     }
 
 
-    private fun loadData(showDetail: TVShowDetail) {
+    override fun showTVShowDetail(tvShowDetail: TVShowDetail) {
         Picasso.get()
-            .load(Utils.getPosterURL(showDetail.backdropPath))
+            .load(Utils.getPosterURL(tvShowDetail.backdropPath))
             .placeholder(R.drawable.img_film)
             .error(R.drawable.img_film)
             .into(imgMovie)
 
-        txtTitle.text = showDetail.name
-        txtOverview.text = showDetail.overview
+        txtTitle.text = tvShowDetail.name
+        txtOverview.text = tvShowDetail.overview
 
-        val rate = showDetail.voteAverage
-        val rateCount = showDetail.voteCount
+        val rate = tvShowDetail.voteAverage
+        val rateCount = tvShowDetail.voteCount
         ratingBar.rating = rate.toFloat()
         txtRating.text = "$rate ($rateCount)"
 
         rvGenres.layoutManager = GridLayoutManager(this, 3)
-        rvGenres.adapter = GenresAdapter(Utils.getGenresNames(showDetail.genres))
-        txtLanguages.text = Utils.getLanguagesConcat(showDetail.spokenLanguages)
+        rvGenres.adapter = GenresAdapter(Utils.getGenresNames(tvShowDetail.genres))
+        txtLanguages.text = Utils.getLanguagesConcat(tvShowDetail.spokenLanguages)
 
         wrapperMovie.visibility = View.VISIBLE
 
         //seasons
-        for(season in showDetail.seasons) {
+        for(season in tvShowDetail.seasons) {
             val card: View = LayoutInflater.from(this@TVShowDetailActivity).inflate(R.layout.card_season, null)
             val imgPoster: ImageView = card.findViewById(R.id.img_poster)
             val txtTitle: TextView = card.findViewById(R.id.txt_title)
@@ -127,6 +117,15 @@ class TVShowDetailActivity : AppCompatActivity() {
             txtOverview.text = season.overview
             wrapperSeasons.addView(card)
         }
+    }
 
+
+    override fun showErrorMessage() {
+        errorLayout.visibility = View.VISIBLE
+    }
+
+    
+    override fun showProgressBar(show: Boolean) {
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 }

@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.stories.detail
+package com.github.elianaferreira.movieslist.stories.detail.movie
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,6 @@ import com.github.elianaferreira.movieslist.models.*
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.squareup.picasso.Picasso
 import android.graphics.Color
-import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -19,6 +18,7 @@ import androidx.appcompat.app.AppCompatCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.ActionMode
 import com.github.elianaferreira.movieslist.BuildConfig
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.GenresAdapter
 import com.github.elianaferreira.movieslist.stories.list.Movie
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.google.android.youtube.player.YouTubeBaseActivity
@@ -92,47 +92,13 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         errorLayout = findViewById(R.id.error_layout)
         trailerPlayer = findViewById(R.id.player_trailer)
 
-//        val successCallback = RequestManager.OnSuccessRequestResult<MovieDetail> {
-//                response ->
-//            errorLayout.visibility = View.GONE
-//            loadData(response as MovieDetail)
-//        }
-//
-//        val errorCallback = RequestManager.OnErrorRequestResult { error ->
-//            error.printStackTrace()
-//            errorLayout.visibility = View.VISIBLE
-//            false
-//        }
-
-        //TODO
-        movieDetailPresenter.getMovieDetail(movie.id.toString())
-
         playerView = YouTubePlayerView(this)
         playerView.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         trailerPlayer.addView(playerView)
+
+        movieDetailPresenter.getMovieDetail(movie.id.toString())
     }
-
-
-//    private fun getVideos(movieID: String) {
-//        val request = RequestManager(this)
-//        val successCallback = RequestManager.OnSuccessRequestResult<Videos> {
-//                response ->
-//            val videosList = response as Videos
-//            if (videosList.results.isNotEmpty()) {
-//                trailerPlayer.visibility = View.VISIBLE
-//                trailerKey = Utils.getTrailerKey(videosList.results)
-//                playerView.initialize(BuildConfig.YOUTUBE_API_KEY, this)
-//            }
-//        }
-//
-//        val errorCallback = RequestManager.OnErrorRequestResult { error ->
-//            error.printStackTrace()
-//            trailerPlayer.visibility = View.GONE
-//            false
-//        }
-//        request.getVideos(movieID, successCallback, errorCallback)
-//    }
 
     override fun onInitializationSuccess(
         provider: YouTubePlayer.Provider?,

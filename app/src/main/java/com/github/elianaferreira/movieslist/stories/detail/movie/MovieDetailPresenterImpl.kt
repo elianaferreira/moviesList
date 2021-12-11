@@ -1,11 +1,12 @@
-package com.github.elianaferreira.movieslist.stories.detail
+package com.github.elianaferreira.movieslist.stories.detail.movie
 
 import com.github.elianaferreira.movieslist.models.MovieDetail
 import com.github.elianaferreira.movieslist.models.Videos
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
 
-class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, private val requestManager: RequestManager):MovieDetailPresenter {
+class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, private val requestManager: RequestManager):
+    MovieDetailPresenter {
 
     override fun getMovieDetail(movieID: String) {
         val successCallback = RequestManager.OnSuccessRequestResult<MovieDetail> {

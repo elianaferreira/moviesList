@@ -11,6 +11,7 @@ import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.list.MoviesList
 import com.github.elianaferreira.movieslist.models.*
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetail
 import com.google.gson.Gson
 import java.lang.StringBuilder
 

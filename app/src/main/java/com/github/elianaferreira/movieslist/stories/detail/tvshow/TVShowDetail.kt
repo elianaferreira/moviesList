@@ -1,5 +1,9 @@
-package com.github.elianaferreira.movieslist.models
+package com.github.elianaferreira.movieslist.stories.detail.tvshow
 import androidx.annotation.Keep
+import com.github.elianaferreira.movieslist.models.Genre
+import com.github.elianaferreira.movieslist.models.ProductionCompany
+import com.github.elianaferreira.movieslist.models.ProductionCountry
+import com.github.elianaferreira.movieslist.models.SpokenLanguage
 import com.google.gson.annotations.SerializedName
 
 

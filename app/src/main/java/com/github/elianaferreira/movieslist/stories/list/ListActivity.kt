@@ -14,8 +14,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.stories.detail.MovieDetailActivity
-import com.github.elianaferreira.movieslist.stories.detail.TVShowDetailActivity
+import com.github.elianaferreira.movieslist.stories.detail.movie.MovieDetailActivity
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetailActivity
 import com.github.elianaferreira.movieslist.stories.home.Category
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils

@@ -12,10 +12,10 @@
         android:theme="@style/Theme.MoviesList"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.github.elianaferreira.movieslist.stories.detail.TVShowDetailActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetailActivity"
             android:exported="false" />
         <activity
-            android:name="com.github.elianaferreira.movieslist.stories.detail.MovieDetailActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.detail.movie.MovieDetailActivity"
             android:exported="false" />
         <activity
             android:name="com.github.elianaferreira.movieslist.stories.list.ListActivity"
