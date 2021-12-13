@@ -3,7 +3,6 @@
     package="com.github.elianaferreira.movieslist">
 
     <application
-        android:name=".utils.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,16 +11,16 @@
         android:theme="@style/Theme.MoviesList"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activities.TVShowDetailActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MovieDetailActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.detail.movie.MovieDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ListActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.list.ListActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.github.elianaferreira.movieslist.stories.home.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

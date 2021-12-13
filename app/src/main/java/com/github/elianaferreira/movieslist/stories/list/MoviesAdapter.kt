@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.adapters
+package com.github.elianaferreira.movieslist.stories.list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.models.Movie
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.github.elianaferreira.viewholder.GenericViewHolder
 import com.squareup.picasso.Picasso

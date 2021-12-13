@@ -1,9 +1,8 @@
-package com.github.elianaferreira.movieslist.activities
+package com.github.elianaferreira.movieslist.stories.list
 
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -11,19 +10,17 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.SearchView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.adapters.MoviesAdapter
-import com.github.elianaferreira.movieslist.models.Category
-import com.github.elianaferreira.movieslist.models.Movie
-import com.github.elianaferreira.movieslist.models.MoviesList
+import com.github.elianaferreira.movieslist.stories.detail.movie.MovieDetailActivity
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetailActivity
+import com.github.elianaferreira.movieslist.stories.home.Category
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
 
-class ListActivity : AppCompatActivity() {
+class ListActivity : AppCompatActivity(), ListView {
 
     companion object {
         const val PARAM_LIST_TYPE = "flag:listType"
@@ -32,9 +29,10 @@ class ListActivity : AppCompatActivity() {
     private lateinit var rvMovies: RecyclerView
     private lateinit var progressBar: ProgressBar
 
-    private lateinit var category: Category
+    private var category: Category? = null
     private lateinit var adapter: MoviesAdapter
     private lateinit var request: RequestManager
+    private lateinit var listPresenter: ListPresenter
 
     private var page = 1
 
@@ -42,10 +40,12 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        category = intent.getSerializableExtra(PARAM_LIST_TYPE) as Category
+        request = RequestManager(this)
+        listPresenter = ListPresenterImpl(this, request)
+        category = intent.getSerializableExtra(PARAM_LIST_TYPE) as Category?
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.title = category.categoryName
+        toolbar.title = category?.categoryName
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -53,9 +53,9 @@ class ListActivity : AppCompatActivity() {
         rvMovies = findViewById(R.id.list_movies)
         rvMovies.layoutManager = LinearLayoutManager(this)
 
-        request = RequestManager(this)
-
-        getMoviesFromAPI(page)
+        if (category != null) {
+            listPresenter.getList(category!!.categoryValue, page)
+        }
 
         rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -64,51 +64,13 @@ class ListActivity : AppCompatActivity() {
                 val total = adapter.itemCount
 
                 if ((visibleItemCount + pastVisibleItem) >= total) {
-                    getMoviesFromAPI(page++)
+                    listPresenter.getList(category!!.categoryValue, page++)
                 }
 
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
     }
-
-
-    private fun getMoviesFromAPI(page: Int) {
-        val successCallback = RequestManager.OnSuccessRequestResult<MoviesList> {
-                response ->
-           if (page == 1) {
-               populateList(response as MoviesList)
-           } else {
-               val moreMovies = response as MoviesList
-               adapter.addData(moreMovies.results as MutableList<Movie>)
-           }
-        }
-
-        val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            error.printStackTrace()
-            true
-        }
-
-        request.getMovies(category.categoryValue, page, progressBar, successCallback, errorCallback)
-    }
-
-
-    private fun populateList(moviesList: MoviesList) {
-        adapter = MoviesAdapter(Utils.categoryIsMovie(category.categoryValue), moviesList.results as MutableList<Movie>) {
-            movie ->
-            if (Utils.categoryIsMovie(category.categoryValue)) {
-                val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)
-                intent.putExtra(MovieDetailActivity.PARAM_MOVIE, movie)
-                startActivity(intent)
-            } else {
-                val intent = Intent(this@ListActivity, TVShowDetailActivity::class.java)
-                intent.putExtra(TVShowDetailActivity.PARAM_SHOW, movie)
-                startActivity(intent)
-            }
-        }
-        rvMovies.adapter = adapter
-    }
-
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -135,5 +97,34 @@ class ListActivity : AppCompatActivity() {
         })
 
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun showList(list: MoviesList) {
+        adapter = MoviesAdapter(Utils.categoryIsMovie(category!!.categoryValue), list.results as MutableList<Movie>) {
+            movie ->
+            listPresenter.itemSelected(movie)
+        }
+        rvMovies.adapter = adapter
+    }
+
+    override fun addMoreItems(list: MutableList<Movie>) {
+        adapter.addData(list)
+    }
+
+    override fun onMovieSelected(movie: Movie) {
+        if (Utils.categoryIsMovie(category!!.categoryValue)) {
+            val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)
+            intent.putExtra(MovieDetailActivity.PARAM_MOVIE, movie)
+            startActivity(intent)
+        } else {
+            val intent = Intent(this@ListActivity, TVShowDetailActivity::class.java)
+            intent.putExtra(TVShowDetailActivity.PARAM_SHOW, movie)
+            startActivity(intent)
+        }
+    }
+
+
+    override fun showProgressBar(show: Boolean) {
+        this.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 }

@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.models
+package com.github.elianaferreira.movieslist.stories.home
 
 import java.io.Serializable
 

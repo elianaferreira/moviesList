@@ -1,4 +1,4 @@
-package com.github.elianaferreira.movieslist.adapters
+package com.github.elianaferreira.movieslist.stories.home
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.models.Category
 import com.github.elianaferreira.viewholder.GenericViewHolder
 
 class CategoriesAdapter(private val context: Context, private val dataSet: List<Category>, private val callback: (Category) -> Unit)
