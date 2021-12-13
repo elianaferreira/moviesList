@@ -29,7 +29,7 @@ class ListActivity : AppCompatActivity(), ListView {
     private lateinit var rvMovies: RecyclerView
     private lateinit var progressBar: ProgressBar
 
-    private lateinit var category: Category
+    private var category: Category? = null
     private lateinit var adapter: MoviesAdapter
     private lateinit var request: RequestManager
     private lateinit var listPresenter: ListPresenter
@@ -42,10 +42,10 @@ class ListActivity : AppCompatActivity(), ListView {
 
         request = RequestManager(this)
         listPresenter = ListPresenterImpl(this, request)
-        category = intent.getSerializableExtra(PARAM_LIST_TYPE) as Category
+        category = intent.getSerializableExtra(PARAM_LIST_TYPE) as Category?
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.title = category.categoryName
+        toolbar.title = category?.categoryName
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -53,7 +53,9 @@ class ListActivity : AppCompatActivity(), ListView {
         rvMovies = findViewById(R.id.list_movies)
         rvMovies.layoutManager = LinearLayoutManager(this)
 
-        listPresenter.getList(category.categoryValue, page)
+        if (category != null) {
+            listPresenter.getList(category!!.categoryValue, page)
+        }
 
         rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -62,7 +64,7 @@ class ListActivity : AppCompatActivity(), ListView {
                 val total = adapter.itemCount
 
                 if ((visibleItemCount + pastVisibleItem) >= total) {
-                    listPresenter.getList(category.categoryValue, page++)
+                    listPresenter.getList(category!!.categoryValue, page++)
                 }
 
                 super.onScrolled(recyclerView, dx, dy)
@@ -98,7 +100,7 @@ class ListActivity : AppCompatActivity(), ListView {
     }
 
     override fun showList(list: MoviesList) {
-        adapter = MoviesAdapter(Utils.categoryIsMovie(category.categoryValue), list.results as MutableList<Movie>) {
+        adapter = MoviesAdapter(Utils.categoryIsMovie(category!!.categoryValue), list.results as MutableList<Movie>) {
             movie ->
             listPresenter.itemSelected(movie)
         }
@@ -110,7 +112,7 @@ class ListActivity : AppCompatActivity(), ListView {
     }
 
     override fun onMovieSelected(movie: Movie) {
-        if (Utils.categoryIsMovie(category.categoryValue)) {
+        if (Utils.categoryIsMovie(category!!.categoryValue)) {
             val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)
             intent.putExtra(MovieDetailActivity.PARAM_MOVIE, movie)
             startActivity(intent)
