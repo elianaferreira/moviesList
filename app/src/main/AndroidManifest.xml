@@ -12,16 +12,20 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.github.elianaferreira.movieslist.stories.detail.movie.MovieDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.github.elianaferreira.movieslist.stories.list.ListActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.github.elianaferreira.movieslist.stories.home.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
