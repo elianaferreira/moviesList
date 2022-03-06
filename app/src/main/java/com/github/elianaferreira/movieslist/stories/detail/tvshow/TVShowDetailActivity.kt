@@ -14,7 +14,6 @@ import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.detail.movie.Genre
 import com.github.elianaferreira.movieslist.stories.detail.movie.SpokenLanguage
 import com.github.elianaferreira.movieslist.stories.list.Movie
-import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.squareup.picasso.Picasso
 
@@ -50,10 +49,9 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
             statusBarColor = Color.TRANSPARENT
         }
 
-//        val tvShow = intent.getSerializableExtra(PARAM_SHOW) as Movie
         val tvShow = intent.getParcelableExtra<Movie>(PARAM_SHOW)
-        val request = RequestManager(this)
-        showDetailPresenter = ShowDetailPresenterImpl(this, request)
+        val repository = TVShowRepositoryImpl(this)
+        showDetailPresenter = ShowDetailPresenterImpl(this, repository)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = ""

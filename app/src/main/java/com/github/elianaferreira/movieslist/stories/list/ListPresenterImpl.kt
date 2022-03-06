@@ -2,7 +2,7 @@ package com.github.elianaferreira.movieslist.stories.list
 
 import com.github.elianaferreira.movieslist.utils.RequestManager
 
-class ListPresenterImpl(private val listView: ListView, private val requestManager: RequestManager): ListPresenter {
+class ListPresenterImpl(private val listView: ListView, private val repository: ListRepository): ListPresenter {
 
     private val successCallback = RequestManager.OnSuccessRequestResult<MoviesList> {
             response ->
@@ -24,7 +24,7 @@ class ListPresenterImpl(private val listView: ListView, private val requestManag
 
     override fun getList(category: String, page: Int) {
         listView.showProgressBar(true)
-        requestManager.getMovies(category, page, successCallback, errorCallback)
+        repository.getMovies(category, page, successCallback, errorCallback)
     }
 
     override fun itemSelected(movie: Movie) {

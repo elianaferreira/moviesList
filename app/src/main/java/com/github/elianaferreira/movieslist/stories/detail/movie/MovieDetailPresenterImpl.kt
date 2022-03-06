@@ -3,7 +3,7 @@ package com.github.elianaferreira.movieslist.stories.detail.movie
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
 
-class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, private val requestManager: RequestManager):
+class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, private val repository: MovieDetailRepository):
     MovieDetailPresenter {
 
     override fun getMovieDetail(movieID: String) {
@@ -20,7 +20,7 @@ class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, pri
             false
         }
         movieDetailView.showProgressBar(true)
-        requestManager.getMovieByID(movieID, successCallback, errorCallback)
+        repository.getMovieByID(movieID, successCallback, errorCallback)
     }
 
 
@@ -43,6 +43,6 @@ class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, pri
             false
         }
         movieDetailView.showProgressBar(true)
-        requestManager.getVideos(movieDetail.id.toString(), successCallback, errorCallback)
+        repository.getVideos(movieDetail.id.toString(), successCallback, errorCallback)
     }
 }

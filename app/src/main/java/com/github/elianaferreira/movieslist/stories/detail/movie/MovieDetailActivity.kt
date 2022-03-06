@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.squareup.picasso.Picasso
 import android.graphics.Color
 import android.view.MenuItem
@@ -66,11 +65,10 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         appCompatDelegate.onCreate(savedInstanceState)
         appCompatDelegate.setContentView(R.layout.activity_movie_detail)
 
-        val request = RequestManager(this)
+        val repository = MovieDetailRepositoryImpl(this)
 
-        movieDetailPresenter = MovieDetailPresenterImpl(this, request)
+        movieDetailPresenter = MovieDetailPresenterImpl(this, repository)
 
-//        val movie = intent.getSerializableExtra(PARAM_MOVIE) as Movie
         val movie = intent.getParcelableExtra<Movie>(PARAM_MOVIE)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)

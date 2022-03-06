@@ -2,21 +2,16 @@ package com.github.elianaferreira.movieslist.utils
 
 import android.content.Context
 import android.util.Log
-import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.stories.list.MoviesList
-import com.github.elianaferreira.movieslist.stories.detail.movie.MovieDetail
-import com.github.elianaferreira.movieslist.stories.detail.movie.Videos
-import com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetail
 import com.google.gson.Gson
 import java.lang.StringBuilder
 
-class RequestManager(private var context: Context) {
+open class RequestManager(private var context: Context) {
 
     private val TAG = RequestManager::class.java.simpleName
 
@@ -36,7 +31,7 @@ class RequestManager(private var context: Context) {
         fun onError(error: VolleyError): Boolean
     }
 
-    private fun makeRequest(url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
+    protected fun makeRequest(url: String, method: Int, classDTO: Class<*>, successCallback: OnSuccessRequestResult<*>,
                             errorCallback: OnErrorRequestResult) {
 
         if (BuildConfig.DEBUG) Log.d(TAG, "send request to " + url)
@@ -59,7 +54,7 @@ class RequestManager(private var context: Context) {
     }
 
 
-    private fun getAbsoluteURL(url: String, queryParams: HashMap<String, String>?): String {
+    protected fun getAbsoluteURL(url: String, queryParams: HashMap<String, String>?): String {
         val absoluteURL = StringBuilder()
         absoluteURL.append(BuildConfig.BASE_URL)
         absoluteURL.append(url) //path of request
@@ -73,25 +68,5 @@ class RequestManager(private var context: Context) {
         }
 
         return absoluteURL.toString()
-    }
-
-
-    //used for list of TV Shows as well
-    fun getMovies(category: String, page: Int, successCallback: OnSuccessRequestResult<MoviesList>, errorCallback: OnErrorRequestResult) {
-        val queryParams = hashMapOf<String, String>()
-        queryParams["page"] = page.toString()
-        makeRequest(getAbsoluteURL(category, queryParams), Request.Method.GET, MoviesList::class.java, successCallback, errorCallback)
-    }
-
-    fun getMovieByID(movieID: String, successCallback: OnSuccessRequestResult<MovieDetail>, errorCallback: OnErrorRequestResult) {
-        makeRequest(getAbsoluteURL("movie/$movieID", null), Request.Method.GET,  MovieDetail::class.java, successCallback, errorCallback)
-    }
-
-    fun getVideos(movieID: String, successCallback: OnSuccessRequestResult<Videos>, errorCallback: OnErrorRequestResult) {
-        makeRequest(getAbsoluteURL("movie/$movieID/videos", null), Request.Method.GET, Videos::class.java, successCallback, errorCallback)
-    }
-
-    fun getTVShow(showID: String, successCallback: OnSuccessRequestResult<TVShowDetail>, errorCallback: OnErrorRequestResult) {
-        makeRequest(getAbsoluteURL("tv/$showID", null), Request.Method.GET, TVShowDetail::class.java, successCallback, errorCallback)
     }
 }

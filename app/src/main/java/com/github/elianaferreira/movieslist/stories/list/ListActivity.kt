@@ -18,7 +18,6 @@ import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.detail.movie.MovieDetailActivity
 import com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetailActivity
 import com.github.elianaferreira.movieslist.stories.home.Category
-import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
 
 class ListActivity : AppCompatActivity(), ListView {
@@ -33,7 +32,7 @@ class ListActivity : AppCompatActivity(), ListView {
 
     private var category: Category? = null
     private lateinit var adapter: MoviesAdapter
-    private lateinit var request: RequestManager
+    private lateinit var listRepository: ListRepository
     private lateinit var listPresenter: ListPresenter
 
     private var page = 1
@@ -42,9 +41,8 @@ class ListActivity : AppCompatActivity(), ListView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        request = RequestManager(this)
-        listPresenter = ListPresenterImpl(this, request)
-//        category = intent.getSerializableExtra(PARAM_LIST_TYPE) as Category?
+        listRepository = ListRepositoryImpl(this)
+        listPresenter = ListPresenterImpl(this, listRepository)
         category = intent.getParcelableExtra<Category?>(PARAM_LIST_TYPE)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
