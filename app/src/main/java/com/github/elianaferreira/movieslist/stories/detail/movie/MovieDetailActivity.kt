@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.models.*
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.squareup.picasso.Picasso
 import android.graphics.Color

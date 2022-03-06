@@ -10,7 +10,8 @@ import com.github.elianaferreira.movieslist.utils.Utils
 import com.github.elianaferreira.viewholder.GenericViewHolder
 import com.squareup.picasso.Picasso
 
-class MoviesAdapter(private val isForMovies: Boolean, private val dataSet: List<Movie>, private val callback: (Movie) -> Unit): RecyclerView.Adapter<GenericViewHolder>(), Filterable {
+class MoviesAdapter(private val isForMovies: Boolean, private val dataSet: List<Movie>, private val callback: (Movie) -> Unit):
+    RecyclerView.Adapter<GenericViewHolder>(), Filterable {
 
     private var filteredList: List<Movie> = dataSet
 

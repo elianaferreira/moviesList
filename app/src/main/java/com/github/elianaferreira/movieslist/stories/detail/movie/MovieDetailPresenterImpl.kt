@@ -1,6 +1,5 @@
 package com.github.elianaferreira.movieslist.stories.detail.movie
 
-import com.github.elianaferreira.movieslist.models.MovieDetail
 import com.github.elianaferreira.movieslist.models.Videos
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils

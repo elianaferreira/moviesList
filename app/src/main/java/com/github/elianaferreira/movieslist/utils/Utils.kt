@@ -3,8 +3,8 @@ package com.github.elianaferreira.movieslist.utils
 import android.content.Context
 import android.widget.Toast
 import com.github.elianaferreira.movieslist.BuildConfig
-import com.github.elianaferreira.movieslist.models.Genre
-import com.github.elianaferreira.movieslist.models.SpokenLanguage
+import com.github.elianaferreira.movieslist.stories.detail.movie.Genre
+import com.github.elianaferreira.movieslist.stories.detail.movie.SpokenLanguage
 import com.github.elianaferreira.movieslist.models.Video
 import java.lang.StringBuilder
 import java.util.*
