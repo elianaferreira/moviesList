@@ -105,7 +105,7 @@ class ListActivity : AppCompatActivity(), ListView {
     }
 
     override fun showList(list: MoviesList) {
-        adapter = MoviesAdapter(Utils.categoryIsMovie(category!!.categoryValue), list.results as MutableList<Movie>) {
+        adapter = MoviesAdapter(category!!.categoryIsMovie(), list.results as MutableList<Movie>) {
             movie ->
             listPresenter.itemSelected(movie)
         }
@@ -117,7 +117,7 @@ class ListActivity : AppCompatActivity(), ListView {
     }
 
     override fun onMovieSelected(movie: Movie) {
-        if (Utils.categoryIsMovie(category!!.categoryValue)) {
+        if (category!!.categoryIsMovie()) {
             val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)
             intent.putExtra(MovieDetailActivity.PARAM_MOVIE, movie)
             startActivity(intent)

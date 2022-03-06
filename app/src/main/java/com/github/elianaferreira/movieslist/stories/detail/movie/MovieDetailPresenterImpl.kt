@@ -1,6 +1,5 @@
 package com.github.elianaferreira.movieslist.stories.detail.movie
 
-import com.github.elianaferreira.movieslist.models.Videos
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
 
@@ -33,7 +32,7 @@ class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, pri
             val videosList = response as Videos
             if (videosList.results.isNotEmpty()) {
                 movieDetailView.showTrailerView(true)
-                movieDetailView.showTrailer(Utils.getTrailerKey(videosList.results))
+                movieDetailView.showTrailer(videosList.getTrailerKey())
             }
         }
 

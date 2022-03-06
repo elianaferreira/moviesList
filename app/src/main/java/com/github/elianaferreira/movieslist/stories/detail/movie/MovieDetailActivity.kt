@@ -199,8 +199,8 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         txtRating.text = "$rate ($rateCount)"
 
         rvGenres.layoutManager = GridLayoutManager(this, 3)
-        rvGenres.adapter = GenresAdapter(Utils.getGenresNames(movieDetail.genres))
-        txtLanguages.text = Utils.getLanguagesConcat(movieDetail.spokenLanguages)
+        rvGenres.adapter = GenresAdapter(Genre.getGenresNames(movieDetail.genres))
+        txtLanguages.text = SpokenLanguage.getLanguagesConcat(movieDetail.spokenLanguages)
 
         wrapperMovie.visibility = View.VISIBLE
 

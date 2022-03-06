@@ -2,6 +2,7 @@ package com.github.elianaferreira.movieslist.stories.detail.movie
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import java.lang.StringBuilder
 
 
 @Keep
@@ -30,10 +31,25 @@ data class Genre(
     val id: Int,
     @SerializedName("name")
     val name: String
-)
+) {
+    companion object {
+        fun getGenresNames(genres: List<Genre>): List<String> {
+            return genres.map { it.name }
+        }
+    }
+}
 
 @Keep
 data class SpokenLanguage(
     @SerializedName("english_name")
     val englishName: String
-)
+) {
+    companion object {
+        fun getLanguagesConcat(languages: List<SpokenLanguage>?): String {
+            val result = StringBuilder()
+            result.append("Languages: ")
+            result.append(if (languages != null && languages.isNotEmpty()) languages.map { it.englishName }.joinToString( ", " ) else "--")
+            return result.toString()
+        }
+    }
+}

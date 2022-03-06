@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
+import com.github.elianaferreira.movieslist.stories.detail.movie.Genre
+import com.github.elianaferreira.movieslist.stories.detail.movie.SpokenLanguage
 import com.github.elianaferreira.movieslist.stories.list.Movie
 import com.github.elianaferreira.movieslist.utils.RequestManager
 import com.github.elianaferreira.movieslist.utils.Utils
@@ -97,8 +99,8 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
         txtRating.text = "$rate ($rateCount)"
 
         rvGenres.layoutManager = GridLayoutManager(this, 3)
-        rvGenres.adapter = GenresAdapter(Utils.getGenresNames(tvShowDetail.genres))
-        txtLanguages.text = Utils.getLanguagesConcat(tvShowDetail.spokenLanguages)
+        rvGenres.adapter = GenresAdapter(Genre.getGenresNames(tvShowDetail.genres))
+        txtLanguages.text = SpokenLanguage.getLanguagesConcat(tvShowDetail.spokenLanguages)
 
         wrapperMovie.visibility = View.VISIBLE
 
