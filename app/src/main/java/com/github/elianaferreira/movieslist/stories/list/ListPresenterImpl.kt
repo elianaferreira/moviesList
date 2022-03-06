@@ -18,6 +18,7 @@ class ListPresenterImpl(private val listView: ListView, private val requestManag
     private val errorCallback = RequestManager.OnErrorRequestResult { error ->
         error.printStackTrace()
         listView.showProgressBar(false)
+        listView.showErrorMessage()
         true
     }
 

@@ -6,4 +6,5 @@ interface ListView: ProgressBarView {
     fun showList(list: MoviesList)
     fun addMoreItems(list: MutableList<Movie>)
     fun onMovieSelected(movie: Movie)
+    fun showErrorMessage()
 }

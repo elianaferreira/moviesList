@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -28,6 +29,7 @@ class ListActivity : AppCompatActivity(), ListView {
 
     private lateinit var rvMovies: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var errorLayout: LinearLayout
 
     private var category: Category? = null
     private lateinit var adapter: MoviesAdapter
@@ -49,6 +51,7 @@ class ListActivity : AppCompatActivity(), ListView {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        errorLayout = findViewById(R.id.error_layout)
         progressBar = findViewById(R.id.progress_bar)
         rvMovies = findViewById(R.id.list_movies)
         rvMovies.layoutManager = LinearLayoutManager(this)
@@ -128,5 +131,22 @@ class ListActivity : AppCompatActivity(), ListView {
 
     override fun showProgressBar(show: Boolean) {
         this.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    override fun showErrorMessage() {
+        if (this@ListActivity::adapter.isInitialized) {
+            if (adapter.itemCount == 0) {
+                errorLayout.visibility = View.VISIBLE
+            } else {
+                showErrorByDefault()
+            }
+        } else {
+            errorLayout.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showErrorByDefault() {
+        errorLayout.visibility = View.GONE
+        Utils.showErrorMessage(this@ListActivity, getString(R.string.general_error_message))
     }
 }
