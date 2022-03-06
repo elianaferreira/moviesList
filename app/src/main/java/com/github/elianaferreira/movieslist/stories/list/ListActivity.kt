@@ -44,7 +44,8 @@ class ListActivity : AppCompatActivity(), ListView {
 
         request = RequestManager(this)
         listPresenter = ListPresenterImpl(this, request)
-        category = intent.getSerializableExtra(PARAM_LIST_TYPE) as Category?
+//        category = intent.getSerializableExtra(PARAM_LIST_TYPE) as Category?
+        category = intent.getParcelableExtra<Category?>(PARAM_LIST_TYPE)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = category?.categoryName

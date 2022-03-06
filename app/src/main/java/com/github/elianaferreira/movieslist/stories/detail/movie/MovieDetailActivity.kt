@@ -70,7 +70,8 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
 
         movieDetailPresenter = MovieDetailPresenterImpl(this, request)
 
-        val movie = intent.getSerializableExtra(PARAM_MOVIE) as Movie
+//        val movie = intent.getSerializableExtra(PARAM_MOVIE) as Movie
+        val movie = intent.getParcelableExtra<Movie>(PARAM_MOVIE)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = ""
@@ -96,7 +97,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         trailerPlayer.addView(playerView)
 
-        movieDetailPresenter.getMovieDetail(movie.id.toString())
+        movieDetailPresenter.getMovieDetail(movie?.id.toString())
     }
 
     override fun onInitializationSuccess(

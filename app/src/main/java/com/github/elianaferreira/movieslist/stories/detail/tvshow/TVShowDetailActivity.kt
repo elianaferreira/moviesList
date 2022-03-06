@@ -50,7 +50,8 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
             statusBarColor = Color.TRANSPARENT
         }
 
-        val tvShow = intent.getSerializableExtra(PARAM_SHOW) as Movie
+//        val tvShow = intent.getSerializableExtra(PARAM_SHOW) as Movie
+        val tvShow = intent.getParcelableExtra<Movie>(PARAM_SHOW)
         val request = RequestManager(this)
         showDetailPresenter = ShowDetailPresenterImpl(this, request)
 
@@ -73,7 +74,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
         wrapperSeasons = findViewById(R.id.wrapper_seasons)
         errorLayout = findViewById(R.id.error_layout)
 
-        showDetailPresenter.getShowDetail(tvShow.id.toString())
+        showDetailPresenter.getShowDetail(tvShow?.id.toString())
     }
 
 

@@ -52,7 +52,7 @@ class MoviesAdapter(private val isForMovies: Boolean, private val dataSet: List<
                 filteredList = if (searchValue.isEmpty()) {
                     dataSet
                 } else {
-                    dataSet.filter { if (isForMovies) it.title.lowercase().contains(searchValue.lowercase()) else it.name.lowercase().contains(searchValue.lowercase()) }
+                    dataSet.filter { if (isForMovies) it.title?.lowercase()!!.contains(searchValue.lowercase()) else it.name?.lowercase()!!.contains(searchValue.lowercase()) }
                 }
                 val filterResults = FilterResults()
                 filterResults.values = filteredList
