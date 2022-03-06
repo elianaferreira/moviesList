@@ -14,8 +14,8 @@ import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.detail.movie.Genre
 import com.github.elianaferreira.movieslist.stories.detail.movie.SpokenLanguage
 import com.github.elianaferreira.movieslist.stories.list.Movie
+import com.github.elianaferreira.movieslist.utils.ImageLoader
 import com.github.elianaferreira.movieslist.utils.Utils
-import com.squareup.picasso.Picasso
 
 class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
@@ -83,11 +83,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
 
     override fun showTVShowDetail(tvShowDetail: TVShowDetail) {
-        Picasso.get()
-            .load(Utils.getPosterURL(tvShowDetail.backdropPath))
-            .placeholder(R.drawable.img_film)
-            .error(R.drawable.img_film)
-            .into(imgMovie)
+        ImageLoader.loadImage(Utils.getPosterURL(tvShowDetail.backdropPath), imgMovie)
 
         txtTitle.text = tvShowDetail.name
         txtOverview.text = tvShowDetail.overview
@@ -109,11 +105,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
             val imgPoster: ImageView = card.findViewById(R.id.img_poster)
             val txtTitle: TextView = card.findViewById(R.id.txt_title)
             val txtOverview: TextView = card.findViewById(R.id.txt_overview)
-            Picasso.get()
-                .load(Utils.getPosterURL(season.posterPath))
-                .placeholder(R.drawable.img_film)
-                .error(R.drawable.img_film)
-                .into(imgPoster)
+            ImageLoader.loadImage(Utils.getPosterURL(season.posterPath), imgPoster)
             txtTitle.text = season.name
             txtOverview.text = season.overview
             wrapperSeasons.addView(card)

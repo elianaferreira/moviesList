@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.squareup.picasso.Picasso
 import android.graphics.Color
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ import androidx.appcompat.view.ActionMode
 import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.stories.detail.tvshow.GenresAdapter
 import com.github.elianaferreira.movieslist.stories.list.Movie
+import com.github.elianaferreira.movieslist.utils.ImageLoader
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
@@ -183,11 +183,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     }
 
     override fun showMovieDetail(movieDetail: MovieDetail) {
-        Picasso.get()
-            .load(Utils.getPosterURL(movieDetail.backdropPath))
-            .placeholder(R.drawable.img_film)
-            .error(R.drawable.img_film)
-            .into(imgMovie)
+        ImageLoader.loadImage(Utils.getPosterURL(movieDetail.backdropPath), imgMovie)
 
         txtTitle.text = movieDetail.title
         txtOverview.text = movieDetail.overview

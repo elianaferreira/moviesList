@@ -3,7 +3,6 @@ package com.github.elianaferreira.movieslist.utils
 import android.content.Context
 import android.widget.Toast
 import com.github.elianaferreira.movieslist.BuildConfig
-import com.github.elianaferreira.movieslist.stories.detail.movie.Video
 import java.util.*
 
 class Utils {

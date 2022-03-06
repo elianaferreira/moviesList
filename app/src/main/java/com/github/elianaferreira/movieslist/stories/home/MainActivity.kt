@@ -32,9 +32,8 @@ class MainActivity : AppCompatActivity(), HomeView {
         }
 
         txtGreeting = findViewById(R.id.greeting)
-
+        homePresenter.setWelcomeMessage()
         homePresenter.loadCategories()
-
     }
 
     override fun showWelcomeMessage(message: String) {
