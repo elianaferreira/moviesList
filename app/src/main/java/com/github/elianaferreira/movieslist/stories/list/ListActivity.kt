@@ -91,7 +91,9 @@ class ListActivity : AppCompatActivity(), ListView {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
+                if (this@ListActivity::adapter.isInitialized) {
+                    adapter.filter.filter(newText)
+                }
                 return false
             }
         })
