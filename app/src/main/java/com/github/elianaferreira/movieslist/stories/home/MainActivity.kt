@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
+import com.github.elianaferreira.movieslist.stories.home.di.DaggerHomeComponent
+import com.github.elianaferreira.movieslist.stories.home.di.HomeModule
 import com.github.elianaferreira.movieslist.stories.list.ListActivity
 
 class MainActivity : AppCompatActivity(), HomeView {
@@ -20,9 +22,21 @@ class MainActivity : AppCompatActivity(), HomeView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        DaggerLoginComponent.builder()
+//            .applicationComponent(BancardApplication.get(context).getApplicationComponent())
+//            .loginModule(new LoginModule(context))
+//            .build()
+//            .inject(this);
+        DaggerHomeComponent.builder()
+            .homeModule(HomeModule(this))
+            .build()
+            .inject(this)
+
         setContentView(R.layout.activity_main)
 
-        homePresenter = HomePresenterImpl(this)
+        homePresenter = HomePresenterImpl()
+        homePresenter.setView(this)
 
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)

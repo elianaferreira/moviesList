@@ -3,7 +3,8 @@ package com.github.elianaferreira.movieslist.utils
 import android.content.Context
 import android.widget.Toast
 import com.github.elianaferreira.movieslist.BuildConfig
-import java.util.*
+import java.util.Calendar
+
 
 class Utils {
 

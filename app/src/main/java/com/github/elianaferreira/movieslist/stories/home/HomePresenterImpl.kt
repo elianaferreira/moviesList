@@ -3,7 +3,9 @@ package com.github.elianaferreira.movieslist.stories.home
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.utils.Utils
 
-class HomePresenterImpl(private val homeView: HomeView): HomePresenter {
+class HomePresenterImpl: HomePresenter {
+
+    private lateinit var homeView: HomeView
 
     override fun setWelcomeMessage() {
         homeView.showWelcomeMessage(Utils.getGreeting())
@@ -21,5 +23,9 @@ class HomePresenterImpl(private val homeView: HomeView): HomePresenter {
 
     override fun categorySelected(category: Category) {
         homeView.onCategorySelected(category)
+    }
+
+    override fun setView(view: HomeView) {
+        this.homeView = view
     }
 }
