@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,7 +19,10 @@ import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.detail.movie.MovieDetailActivity
 import com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetailActivity
 import com.github.elianaferreira.movieslist.stories.home.Category
+import com.github.elianaferreira.movieslist.stories.list.di.DaggerListComponent
+import com.github.elianaferreira.movieslist.stories.list.di.ListModule
 import com.github.elianaferreira.movieslist.utils.Utils
+import javax.inject.Inject
 
 class ListActivity : AppCompatActivity(), ListView {
 
@@ -32,17 +36,26 @@ class ListActivity : AppCompatActivity(), ListView {
 
     private var category: Category? = null
     private lateinit var adapter: MoviesAdapter
-    private lateinit var listRepository: ListRepository
-    private lateinit var listPresenter: ListPresenter
+
+    @Inject
+    lateinit var listPresenter: ListPresenter
 
     private var page = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        DaggerListComponent.builder()
+            .listModule(ListModule(this))
+            .build()
+            .inject(this)
+
+        Log.d(">>>>>", "onCreate de ListActivity, se paso el Builder del Dagger")
+
         setContentView(R.layout.activity_list)
 
-        listRepository = ListRepositoryImpl(this)
-        listPresenter = ListPresenterImpl(this, listRepository)
+        listPresenter.setView(this)
+
         category = intent.getParcelableExtra<Category?>(PARAM_LIST_TYPE)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)

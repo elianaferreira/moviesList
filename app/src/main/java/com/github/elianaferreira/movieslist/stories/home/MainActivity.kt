@@ -13,29 +13,25 @@ import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.home.di.DaggerHomeComponent
 import com.github.elianaferreira.movieslist.stories.home.di.HomeModule
 import com.github.elianaferreira.movieslist.stories.list.ListActivity
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), HomeView {
 
-    private lateinit var homePresenter: HomePresenter
+    @Inject
+    lateinit var homePresenter: HomePresenter
 
     private lateinit var txtGreeting: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        DaggerLoginComponent.builder()
-//            .applicationComponent(BancardApplication.get(context).getApplicationComponent())
-//            .loginModule(new LoginModule(context))
-//            .build()
-//            .inject(this);
         DaggerHomeComponent.builder()
             .homeModule(HomeModule(this))
             .build()
             .inject(this)
 
         setContentView(R.layout.activity_main)
-
-        homePresenter = HomePresenterImpl()
         homePresenter.setView(this)
 
         window.apply {

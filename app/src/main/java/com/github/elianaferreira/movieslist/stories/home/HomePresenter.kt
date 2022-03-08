@@ -1,7 +1,8 @@
 package com.github.elianaferreira.movieslist.stories.home
 
-interface HomePresenter {
-    fun setView(view: HomeView)
+import com.github.elianaferreira.movieslist.utils.BasePresenter
+
+interface HomePresenter: BasePresenter<HomeView> {
     fun setWelcomeMessage()
     fun loadCategories()
     fun categorySelected(category: Category)
