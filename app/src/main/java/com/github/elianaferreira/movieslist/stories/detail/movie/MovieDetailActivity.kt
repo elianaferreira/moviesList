@@ -167,8 +167,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         if (youTubeInitializationResult?.isUserRecoverableError == true) {
             youTubeInitializationResult.getErrorDialog(this, 0).show()
         } else {
-            val errorMessage = "There was an error initializing the YoutubePlayer ($youTubeInitializationResult)"
-            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+            Utils.showErrorMessage(this, getString(R.string.youtube_player_error))
         }
 
     }
@@ -200,7 +199,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         val rate = movieDetail.voteAverage
         val rateCount = movieDetail.voteCount
         ratingBar.rating = rate.toFloat()
-        txtRating.text = "$rate ($rateCount)"
+        txtRating.text = getString(R.string.rate, rate.toString(), rateCount.toString())
 
         rvGenres.layoutManager = GridLayoutManager(this, 3)
         rvGenres.adapter = GenresAdapter(Genre.getGenresNames(movieDetail.genres))

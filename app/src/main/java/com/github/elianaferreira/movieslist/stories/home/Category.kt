@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Parcelize
-data class Category (
+data class Category  (
     val categoryValue: String,
     val categoryName: String,
     val drawable: Int

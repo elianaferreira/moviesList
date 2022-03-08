@@ -46,8 +46,8 @@ class MainActivity : AppCompatActivity(), HomeView {
         homePresenter.loadCategories()
     }
 
-    override fun showWelcomeMessage(message: String) {
-        txtGreeting.text = message
+    override fun showWelcomeMessage(message: Int) {
+        txtGreeting.text = getString(message)
     }
 
 

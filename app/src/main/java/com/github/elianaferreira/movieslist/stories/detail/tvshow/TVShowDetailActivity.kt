@@ -100,7 +100,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
         val rate = tvShowDetail.voteAverage
         val rateCount = tvShowDetail.voteCount
         ratingBar.rating = rate.toFloat()
-        txtRating.text = "$rate ($rateCount)"
+        txtRating.text = getString(R.string.rate, rate.toString(), rateCount.toString())
 
         rvGenres.layoutManager = GridLayoutManager(this, 3)
         rvGenres.adapter = GenresAdapter(Genre.getGenresNames(tvShowDetail.genres))

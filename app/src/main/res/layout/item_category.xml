@@ -15,7 +15,7 @@
     <TextView
         android:id="@+id/item_title"
         style="@style/PrimaryTitle"
-        android:text="@string/sample_category"
+        android:text="@tools:sample/full_names"
         android:layout_alignParentBottom="true"
         android:gravity="center" />
 </RelativeLayout>

@@ -1,19 +1,26 @@
 <resources>
     <string name="app_name">Movies List</string>
-    <string name="trailer"><u>Watch trailer</u></string>
+
+    <!-- greeting -->
+    <string name="good_morning">Good morning,</string>
+    <string name="good_afternoon">Good afternoon,</string>
+    <string name="good_evening">Good evening,</string>
+    <string name="good_night">Good Night,</string>
+    <string name="hi">Hi,</string>
+
+    <!-- error messages -->
     <string name="general_error_message">An error occurred while getting data from the server.</string>
+    <string name="youtube_player_error">There was an error initializing the YoutubePlayer.</string>
+
+    <string name="trailer"><u>Watch trailer</u></string>
+
     <string name="search">Search</string>
     <string name="welcome">welcome</string>
+    <string name="release_date">Release: %1$s</string>
+    <string name="rate">%1$s (%2$s)</string>
 
-    <!-- labels for layout design -->
-    <string name="sample_genre">suspense</string>
-    <string name="sample_languages">Languagess: English, Spanish</string>
-    <string name="sample_overview">Bond has left active service and is enjoying a tranquil life in Jamaica. His peace is short-lived when his old friend Felix Leiter from the CIA turns up asking for help. The mission to rescue a kidnapped scientist turns out to be far more treacherous than expected, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.</string>
-    <string name="sample_title">Movie title could be long, really long</string>
-    <string name="sample_rate">8.6 (573)</string>
-    <string name="sample_season_title">Season 1</string>
-    <string name="sample_category">Category</string>
-    <string name="sample_description">Description</string>
-    <string name="sample_greeting">Good morning,</string>
+
+
+
 
 </resources>
