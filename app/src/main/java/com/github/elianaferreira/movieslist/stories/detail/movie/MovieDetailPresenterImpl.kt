@@ -1,10 +1,11 @@
 package com.github.elianaferreira.movieslist.stories.detail.movie
 
 import com.github.elianaferreira.movieslist.utils.RequestManager
-import com.github.elianaferreira.movieslist.utils.Utils
 
-class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, private val repository: MovieDetailRepository):
+class MovieDetailPresenterImpl(var repository: MovieDetailRepository):
     MovieDetailPresenter {
+
+    private lateinit var movieDetailView: MovieDetailView
 
     override fun getMovieDetail(movieID: String) {
         val successCallback = RequestManager.OnSuccessRequestResult<MovieDetail> {
@@ -44,5 +45,9 @@ class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, pri
         }
         movieDetailView.showProgressBar(true)
         repository.getVideos(movieDetail.id.toString(), successCallback, errorCallback)
+    }
+
+    override fun setView(view: MovieDetailView) {
+        movieDetailView = view
     }
 }

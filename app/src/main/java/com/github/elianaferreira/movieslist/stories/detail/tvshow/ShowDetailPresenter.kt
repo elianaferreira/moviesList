@@ -1,5 +1,7 @@
 package com.github.elianaferreira.movieslist.stories.detail.tvshow
 
-interface ShowDetailPresenter {
+import com.github.elianaferreira.movieslist.utils.BasePresenter
+
+interface ShowDetailPresenter: BasePresenter<ShowDetailView> {
     fun getShowDetail(showID: String)
 }

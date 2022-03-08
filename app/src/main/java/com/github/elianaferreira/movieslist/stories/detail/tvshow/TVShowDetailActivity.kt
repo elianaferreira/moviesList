@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.detail.movie.Genre
 import com.github.elianaferreira.movieslist.stories.detail.movie.SpokenLanguage
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.di.DaggerShowDetailComponent
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.di.ShowDetailModule
 import com.github.elianaferreira.movieslist.stories.list.Movie
 import com.github.elianaferreira.movieslist.utils.ImageLoader
 import com.github.elianaferreira.movieslist.utils.Utils
+import javax.inject.Inject
 
 class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
@@ -35,12 +38,20 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
     private lateinit var wrapperSeasons: LinearLayout
     private lateinit var errorLayout: LinearLayout
 
-    private lateinit var showDetailPresenter: ShowDetailPresenter
+    @Inject
+    lateinit var showDetailPresenter: ShowDetailPresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        DaggerShowDetailComponent.builder()
+            .showDetailModule(ShowDetailModule(this))
+            .build()
+            .inject(this)
+
         setContentView(R.layout.activity_tvshow_detail)
+        showDetailPresenter.setView(this)
 
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -50,8 +61,6 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
         }
 
         val tvShow = intent.getParcelableExtra<Movie>(PARAM_SHOW)
-        val repository = TVShowRepositoryImpl(this)
-        showDetailPresenter = ShowDetailPresenterImpl(this, repository)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = ""

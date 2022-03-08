@@ -2,7 +2,9 @@ package com.github.elianaferreira.movieslist.stories.detail.tvshow
 
 import com.github.elianaferreira.movieslist.utils.RequestManager
 
-class ShowDetailPresenterImpl(private val showDetailView: ShowDetailView, private val repository: TVShowRepository): ShowDetailPresenter {
+class ShowDetailPresenterImpl(var repository: TVShowRepository): ShowDetailPresenter {
+
+    private lateinit var showDetailView: ShowDetailView
 
     private val successCallback = RequestManager.OnSuccessRequestResult<TVShowDetail> {
             response ->
@@ -20,5 +22,9 @@ class ShowDetailPresenterImpl(private val showDetailView: ShowDetailView, privat
     override fun getShowDetail(showID: String) {
         showDetailView.showProgressBar(true)
         repository.getTVShow(showID, successCallback, errorCallback)
+    }
+
+    override fun setView(view: ShowDetailView) {
+        showDetailView = view
     }
 }

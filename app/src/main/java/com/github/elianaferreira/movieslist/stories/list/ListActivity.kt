@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -49,8 +48,6 @@ class ListActivity : AppCompatActivity(), ListView {
             .listModule(ListModule(this))
             .build()
             .inject(this)
-
-        Log.d(">>>>>", "onCreate de ListActivity, se paso el Builder del Dagger")
 
         setContentView(R.layout.activity_list)
 

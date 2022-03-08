@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.ActionMode
 import com.github.elianaferreira.movieslist.BuildConfig
+import com.github.elianaferreira.movieslist.stories.detail.movie.di.DaggerMovieDetailComponent
+import com.github.elianaferreira.movieslist.stories.detail.movie.di.MovieDetailModule
 import com.github.elianaferreira.movieslist.stories.detail.tvshow.GenresAdapter
 import com.github.elianaferreira.movieslist.stories.list.Movie
 import com.github.elianaferreira.movieslist.utils.ImageLoader
@@ -23,6 +25,7 @@ import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerView
+import javax.inject.Inject
 
 
 class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener,
@@ -47,12 +50,22 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     private lateinit var appCompatDelegate: AppCompatDelegate
     private lateinit var playerView: YouTubePlayerView
     private lateinit var trailerKey: String
-    private lateinit var movieDetailPresenter: MovieDetailPresenter
+
+    @Inject
+    lateinit var movieDetailPresenter: MovieDetailPresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        DaggerMovieDetailComponent.builder()
+            .movieDetailModule(MovieDetailModule(this))
+            .build()
+            .inject(this)
+
         setContentView(R.layout.activity_movie_detail)
+        movieDetailPresenter.setView(this)
 
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -64,10 +77,6 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         appCompatDelegate = AppCompatDelegate.create(this, this)
         appCompatDelegate.onCreate(savedInstanceState)
         appCompatDelegate.setContentView(R.layout.activity_movie_detail)
-
-        val repository = MovieDetailRepositoryImpl(this)
-
-        movieDetailPresenter = MovieDetailPresenterImpl(this, repository)
 
         val movie = intent.getParcelableExtra<Movie>(PARAM_MOVIE)
 

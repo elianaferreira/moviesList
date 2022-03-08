@@ -1,7 +1,6 @@
 package com.github.elianaferreira.movieslist.stories.list.di
 
 import android.content.Context
-import android.util.Log
 import com.github.elianaferreira.movieslist.stories.list.ListPresenter
 import com.github.elianaferreira.movieslist.stories.list.ListPresenterImpl
 import com.github.elianaferreira.movieslist.stories.list.ListRepositoryImpl
@@ -20,7 +19,6 @@ class ListModule(context: Context) {
 
     @Provides
     fun providePresenter(): ListPresenter {
-        Log.d(">>>>>", "providePresenter called in ListModule")
         return ListPresenterImpl(ListRepositoryImpl(mContext))
     }
 }

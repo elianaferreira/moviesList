@@ -1,13 +1,8 @@
 package com.github.elianaferreira.movieslist.stories.list
 
-import android.util.Log
 import com.github.elianaferreira.movieslist.utils.RequestManager
-import javax.inject.Inject
 
 class ListPresenterImpl(var repository: ListRepository): ListPresenter {
-
-//    @Inject
-//    lateinit var repository: ListRepository
 
     private lateinit var listView: ListView
 
@@ -30,7 +25,6 @@ class ListPresenterImpl(var repository: ListRepository): ListPresenter {
     }
 
     override fun getList(category: String, page: Int) {
-        Log.d(">>>>>", "getList called in ListPresenterImpl")
         listView.showProgressBar(true)
         repository.getMovies(category, page, successCallback, errorCallback)
     }
@@ -40,7 +34,6 @@ class ListPresenterImpl(var repository: ListRepository): ListPresenter {
     }
 
     override fun setView(view: ListView) {
-        Log.d(">>>>>", "setView en ListPresenterImpl called")
         listView = view
     }
 }
