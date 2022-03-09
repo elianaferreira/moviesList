@@ -37,13 +37,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
 
     private lateinit var progressBar: ProgressBar
     private lateinit var wrapperMovie: LinearLayout
-    private lateinit var imgMovie: ImageView
-    private lateinit var txtTitle: TextView
-    private lateinit var txtOverview: TextView
-    private lateinit var rvGenres: RecyclerView
-    private lateinit var ratingBar: RatingBar
-    private lateinit var txtRating: TextView
-    private lateinit var txtLanguages: TextView
+    private lateinit var wrapperHeader: RelativeLayout
     private lateinit var errorLayout: LinearLayout
     private lateinit var trailerPlayer: LinearLayout
 
@@ -88,14 +82,8 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
 
         progressBar = findViewById(R.id.progress_bar)
         wrapperMovie = findViewById(R.id.wrapper_movie)
+        wrapperHeader = findViewById(R.id.wrapper_header)
         wrapperMovie.visibility = View.GONE
-        imgMovie = findViewById(R.id.img_movie)
-        txtTitle = findViewById(R.id.tv_movie)
-        txtOverview = findViewById(R.id.tv_overview)
-        rvGenres = findViewById(R.id.rv_genres)
-        ratingBar = findViewById(R.id.item_rate)
-        txtRating = findViewById(R.id.item_rate_value)
-        txtLanguages = findViewById(R.id.txt_languages)
         errorLayout = findViewById(R.id.error_layout)
         trailerPlayer = findViewById(R.id.player_trailer)
 
@@ -191,22 +179,8 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     }
 
     override fun showMovieDetail(movieDetail: MovieDetail) {
-        ImageLoader.loadImage(Utils.getPosterURL(movieDetail.backdropPath), imgMovie)
-
-        txtTitle.text = movieDetail.title
-        txtOverview.text = movieDetail.overview
-
-        val rate = movieDetail.voteAverage
-        val rateCount = movieDetail.voteCount
-        ratingBar.rating = rate.toFloat()
-        txtRating.text = getString(R.string.rate, rate.toString(), rateCount.toString())
-
-        rvGenres.layoutManager = GridLayoutManager(this, 3)
-        rvGenres.adapter = GenresAdapter(Genre.getGenresNames(movieDetail.genres))
-        txtLanguages.text = SpokenLanguage.getLanguagesConcat(movieDetail.spokenLanguages)
-
+        Utils.loadDataIntoMovieHeader(this@MovieDetailActivity, movieDetail.title, movieDetail, wrapperHeader)
         wrapperMovie.visibility = View.VISIBLE
-
         movieDetailPresenter.getTrailerPath(movieDetail)
     }
 

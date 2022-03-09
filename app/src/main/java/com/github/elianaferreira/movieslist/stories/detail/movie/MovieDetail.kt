@@ -1,6 +1,7 @@
 package com.github.elianaferreira.movieslist.stories.detail.movie
 
 import androidx.annotation.Keep
+import com.github.elianaferreira.movieslist.utils.MovieHeader
 import com.google.gson.annotations.SerializedName
 import java.lang.StringBuilder
 
@@ -8,22 +9,22 @@ import java.lang.StringBuilder
 @Keep
 data class MovieDetail(
     @SerializedName("backdrop_path")
-    val backdropPath: String,
+   override val backdropPath: String,
     @SerializedName("genres")
-    val genres: List<Genre>,
+    override val genres: List<Genre>,
     @SerializedName("id")
     val id: Int,
     @SerializedName("overview")
-    val overview: String,
+    override val overview: String,
     @SerializedName("spoken_languages")
-    val spokenLanguages: List<SpokenLanguage>,
+    override val spokenLanguages: List<SpokenLanguage>,
     @SerializedName("title")
     val title: String,
     @SerializedName("vote_average")
-    val voteAverage: Double,
+    override val voteAverage: Double,
     @SerializedName("vote_count")
-    val voteCount: Int
-)
+    override val voteCount: Int
+): MovieHeader
 
 @Keep
 data class Genre(

@@ -28,13 +28,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
     private lateinit var progressBar: ProgressBar
     private lateinit var wrapperMovie: LinearLayout
-    private lateinit var imgMovie: ImageView
-    private lateinit var txtTitle: TextView
-    private lateinit var txtOverview: TextView
-    private lateinit var rvGenres: RecyclerView
-    private lateinit var ratingBar: RatingBar
-    private lateinit var txtRating: TextView
-    private lateinit var txtLanguages: TextView
+    private lateinit var wrapperHeader: RelativeLayout
     private lateinit var wrapperSeasons: LinearLayout
     private lateinit var errorLayout: LinearLayout
 
@@ -70,14 +64,8 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
         progressBar = findViewById(R.id.progress_bar)
         wrapperMovie = findViewById(R.id.wrapper_movie)
+        wrapperHeader = findViewById(R.id.wrapper_header)
         wrapperMovie.visibility = View.GONE
-        imgMovie = findViewById(R.id.img_movie)
-        txtTitle = findViewById(R.id.tv_movie)
-        txtOverview = findViewById(R.id.tv_overview)
-        rvGenres = findViewById(R.id.rv_genres)
-        ratingBar = findViewById(R.id.item_rate)
-        txtRating = findViewById(R.id.item_rate_value)
-        txtLanguages = findViewById(R.id.txt_languages)
         wrapperSeasons = findViewById(R.id.wrapper_seasons)
         errorLayout = findViewById(R.id.error_layout)
 
@@ -92,20 +80,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
 
     override fun showTVShowDetail(tvShowDetail: TVShowDetail) {
-        ImageLoader.loadImage(Utils.getPosterURL(tvShowDetail.backdropPath), imgMovie)
-
-        txtTitle.text = tvShowDetail.name
-        txtOverview.text = tvShowDetail.overview
-
-        val rate = tvShowDetail.voteAverage
-        val rateCount = tvShowDetail.voteCount
-        ratingBar.rating = rate.toFloat()
-        txtRating.text = getString(R.string.rate, rate.toString(), rateCount.toString())
-
-        rvGenres.layoutManager = GridLayoutManager(this, 3)
-        rvGenres.adapter = GenresAdapter(Genre.getGenresNames(tvShowDetail.genres))
-        txtLanguages.text = SpokenLanguage.getLanguagesConcat(tvShowDetail.spokenLanguages)
-
+        Utils.loadDataIntoMovieHeader(this@TVShowDetailActivity, tvShowDetail.name, tvShowDetail, wrapperHeader)
         wrapperMovie.visibility = View.VISIBLE
 
         //seasons

@@ -19,7 +19,8 @@
             android:orientation="vertical">
 
             <include
-                layout="@layout/layout_movie" />
+                layout="@layout/layout_movie"
+                android:id="@+id/wrapper_header"/>
 
             <Button
                 android:id="@+id/btn_trailer"

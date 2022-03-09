@@ -1,9 +1,15 @@
 package com.github.elianaferreira.movieslist.utils
 
+import android.app.Activity
 import android.content.Context
-import android.widget.Toast
+import android.widget.*
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.R
+import com.github.elianaferreira.movieslist.stories.detail.movie.Genre
+import com.github.elianaferreira.movieslist.stories.detail.movie.SpokenLanguage
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.GenresAdapter
 import java.util.Calendar
 
 
@@ -28,6 +34,28 @@ class Utils {
                 in 21..24 -> R.string.good_night
                 else -> R.string.hi
             }
+        }
+
+        fun loadDataIntoMovieHeader(
+            context: Activity,
+            title: String,
+            movieHeader: MovieHeader,
+            wrapperView: RelativeLayout) {
+
+            //load data in view
+            ImageLoader.loadImage(getPosterURL(movieHeader.backdropPath), wrapperView.findViewById(R.id.img_movie))
+            (wrapperView.findViewById<TextView>(R.id.tv_movie)).text = title
+            (wrapperView.findViewById<TextView>(R.id.tv_overview)).text = movieHeader.overview
+            (wrapperView.findViewById<TextView>(R.id.txt_languages)).text = SpokenLanguage.getLanguagesConcat(movieHeader.spokenLanguages)
+
+            val rate = movieHeader.voteAverage
+            val rateCount = movieHeader.voteCount
+            (wrapperView.findViewById<RatingBar>(R.id.item_rate)).rating = rate.toFloat()
+            (wrapperView.findViewById<TextView>(R.id.item_rate_value)).text = context.getString(R.string.rate, rate.toString(), rateCount.toString())
+
+            val rvGenres: RecyclerView = wrapperView.findViewById(R.id.rv_genres)
+            rvGenres.layoutManager = GridLayoutManager(context, 3)
+            rvGenres.adapter = GenresAdapter(Genre.getGenresNames(movieHeader.genres))
         }
     }
 }
