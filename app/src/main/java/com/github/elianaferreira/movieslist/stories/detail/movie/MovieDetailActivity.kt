@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
 import android.graphics.Color
 import android.view.MenuItem
@@ -17,9 +15,7 @@ import androidx.appcompat.view.ActionMode
 import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.stories.detail.movie.di.DaggerMovieDetailComponent
 import com.github.elianaferreira.movieslist.stories.detail.movie.di.MovieDetailModule
-import com.github.elianaferreira.movieslist.stories.detail.tvshow.GenresAdapter
 import com.github.elianaferreira.movieslist.stories.list.Movie
-import com.github.elianaferreira.movieslist.utils.ImageLoader
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
@@ -199,5 +195,9 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
 
     override fun showTrailerView(show: Boolean) {
         trailerPlayer.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    override fun onBackPressed() {
+        finishAfterTransition()
     }
 }

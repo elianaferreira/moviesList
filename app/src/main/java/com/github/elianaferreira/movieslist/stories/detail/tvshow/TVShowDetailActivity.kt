@@ -8,11 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.stories.detail.movie.Genre
-import com.github.elianaferreira.movieslist.stories.detail.movie.SpokenLanguage
 import com.github.elianaferreira.movieslist.stories.detail.tvshow.di.DaggerShowDetailComponent
 import com.github.elianaferreira.movieslist.stories.detail.tvshow.di.ShowDetailModule
 import com.github.elianaferreira.movieslist.stories.list.Movie
@@ -104,5 +100,9 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
     
     override fun showProgressBar(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    override fun onBackPressed() {
+        supportFinishAfterTransition()
     }
 }

@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
@@ -115,8 +116,8 @@ class ListActivity : AppCompatActivity(), ListView {
 
     override fun showList(list: MoviesList) {
         adapter = MoviesAdapter(category!!.categoryIsMovie(), list.results as MutableList<Movie>) {
-            movie ->
-            listPresenter.itemSelected(movie)
+            movie, view ->
+            listPresenter.itemSelected(movie, view)
         }
         rvMovies.adapter = adapter
     }
@@ -125,15 +126,25 @@ class ListActivity : AppCompatActivity(), ListView {
         adapter.addData(list)
     }
 
-    override fun onMovieSelected(movie: Movie) {
+    override fun onMovieSelected(movie: Movie, view: View) {
         if (category!!.categoryIsMovie()) {
             val intent = Intent(this@ListActivity, MovieDetailActivity::class.java)
             intent.putExtra(MovieDetailActivity.PARAM_MOVIE, movie)
-            startActivity(intent)
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@ListActivity,
+                view,
+                getString(R.string.transition_name)
+            )
+            startActivity(intent, options.toBundle())
         } else {
             val intent = Intent(this@ListActivity, TVShowDetailActivity::class.java)
             intent.putExtra(TVShowDetailActivity.PARAM_SHOW, movie)
-            startActivity(intent)
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@ListActivity,
+                view,
+                getString(R.string.transition_name)
+            )
+            startActivity(intent, options.toBundle())
         }
     }
 
@@ -157,5 +168,9 @@ class ListActivity : AppCompatActivity(), ListView {
     private fun showErrorByDefault() {
         errorLayout.visibility = View.GONE
         Utils.showErrorMessage(this@ListActivity, getString(R.string.general_error_message))
+    }
+
+    override fun onBackPressed() {
+        supportFinishAfterTransition()
     }
 }

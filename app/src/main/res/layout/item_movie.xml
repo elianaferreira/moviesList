@@ -27,7 +27,7 @@
         <TextView
             android:id="@+id/item_title"
             style="@style/SecondaryTitle"
-            android:text="@tools:sample/full_names" />
+            android:text="@tools:sample/full_names"/>
 
         <TextView
             android:id="@+id/item_description"

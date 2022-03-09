@@ -19,6 +19,8 @@
     <string name="release_date">Release: %1$s</string>
     <string name="rate">%1$s (%2$s)</string>
 
+    <string name="transition_name">item_tranition_name</string>
+
 
 
 

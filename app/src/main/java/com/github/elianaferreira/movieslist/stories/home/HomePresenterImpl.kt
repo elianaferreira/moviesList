@@ -1,5 +1,6 @@
 package com.github.elianaferreira.movieslist.stories.home
 
+import android.view.View
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.utils.Utils
 
@@ -21,8 +22,8 @@ class HomePresenterImpl: HomePresenter {
         homeView.showCategories(categories)
     }
 
-    override fun categorySelected(category: Category) {
-        homeView.onCategorySelected(category)
+    override fun categorySelected(category: Category, view: View) {
+        homeView.onCategorySelected(category, view)
     }
 
     override fun setView(view: HomeView) {

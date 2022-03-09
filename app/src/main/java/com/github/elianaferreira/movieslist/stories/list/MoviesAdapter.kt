@@ -14,7 +14,7 @@ import com.github.elianaferreira.viewholder.GenericViewHolder
 class MoviesAdapter(
     private val isForMovies: Boolean,
     private val dataSet: List<Movie>,
-    private val callback: (Movie) -> Unit):
+    private val callback: (Movie, View) -> Unit):
         RecyclerView.Adapter<GenericViewHolder>(), Filterable {
 
     private var filteredList: List<Movie> = dataSet
@@ -41,7 +41,7 @@ class MoviesAdapter(
         ImageLoader.loadImage(Utils.getPosterURL(movie.posterPath),
             holder.get(R.id.img_cinema, ImageView::class.java))
 
-        holder.view.setOnClickListener(View.OnClickListener { callback(movie) })
+        holder.view.setOnClickListener(View.OnClickListener { callback(movie, holder.view) })
     }
 
     override fun getItemCount(): Int {

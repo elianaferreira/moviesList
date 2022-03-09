@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
@@ -55,14 +56,19 @@ class MainActivity : AppCompatActivity(), HomeView {
         val rvCategories: RecyclerView = findViewById(R.id.list_categories)
         rvCategories.layoutManager = GridLayoutManager(this, 2)
         rvCategories.adapter = CategoriesAdapter(this@MainActivity, categories) {
-                categoryValue -> homePresenter.categorySelected(categoryValue)
+                categoryValue, view -> homePresenter.categorySelected(categoryValue, view)
         }
     }
 
 
-    override fun onCategorySelected(category: Category) {
+    override fun onCategorySelected(category: Category, view: View) {
         val intent = Intent(this@MainActivity, ListActivity::class.java)
         intent.putExtra(ListActivity.PARAM_LIST_TYPE, category)
-        startActivity(intent)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            this@MainActivity,
+            view,
+            getString(R.string.transition_name)
+        )
+        startActivity(intent, options.toBundle())
     }
 }

@@ -1,6 +1,7 @@
 package com.github.elianaferreira.movieslist.stories.list
 
 import android.util.Log
+import android.view.View
 import com.github.elianaferreira.movieslist.utils.RequestManager
 
 class ListPresenterImpl(var repository: ListRepository): ListPresenter {
@@ -30,8 +31,8 @@ class ListPresenterImpl(var repository: ListRepository): ListPresenter {
         repository.getMovies(category, page, successCallback, errorCallback)
     }
 
-    override fun itemSelected(movie: Movie) {
-        listView.onMovieSelected(movie)
+    override fun itemSelected(movie: Movie, view: View) {
+        listView.onMovieSelected(movie, view)
     }
 
     override fun setView(view: ListView) {
