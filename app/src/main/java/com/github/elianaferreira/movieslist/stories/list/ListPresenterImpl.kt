@@ -1,5 +1,6 @@
 package com.github.elianaferreira.movieslist.stories.list
 
+import android.util.Log
 import com.github.elianaferreira.movieslist.utils.RequestManager
 
 class ListPresenterImpl(var repository: ListRepository): ListPresenter {
@@ -18,7 +19,7 @@ class ListPresenterImpl(var repository: ListRepository): ListPresenter {
     }
 
     private val errorCallback = RequestManager.OnErrorRequestResult { error ->
-        error.printStackTrace()
+        Log.e(ListPresenterImpl::class.simpleName, error.cause?.message, error)
         listView.showProgressBar(false)
         listView.showErrorMessage()
         true

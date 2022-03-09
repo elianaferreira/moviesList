@@ -1,5 +1,6 @@
 package com.github.elianaferreira.movieslist.stories.detail.movie
 
+import android.util.Log
 import com.github.elianaferreira.movieslist.utils.RequestManager
 
 class MovieDetailPresenterImpl(var repository: MovieDetailRepository):
@@ -15,7 +16,7 @@ class MovieDetailPresenterImpl(var repository: MovieDetailRepository):
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            error.printStackTrace()
+            Log.e(MovieDetailPresenterImpl::class.simpleName, error.cause?.message, error)
             movieDetailView.showProgressBar(false)
             movieDetailView.showErrorMessage()
             false
@@ -38,7 +39,7 @@ class MovieDetailPresenterImpl(var repository: MovieDetailRepository):
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            error.printStackTrace()
+            Log.e(MovieDetailPresenterImpl::class.simpleName, error.cause?.message, error)
             movieDetailView.showProgressBar(false)
             movieDetailView.showTrailerView(false)
             false

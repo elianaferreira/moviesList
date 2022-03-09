@@ -1,5 +1,6 @@
 package com.github.elianaferreira.movieslist.stories.detail.tvshow
 
+import android.util.Log
 import com.github.elianaferreira.movieslist.utils.RequestManager
 
 class ShowDetailPresenterImpl(var repository: TVShowRepository): ShowDetailPresenter {
@@ -13,7 +14,7 @@ class ShowDetailPresenterImpl(var repository: TVShowRepository): ShowDetailPrese
     }
 
     private val errorCallback = RequestManager.OnErrorRequestResult { error ->
-        error.printStackTrace()
+        Log.e(ShowDetailPresenterImpl::class.simpleName, error.cause?.message, error)
         showDetailView.showProgressBar(false)
         showDetailView.showErrorMessage()
         false

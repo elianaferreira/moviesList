@@ -44,7 +44,7 @@ open class RequestManager(private var context: Context) {
             },
             { error ->
                 if (errorCallback.onError(error)) {
-                    error.printStackTrace()
+                    Log.e(RequestManager::class.simpleName, error.cause?.message, error)
                     //show error
                     Utils.showErrorMessage(context, context.getString(R.string.general_error_message))
                 }
