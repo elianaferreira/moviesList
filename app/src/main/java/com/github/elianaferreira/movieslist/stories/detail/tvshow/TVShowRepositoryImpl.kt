@@ -4,7 +4,7 @@ import android.content.Context
 import com.android.volley.Request
 import com.github.elianaferreira.movieslist.utils.RequestManager
 
-class TVShowRepositoryImpl(context: Context) : RequestManager(context), TVShowRepository {
+class TVShowRepositoryImpl(context: Context): RequestManager(context), TVShowRepository {
 
     override fun getTVShow(
         showID: String,
@@ -12,5 +12,9 @@ class TVShowRepositoryImpl(context: Context) : RequestManager(context), TVShowRe
         errorCallback: OnErrorRequestResult
     ) {
         makeRequest(getAbsoluteURL("tv/$showID", null), Request.Method.GET, TVShowDetail::class.java, successCallback, errorCallback)
+    }
+
+    override fun cancelRequests() {
+        cancelAllRequest()
     }
 }

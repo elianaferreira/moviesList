@@ -173,4 +173,9 @@ class ListActivity : AppCompatActivity(), ListView {
     override fun onBackPressed() {
         supportFinishAfterTransition()
     }
+
+    override fun onStop() {
+        super.onStop()
+        listPresenter.cancelRequests()
+    }
 }

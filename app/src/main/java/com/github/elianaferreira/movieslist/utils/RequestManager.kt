@@ -13,7 +13,7 @@ import java.lang.StringBuilder
 
 open class RequestManager(private var context: Context) {
 
-    private val TAG = RequestManager::class.java.simpleName
+    private val TAG = RequestManager::class.java.simpleName //use the same log TAG for requests
 
     private var queue: RequestQueue = Volley.newRequestQueue(context)
 
@@ -50,6 +50,7 @@ open class RequestManager(private var context: Context) {
                 }
             }
         )
+        jsonObjectRequest.tag = TAG
         queue.add(jsonObjectRequest)
     }
 
@@ -68,5 +69,10 @@ open class RequestManager(private var context: Context) {
         }
 
         return absoluteURL.toString()
+    }
+
+    protected fun cancelAllRequest() {
+        Log.d(TAG, "cancelAllRequest called")
+        queue.cancelAll(TAG)
     }
 }

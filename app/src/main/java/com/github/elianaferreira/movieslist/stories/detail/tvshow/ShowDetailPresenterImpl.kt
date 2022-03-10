@@ -28,4 +28,8 @@ class ShowDetailPresenterImpl(var repository: TVShowRepository): ShowDetailPrese
     override fun setView(view: ShowDetailView) {
         showDetailView = view
     }
+
+    override fun cancelRequests() {
+        repository.cancelRequests()
+    }
 }

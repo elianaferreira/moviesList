@@ -105,4 +105,9 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
     override fun onBackPressed() {
         supportFinishAfterTransition()
     }
+
+    override fun onStop() {
+        super.onStop()
+        showDetailPresenter.cancelRequests()
+    }
 }

@@ -51,4 +51,8 @@ class MovieDetailPresenterImpl(var repository: MovieDetailRepository):
     override fun setView(view: MovieDetailView) {
         movieDetailView = view
     }
+
+    override fun cancelRequests() {
+        repository.cancelRequests()
+    }
 }

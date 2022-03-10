@@ -38,4 +38,8 @@ class ListPresenterImpl(var repository: ListRepository): ListPresenter {
     override fun setView(view: ListView) {
         listView = view
     }
+
+    override fun cancelRequests() {
+        repository.cancelRequests()
+    }
 }

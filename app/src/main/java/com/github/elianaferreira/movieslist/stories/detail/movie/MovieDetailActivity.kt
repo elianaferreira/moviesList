@@ -200,4 +200,9 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     override fun onBackPressed() {
         finishAfterTransition()
     }
+
+    override fun onStop() {
+        super.onStop()
+        movieDetailPresenter.cancelRequests()
+    }
 }

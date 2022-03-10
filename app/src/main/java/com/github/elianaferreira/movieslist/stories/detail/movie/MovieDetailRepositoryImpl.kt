@@ -4,7 +4,7 @@ import android.content.Context
 import com.android.volley.Request
 import com.github.elianaferreira.movieslist.utils.RequestManager
 
-class MovieDetailRepositoryImpl(context: Context) : RequestManager(context), MovieDetailRepository {
+class MovieDetailRepositoryImpl(context: Context): RequestManager(context), MovieDetailRepository {
 
     override fun getMovieByID(
         movieID: String,
@@ -20,5 +20,9 @@ class MovieDetailRepositoryImpl(context: Context) : RequestManager(context), Mov
         errorCallback: OnErrorRequestResult
     ) {
         makeRequest(getAbsoluteURL("movie/$movieID/videos", null), Request.Method.GET, Videos::class.java, successCallback, errorCallback)
+    }
+
+    override fun cancelRequests() {
+        cancelAllRequest()
     }
 }

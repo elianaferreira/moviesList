@@ -29,4 +29,8 @@ class HomePresenterImpl: HomePresenter {
     override fun setView(view: HomeView) {
         this.homeView = view
     }
+
+    override fun cancelRequests() {
+        //nothing to do here
+    }
 }
