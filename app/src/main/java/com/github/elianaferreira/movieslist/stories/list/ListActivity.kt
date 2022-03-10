@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.detail.movie.MovieDetailActivity
 import com.github.elianaferreira.movieslist.stories.detail.tvshow.TVShowDetailActivity
@@ -33,6 +34,7 @@ class ListActivity : AppCompatActivity(), ListView {
     private lateinit var rvMovies: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var errorLayout: LinearLayout
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private var category: Category? = null
     private lateinit var adapter: MoviesAdapter
@@ -61,10 +63,13 @@ class ListActivity : AppCompatActivity(), ListView {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        swipeRefreshLayout = findViewById(R.id.refresh_layout)
         errorLayout = findViewById(R.id.error_layout)
         progressBar = findViewById(R.id.progress_bar)
         rvMovies = findViewById(R.id.list_movies)
         rvMovies.layoutManager = LinearLayoutManager(this)
+
+        Utils.setColorToSwipeRefreh(swipeRefreshLayout)
 
         if (category != null) {
             listPresenter.getList(category!!.categoryValue, page)
@@ -81,6 +86,14 @@ class ListActivity : AppCompatActivity(), ListView {
                 }
 
                 super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+
+        swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            if (category != null) {
+                listPresenter.getList(category!!.categoryValue, 1)
+            } else {
+                swipeRefreshLayout.isRefreshing = false
             }
         })
     }
@@ -115,6 +128,10 @@ class ListActivity : AppCompatActivity(), ListView {
     }
 
     override fun showList(list: MoviesList) {
+        if (this@ListActivity::adapter.isInitialized) {
+            //clear data in recycler
+            adapter.clearData()
+        }
         adapter = MoviesAdapter(category!!.categoryIsMovie(), list.results as MutableList<Movie>) {
             movie, view ->
             listPresenter.itemSelected(movie, view)
@@ -151,6 +168,7 @@ class ListActivity : AppCompatActivity(), ListView {
 
     override fun showProgressBar(show: Boolean) {
         this.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun showErrorMessage() {

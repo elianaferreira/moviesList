@@ -7,36 +7,39 @@
     android:background="@color/white"
     tools:context=".stories.detail.tvshow.TVShowDetailActivity">
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true">
-
-        <LinearLayout
-            android:id="@+id/wrapper_movie"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include
-                layout="@layout/layout_movie"
-                android:id="@+id/wrapper_header"/>
-
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/wrapper_movie"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/general_margin"
-                android:layout_marginBottom="@dimen/general_margin">
-                <LinearLayout
-                    android:id="@+id/wrapper_seasons"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/layout_movie"
+                    android:id="@+id/wrapper_header"/>
+
+                <HorizontalScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                </LinearLayout>
-            </HorizontalScrollView>
-        </LinearLayout>
-    </ScrollView>
-
+                    android:layout_marginEnd="@dimen/general_margin"
+                    android:layout_marginBottom="@dimen/general_margin">
+                    <LinearLayout
+                        android:id="@+id/wrapper_seasons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <include
         android:id="@+id/error_layout"
         layout="@layout/error_layout"

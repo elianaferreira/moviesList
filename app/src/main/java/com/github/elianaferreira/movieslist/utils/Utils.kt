@@ -3,8 +3,10 @@ package com.github.elianaferreira.movieslist.utils
 import android.app.Activity
 import android.content.Context
 import android.widget.*
+import androidx.annotation.ColorRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.detail.movie.Genre
@@ -56,6 +58,10 @@ class Utils {
             val rvGenres: RecyclerView = wrapperView.findViewById(R.id.rv_genres)
             rvGenres.layoutManager = GridLayoutManager(context, 3)
             rvGenres.adapter = GenresAdapter(Genre.getGenresNames(movieHeader.genres))
+        }
+
+        fun setColorToSwipeRefreh(swipeRefreshLayout: SwipeRefreshLayout) {
+            swipeRefreshLayout.setColorScheme(R.color.peach, R.color.dark_peach, R.color.light_peach)
         }
     }
 }

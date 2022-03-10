@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.elianaferreira.movieslist.R
 import com.github.elianaferreira.movieslist.stories.detail.tvshow.di.DaggerShowDetailComponent
 import com.github.elianaferreira.movieslist.stories.detail.tvshow.di.ShowDetailModule
@@ -27,6 +28,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
     private lateinit var wrapperHeader: RelativeLayout
     private lateinit var wrapperSeasons: LinearLayout
     private lateinit var errorLayout: LinearLayout
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     @Inject
     lateinit var showDetailPresenter: ShowDetailPresenter
@@ -64,8 +66,14 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
         wrapperMovie.visibility = View.GONE
         wrapperSeasons = findViewById(R.id.wrapper_seasons)
         errorLayout = findViewById(R.id.error_layout)
+        swipeRefreshLayout = findViewById(R.id.refresh_layout)
+        Utils.setColorToSwipeRefreh(swipeRefreshLayout)
 
         showDetailPresenter.getShowDetail(tvShow?.id.toString())
+
+        swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            showDetailPresenter.getShowDetail(tvShow?.id.toString())
+        })
     }
 
 
@@ -78,6 +86,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
     override fun showTVShowDetail(tvShowDetail: TVShowDetail) {
         Utils.loadDataIntoMovieHeader(this@TVShowDetailActivity, tvShowDetail.name, tvShowDetail, wrapperHeader)
         wrapperMovie.visibility = View.VISIBLE
+        errorLayout.visibility = View.GONE
 
         //seasons
         for(season in tvShowDetail.seasons) {
@@ -100,6 +109,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
     
     override fun showProgressBar(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onBackPressed() {

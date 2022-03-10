@@ -6,12 +6,14 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import com.github.elianaferreira.movieslist.R
 import android.graphics.Color
+import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.ActionMode
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.elianaferreira.movieslist.BuildConfig
 import com.github.elianaferreira.movieslist.stories.detail.movie.di.DaggerMovieDetailComponent
 import com.github.elianaferreira.movieslist.stories.detail.movie.di.MovieDetailModule
@@ -36,6 +38,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     private lateinit var wrapperHeader: RelativeLayout
     private lateinit var errorLayout: LinearLayout
     private lateinit var trailerPlayer: LinearLayout
+    private lateinit var swipeRelativeLayout: SwipeRefreshLayout
 
     private lateinit var appCompatDelegate: AppCompatDelegate
     private lateinit var playerView: YouTubePlayerView
@@ -76,6 +79,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         appCompatDelegate.setSupportActionBar(toolbar)
         appCompatDelegate.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        swipeRelativeLayout = findViewById(R.id.refresh_layout)
         progressBar = findViewById(R.id.progress_bar)
         wrapperMovie = findViewById(R.id.wrapper_movie)
         wrapperHeader = findViewById(R.id.wrapper_header)
@@ -89,6 +93,12 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         trailerPlayer.addView(playerView)
 
         movieDetailPresenter.getMovieDetail(movie?.id.toString())
+
+        Utils.setColorToSwipeRefreh(swipeRelativeLayout)
+
+        swipeRelativeLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            movieDetailPresenter.getMovieDetail(movie?.id.toString())
+        })
     }
 
     override fun onInitializationSuccess(
@@ -178,6 +188,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         Utils.loadDataIntoMovieHeader(this@MovieDetailActivity, movieDetail.title, movieDetail, wrapperHeader)
         wrapperMovie.visibility = View.VISIBLE
         movieDetailPresenter.getTrailerPath(movieDetail)
+        errorLayout.visibility = View.GONE
     }
 
     override fun showTrailer(path: String) {
@@ -187,6 +198,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
 
     override fun showProgressBar(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        swipeRelativeLayout.isRefreshing = false
     }
 
     override fun showErrorMessage() {

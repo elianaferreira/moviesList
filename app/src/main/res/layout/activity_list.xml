@@ -18,11 +18,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_movies"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar" >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_movies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include
         android:id="@+id/progress_bar"

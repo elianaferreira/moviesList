@@ -79,4 +79,12 @@ class MoviesAdapter(
         notifyDataSetChanged()
     }
 
+
+    fun clearData() {
+        val mutableList = filteredList.toMutableList()
+        mutableList.clear()
+        filteredList = mutableList.toList()
+        notifyDataSetChanged()
+    }
+
 }
