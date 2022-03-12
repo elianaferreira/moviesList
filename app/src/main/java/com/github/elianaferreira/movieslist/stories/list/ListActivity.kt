@@ -133,6 +133,7 @@ class ListActivity : AppCompatActivity(), ListView {
     }
 
     override fun showList(list: MoviesList) {
+        errorLayout.visibility = View.GONE
         if (this@ListActivity::adapter.isInitialized) {
             //clear data in recycler
             adapter.clearData()
@@ -145,6 +146,7 @@ class ListActivity : AppCompatActivity(), ListView {
     }
 
     override fun addMoreItems(list: MutableList<Movie>) {
+        errorLayout.visibility = View.GONE
         adapter.addData(list)
     }
 

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".stories.detail.movie.MovieDetailActivity">
+    android:layout_alignParentTop="true">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true">
+        android:background="@color/white"
+        tools:context=".stories.detail.movie.MovieDetailActivity">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -49,25 +50,21 @@
             </LinearLayout>
         </ScrollView>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <include
+            android:id="@+id/error_layout"
+            layout="@layout/error_layout"
+            android:visibility="gone"/>
 
-    <include
-        android:id="@+id/error_layout"
-        layout="@layout/error_layout"
-        android:visibility="gone"/>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general_margin"/>
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general_margin"/>
-
-    <include
-        android:id="@+id/progress_bar"
-        layout="@layout/progress_bar"
-        android:visibility="gone"/>
-
-
-
-</RelativeLayout>
+        <include
+            android:id="@+id/progress_bar"
+            layout="@layout/progress_bar"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
