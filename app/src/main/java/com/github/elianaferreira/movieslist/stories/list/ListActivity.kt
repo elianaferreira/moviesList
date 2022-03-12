@@ -3,6 +3,7 @@ package com.github.elianaferreira.movieslist.stories.list
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -82,7 +83,11 @@ class ListActivity : AppCompatActivity(), ListView {
                 val total = adapter.itemCount
 
                 if ((visibleItemCount + pastVisibleItem) >= total) {
-                    listPresenter.getList(category!!.categoryValue, page++)
+                    //if is not connected, prevent get data and increment the page number
+                    if (isConnectedToInternet()) {
+                        page += 1
+                        listPresenter.getList(category!!.categoryValue, page)
+                    }
                 }
 
                 super.onScrolled(recyclerView, dx, dy)
@@ -195,5 +200,10 @@ class ListActivity : AppCompatActivity(), ListView {
     override fun onStop() {
         super.onStop()
         listPresenter.cancelRequests()
+    }
+
+    private fun isConnectedToInternet(): Boolean {
+        val connectivityManager: ConnectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!.isConnected
     }
 }
