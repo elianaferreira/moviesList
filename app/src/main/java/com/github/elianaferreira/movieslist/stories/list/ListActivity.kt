@@ -39,6 +39,7 @@ class ListActivity : AppCompatActivity(), ListView {
 
     private var category: Category? = null
     private lateinit var adapter: MoviesAdapter
+    private var allowAddMoreItems: Boolean = true
 
     @Inject
     lateinit var listPresenter: ListPresenter
@@ -76,8 +77,12 @@ class ListActivity : AppCompatActivity(), ListView {
             listPresenter.getList(category!!.categoryValue, page)
         }
 
-        rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (!allowAddMoreItems) return
+
                 val visibleItemCount = (rvMovies.layoutManager as LinearLayoutManager).childCount
                 val pastVisibleItem = (rvMovies.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
                 val total = adapter.itemCount
@@ -89,8 +94,6 @@ class ListActivity : AppCompatActivity(), ListView {
                         listPresenter.getList(category!!.categoryValue, page)
                     }
                 }
-
-                super.onScrolled(recyclerView, dx, dy)
             }
         })
 
@@ -122,6 +125,7 @@ class ListActivity : AppCompatActivity(), ListView {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                allowAddMoreItems = newText == null || newText.isEmpty()
                 if (this@ListActivity::adapter.isInitialized) {
                     adapter.filter.filter(newText)
                 }
