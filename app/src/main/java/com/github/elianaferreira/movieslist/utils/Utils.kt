@@ -1,13 +1,19 @@
 package com.github.elianaferreira.movieslist.utils
 
+import android.app.Activity
 import android.content.Context
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.ColorRes
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.elianaferreira.movieslist.BuildConfig
-import com.github.elianaferreira.movieslist.models.Genre
-import com.github.elianaferreira.movieslist.models.SpokenLanguage
-import com.github.elianaferreira.movieslist.models.Video
-import java.lang.StringBuilder
-import java.util.*
+import com.github.elianaferreira.movieslist.R
+import com.github.elianaferreira.movieslist.stories.detail.movie.Genre
+import com.github.elianaferreira.movieslist.stories.detail.movie.SpokenLanguage
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.GenresAdapter
+import java.util.Calendar
+
 
 class Utils {
 
@@ -17,57 +23,45 @@ class Utils {
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         }
 
-        fun getLanguagesConcat(languages: List<SpokenLanguage>?): String {
-            val result = StringBuilder()
-            result.append("Languages: ")
-            result.append(if (languages != null && languages.isNotEmpty()) languages.map { it.englishName }.joinToString( ", " ) else "--")
-            return result.toString()
-        }
-
-        fun getGenresNames(genres: List<Genre>): List<String> {
-            return genres.map { it.name }
-        }
-
         fun getPosterURL(filePath: String?): String {
             return BuildConfig.POSTER_URL_BASE + filePath
         }
 
-        fun categoryIsMovie(category: String) : Boolean {
-            return category.lowercase(Locale.getDefault()).contains("movie")
-        }
-
-        fun getGreeting(): String {
+        fun getGreeting(): Int {
             val calendar = Calendar.getInstance()
             return when (calendar.get(Calendar.HOUR_OF_DAY)) {
-                in 0 until 12 -> "Good morning,"
-                in 12 until 16 -> "Good afternoon,"
-                in 16 until 21 -> "Good evening,"
-                in 21..24 -> "Good Night,"
-                else -> "Hi,"
+                in 0 until 12 -> R.string.good_morning
+                in 12 until 16 -> R.string.good_afternoon
+                in 16 until 21 -> R.string.good_evening
+                in 21..24 -> R.string.good_night
+                else -> R.string.hi
             }
         }
 
-        fun getTrailerKey(videos: List<Video>): String {
-            //get only trailer
-            val trailers = videos.filter { it.type.lowercase() == "trailer" }
-            if (trailers.isNotEmpty()) {
-                return trailers.first().key
-            } else {
-                //if there is no trailer, search for teaser
-                val teasers = videos.filter { it.type.lowercase() == "teaser" }
-                return if (teasers.isNotEmpty()) {
-                    teasers.first().key
-                } else {
-                    //search for clips
-                    val clips = videos.filter { it.type.lowercase() == "clip" }
-                    if (clips.isNotEmpty()) {
-                        clips.first().key
-                    } else {
-                        //extreme case: return the first element's key
-                        videos.first().key
-                    }
-                }
-            }
+        fun loadDataIntoMovieHeader(
+            context: Activity,
+            title: String,
+            movieHeader: MovieHeader,
+            wrapperView: RelativeLayout) {
+
+            //load data in view
+            ImageLoader.loadImage(getPosterURL(movieHeader.backdropPath), wrapperView.findViewById(R.id.img_movie))
+            (wrapperView.findViewById<TextView>(R.id.tv_movie)).text = title
+            (wrapperView.findViewById<TextView>(R.id.tv_overview)).text = movieHeader.overview
+            (wrapperView.findViewById<TextView>(R.id.txt_languages)).text = SpokenLanguage.getLanguagesConcat(movieHeader.spokenLanguages)
+
+            val rate = movieHeader.voteAverage
+            val rateCount = movieHeader.voteCount
+            (wrapperView.findViewById<RatingBar>(R.id.item_rate)).rating = rate.toFloat()
+            (wrapperView.findViewById<TextView>(R.id.item_rate_value)).text = context.getString(R.string.rate, rate.toString(), rateCount.toString())
+
+            val rvGenres: RecyclerView = wrapperView.findViewById(R.id.rv_genres)
+            rvGenres.layoutManager = GridLayoutManager(context, 3)
+            rvGenres.adapter = GenresAdapter(Genre.getGenresNames(movieHeader.genres))
+        }
+
+        fun setColorToSwipeRefreh(swipeRefreshLayout: SwipeRefreshLayout) {
+            swipeRefreshLayout.setColorScheme(R.color.peach, R.color.dark_peach, R.color.light_peach)
         }
     }
 }

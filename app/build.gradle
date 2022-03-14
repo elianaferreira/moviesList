@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -10,8 +12,8 @@ android {
         applicationId "com.github.elianaferreira.movieslist"
         minSdk 21
         targetSdk 31
-        versionCode 100200000
-        versionName "1.2.0"
+        versionCode 100200100
+        versionName "1.2.1"
 
         buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
         buildConfigField "String", "POSTER_URL_BASE", "\"https://image.tmdb.org/t/p/w500/\""
@@ -50,9 +52,11 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "androidx.paging:paging-runtime-ktx:3.1.0"
+    implementation 'com.google.dagger:dagger:2.28.3'
+    kapt 'com.google.dagger:dagger-compiler:2.24'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -60,4 +64,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.0-alpha03'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.0-alpha03'
     androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
 }

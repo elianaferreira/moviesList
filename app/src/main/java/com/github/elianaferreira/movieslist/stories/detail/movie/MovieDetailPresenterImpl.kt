@@ -1,12 +1,12 @@
 package com.github.elianaferreira.movieslist.stories.detail.movie
 
-import com.github.elianaferreira.movieslist.models.MovieDetail
-import com.github.elianaferreira.movieslist.models.Videos
+import android.util.Log
 import com.github.elianaferreira.movieslist.utils.RequestManager
-import com.github.elianaferreira.movieslist.utils.Utils
 
-class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, private val requestManager: RequestManager):
+class MovieDetailPresenterImpl(var repository: MovieDetailRepository):
     MovieDetailPresenter {
+
+    private lateinit var movieDetailView: MovieDetailView
 
     override fun getMovieDetail(movieID: String) {
         val successCallback = RequestManager.OnSuccessRequestResult<MovieDetail> {
@@ -16,13 +16,13 @@ class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, pri
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            error.printStackTrace()
+            Log.e(MovieDetailPresenterImpl::class.simpleName, error.cause?.message, error)
             movieDetailView.showProgressBar(false)
             movieDetailView.showErrorMessage()
             false
         }
         movieDetailView.showProgressBar(true)
-        requestManager.getMovieByID(movieID, successCallback, errorCallback)
+        repository.getMovieByID(movieID, successCallback, errorCallback)
     }
 
 
@@ -34,17 +34,25 @@ class MovieDetailPresenterImpl(private val movieDetailView: MovieDetailView, pri
             val videosList = response as Videos
             if (videosList.results.isNotEmpty()) {
                 movieDetailView.showTrailerView(true)
-                movieDetailView.showTrailer(Utils.getTrailerKey(videosList.results))
+                movieDetailView.showTrailer(videosList.getTrailerKey())
             }
         }
 
         val errorCallback = RequestManager.OnErrorRequestResult { error ->
-            error.printStackTrace()
+            Log.e(MovieDetailPresenterImpl::class.simpleName, error.cause?.message, error)
             movieDetailView.showProgressBar(false)
             movieDetailView.showTrailerView(false)
             false
         }
         movieDetailView.showProgressBar(true)
-        requestManager.getVideos(movieDetail.id.toString(), successCallback, errorCallback)
+        repository.getVideos(movieDetail.id.toString(), successCallback, errorCallback)
+    }
+
+    override fun setView(view: MovieDetailView) {
+        movieDetailView = view
+    }
+
+    override fun cancelRequests() {
+        repository.cancelRequests()
     }
 }

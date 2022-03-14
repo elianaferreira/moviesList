@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/season_card_width"
     android:layout_height="@dimen/season_card_height"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:clipToPadding="true">
 
@@ -35,7 +36,7 @@
                 android:id="@+id/txt_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sample_season_title"
+                android:text="@tools:sample/full_names"
                 style="@style/SecondaryTitle"
                 android:textColor="@color/black"/>
             <TextView
@@ -43,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="@dimen/season_text_max_width"
-                android:text="@string/sample_overview"
+                android:text="@tools:sample/lorem/random"
                 android:textColor="@color/dark_grey"
                 android:maxLines="6"
                 android:lines="6"

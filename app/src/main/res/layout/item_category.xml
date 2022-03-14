@@ -12,10 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/img_show_popular" />
+
     <TextView
         android:id="@+id/item_title"
         style="@style/PrimaryTitle"
-        android:text="@string/sample_category"
         android:layout_alignParentBottom="true"
-        android:gravity="center" />
+        android:gravity="center"
+        android:text="@tools:sample/full_names"
+        android:transitionName="@string/transition_name"/>
 </RelativeLayout>

@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_margin"
-            android:text="@string/sample_rate"
+            android:text="@tools:sample/date/hhmmss"
             android:textColor="@color/dark_grey" />
     </LinearLayout>
 
@@ -50,7 +50,7 @@
         android:layout_marginStart="@dimen/general_margin"
         android:layout_marginTop="@dimen/general_margin"
         android:layout_toStartOf="@id/wrapper_vote"
-        android:text="@string/sample_title" />
+        android:text="@tools:sample/full_names" />
 
     <TextView
         android:id="@+id/tv_overview"
@@ -61,7 +61,7 @@
         android:layout_marginTop="@dimen/general_margin"
         android:layout_marginEnd="@dimen/general_margin"
         android:layout_marginBottom="@dimen/general_margin"
-        android:text="@string/sample_overview"
+        android:text="@tools:sample/lorem"
         android:textColor="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -81,7 +81,7 @@
         android:layout_marginTop="@dimen/general_margin"
         android:layout_marginEnd="@dimen/general_margin"
         android:layout_marginBottom="@dimen/general_margin"
-        android:text="@string/sample_languages"
+        android:text="@tools:sample/lorem"
         android:textColor="@color/black" />
 
 </RelativeLayout>

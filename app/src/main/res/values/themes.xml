@@ -12,6 +12,10 @@
         <item name="colorPrimaryDark">@color/dark_peach</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlHighlight">@color/light_peach</item>
+
+
+        <item name="android:windowContentTransitions">true</item>
+
     </style>
 
     <style name="PrimaryTitle" parent="Widget.AppCompat.TextView">

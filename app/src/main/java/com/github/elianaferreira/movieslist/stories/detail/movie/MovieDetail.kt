@@ -1,61 +1,30 @@
-package com.github.elianaferreira.movieslist.models
+package com.github.elianaferreira.movieslist.stories.detail.movie
+
 import androidx.annotation.Keep
+import com.github.elianaferreira.movieslist.utils.MovieHeader
 import com.google.gson.annotations.SerializedName
+import java.lang.StringBuilder
 
 
 @Keep
 data class MovieDetail(
-    @SerializedName("adult")
-    val adult: Boolean,
     @SerializedName("backdrop_path")
-    val backdropPath: String,
-    @SerializedName("belongs_to_collection")
-    val belongsToCollection: Any,
-    @SerializedName("budget")
-    val budget: Int,
+   override val backdropPath: String,
     @SerializedName("genres")
-    val genres: List<Genre>,
-    @SerializedName("homepage")
-    val homepage: String,
+    override val genres: List<Genre>,
     @SerializedName("id")
     val id: Int,
-    @SerializedName("imdb_id")
-    val imdbId: String,
-    @SerializedName("original_language")
-    val originalLanguage: String,
-    @SerializedName("original_title")
-    val originalTitle: String,
     @SerializedName("overview")
-    val overview: String,
-    @SerializedName("popularity")
-    val popularity: Double,
-    @SerializedName("poster_path")
-    val posterPath: String,
-    @SerializedName("production_companies")
-    val productionCompanies: List<ProductionCompany>,
-    @SerializedName("production_countries")
-    val productionCountries: List<ProductionCountry>,
-    @SerializedName("release_date")
-    val releaseDate: String,
-    @SerializedName("revenue")
-    val revenue: Int,
-    @SerializedName("runtime")
-    val runtime: Int,
+    override val overview: String,
     @SerializedName("spoken_languages")
-    val spokenLanguages: List<SpokenLanguage>,
-    @SerializedName("status")
-    val status: String,
-    @SerializedName("tagline")
-    val tagline: String,
+    override val spokenLanguages: List<SpokenLanguage>,
     @SerializedName("title")
     val title: String,
-    @SerializedName("video")
-    val video: Boolean,
     @SerializedName("vote_average")
-    val voteAverage: Double,
+    override val voteAverage: Double,
     @SerializedName("vote_count")
-    val voteCount: Int
-)
+    override val voteCount: Int
+): MovieHeader
 
 @Keep
 data class Genre(
@@ -63,34 +32,25 @@ data class Genre(
     val id: Int,
     @SerializedName("name")
     val name: String
-)
-
-@Keep
-data class ProductionCompany(
-    @SerializedName("id")
-    val id: Int,
-    @SerializedName("logo_path")
-    val logoPath: Any,
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("origin_country")
-    val originCountry: String
-)
-
-@Keep
-data class ProductionCountry(
-    @SerializedName("iso_3166_1")
-    val iso31661: String,
-    @SerializedName("name")
-    val name: String
-)
+) {
+    companion object {
+        fun getGenresNames(genres: List<Genre>): List<String> {
+            return genres.map { it.name }
+        }
+    }
+}
 
 @Keep
 data class SpokenLanguage(
     @SerializedName("english_name")
-    val englishName: String,
-    @SerializedName("iso_639_1")
-    val iso6391: String,
-    @SerializedName("name")
-    val name: String
-)
+    val englishName: String
+) {
+    companion object {
+        fun getLanguagesConcat(languages: List<SpokenLanguage>?): String {
+            val result = StringBuilder()
+            result.append("Languages: ")
+            result.append(if (languages != null && languages.isNotEmpty()) languages.map { it.englishName }.joinToString( ", " ) else "--")
+            return result.toString()
+        }
+    }
+}

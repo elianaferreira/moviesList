@@ -1,8 +1,12 @@
 package com.github.elianaferreira.movieslist.stories.list
 
+import android.util.Log
+import android.view.View
 import com.github.elianaferreira.movieslist.utils.RequestManager
 
-class ListPresenterImpl(private val listView: ListView, private val requestManager: RequestManager): ListPresenter {
+class ListPresenterImpl(var repository: ListRepository): ListPresenter {
+
+    private lateinit var listView: ListView
 
     private val successCallback = RequestManager.OnSuccessRequestResult<MoviesList> {
             response ->
@@ -16,17 +20,26 @@ class ListPresenterImpl(private val listView: ListView, private val requestManag
     }
 
     private val errorCallback = RequestManager.OnErrorRequestResult { error ->
-        error.printStackTrace()
+        Log.e(ListPresenterImpl::class.simpleName, error.cause?.message, error)
         listView.showProgressBar(false)
+        listView.showErrorMessage()
         true
     }
 
     override fun getList(category: String, page: Int) {
         listView.showProgressBar(true)
-        requestManager.getMovies(category, page, successCallback, errorCallback)
+        repository.getMovies(category, page, successCallback, errorCallback)
     }
 
-    override fun itemSelected(movie: Movie) {
-        listView.onMovieSelected(movie)
+    override fun itemSelected(movie: Movie, view: View) {
+        listView.onMovieSelected(movie, view)
+    }
+
+    override fun setView(view: ListView) {
+        listView = view
+    }
+
+    override fun cancelRequests() {
+        repository.cancelRequests()
     }
 }

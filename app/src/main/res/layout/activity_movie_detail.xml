@@ -1,67 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".stories.detail.movie.MovieDetailActivity">
+    android:layout_alignParentTop="true">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true">
+        android:background="@color/white"
+        tools:context=".stories.detail.movie.MovieDetailActivity">
 
-        <LinearLayout
-            android:id="@+id/wrapper_movie"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/wrapper_movie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/layout_movie"
+                    android:id="@+id/wrapper_header"/>
+
+                <Button
+                    android:id="@+id/btn_trailer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/general_margin"
+                    android:background="@color/white"
+                    android:text="@string/trailer"
+                    android:textAllCaps="false"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:textColor="@color/dark_peach"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/player_trailer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/trailer_video_height"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/general_margin"
+                    android:layout_marginRight="@dimen/general_margin"
+                    android:layout_marginBottom="@dimen/general_margin"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <include
+            android:id="@+id/error_layout"
+            layout="@layout/error_layout"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/general_margin"/>
 
-            <include
-                layout="@layout/layout_movie" />
-
-            <Button
-                android:id="@+id/btn_trailer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/general_margin"
-                android:background="@color/white"
-                android:text="@string/trailer"
-                android:textAllCaps="false"
-                style="?android:attr/borderlessButtonStyle"
-                android:textColor="@color/dark_peach"
-                android:visibility="gone"/>
-
-            <LinearLayout
-                android:id="@+id/player_trailer"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/trailer_video_height"
-                android:orientation="vertical"
-                android:layout_marginLeft="@dimen/general_margin"
-                android:layout_marginRight="@dimen/general_margin"
-                android:layout_marginBottom="@dimen/general_margin"/>
-
-        </LinearLayout>
-    </ScrollView>
-
-    <include
-        android:id="@+id/error_layout"
-        layout="@layout/error_layout"
-        android:visibility="gone"/>
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general_margin"/>
-
-    <include
-        android:id="@+id/progress_bar"
-        layout="@layout/progress_bar"
-        android:visibility="gone"/>
-
-
-
-</RelativeLayout>
+        <include
+            android:id="@+id/progress_bar"
+            layout="@layout/progress_bar"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

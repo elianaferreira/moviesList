@@ -8,13 +8,14 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.elianaferreira.movieslist.R
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.di.DaggerShowDetailComponent
+import com.github.elianaferreira.movieslist.stories.detail.tvshow.di.ShowDetailModule
 import com.github.elianaferreira.movieslist.stories.list.Movie
-import com.github.elianaferreira.movieslist.utils.RequestManager
+import com.github.elianaferreira.movieslist.utils.ImageLoader
 import com.github.elianaferreira.movieslist.utils.Utils
-import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
@@ -24,22 +25,25 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
     private lateinit var progressBar: ProgressBar
     private lateinit var wrapperMovie: LinearLayout
-    private lateinit var imgMovie: ImageView
-    private lateinit var txtTitle: TextView
-    private lateinit var txtOverview: TextView
-    private lateinit var rvGenres: RecyclerView
-    private lateinit var ratingBar: RatingBar
-    private lateinit var txtRating: TextView
-    private lateinit var txtLanguages: TextView
+    private lateinit var wrapperHeader: RelativeLayout
     private lateinit var wrapperSeasons: LinearLayout
     private lateinit var errorLayout: LinearLayout
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
-    private lateinit var showDetailPresenter: ShowDetailPresenter
+    @Inject
+    lateinit var showDetailPresenter: ShowDetailPresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        DaggerShowDetailComponent.builder()
+            .showDetailModule(ShowDetailModule(this))
+            .build()
+            .inject(this)
+
         setContentView(R.layout.activity_tvshow_detail)
+        showDetailPresenter.setView(this)
 
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -48,9 +52,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
             statusBarColor = Color.TRANSPARENT
         }
 
-        val tvShow = intent.getSerializableExtra(PARAM_SHOW) as Movie
-        val request = RequestManager(this)
-        showDetailPresenter = ShowDetailPresenterImpl(this, request)
+        val tvShow = intent.getParcelableExtra<Movie>(PARAM_SHOW)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = ""
@@ -60,18 +62,18 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
         progressBar = findViewById(R.id.progress_bar)
         wrapperMovie = findViewById(R.id.wrapper_movie)
+        wrapperHeader = findViewById(R.id.wrapper_header)
         wrapperMovie.visibility = View.GONE
-        imgMovie = findViewById(R.id.img_movie)
-        txtTitle = findViewById(R.id.tv_movie)
-        txtOverview = findViewById(R.id.tv_overview)
-        rvGenres = findViewById(R.id.rv_genres)
-        ratingBar = findViewById(R.id.item_rate)
-        txtRating = findViewById(R.id.item_rate_value)
-        txtLanguages = findViewById(R.id.txt_languages)
         wrapperSeasons = findViewById(R.id.wrapper_seasons)
         errorLayout = findViewById(R.id.error_layout)
+        swipeRefreshLayout = findViewById(R.id.refresh_layout)
+        Utils.setColorToSwipeRefreh(swipeRefreshLayout)
 
-        showDetailPresenter.getShowDetail(tvShow.id.toString())
+        showDetailPresenter.getShowDetail(tvShow?.id.toString())
+
+        swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            showDetailPresenter.getShowDetail(tvShow?.id.toString())
+        })
     }
 
 
@@ -82,25 +84,9 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
 
 
     override fun showTVShowDetail(tvShowDetail: TVShowDetail) {
-        Picasso.get()
-            .load(Utils.getPosterURL(tvShowDetail.backdropPath))
-            .placeholder(R.drawable.img_film)
-            .error(R.drawable.img_film)
-            .into(imgMovie)
-
-        txtTitle.text = tvShowDetail.name
-        txtOverview.text = tvShowDetail.overview
-
-        val rate = tvShowDetail.voteAverage
-        val rateCount = tvShowDetail.voteCount
-        ratingBar.rating = rate.toFloat()
-        txtRating.text = "$rate ($rateCount)"
-
-        rvGenres.layoutManager = GridLayoutManager(this, 3)
-        rvGenres.adapter = GenresAdapter(Utils.getGenresNames(tvShowDetail.genres))
-        txtLanguages.text = Utils.getLanguagesConcat(tvShowDetail.spokenLanguages)
-
+        Utils.loadDataIntoMovieHeader(this@TVShowDetailActivity, tvShowDetail.name, tvShowDetail, wrapperHeader)
         wrapperMovie.visibility = View.VISIBLE
+        errorLayout.visibility = View.GONE
 
         //seasons
         for(season in tvShowDetail.seasons) {
@@ -108,11 +94,7 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
             val imgPoster: ImageView = card.findViewById(R.id.img_poster)
             val txtTitle: TextView = card.findViewById(R.id.txt_title)
             val txtOverview: TextView = card.findViewById(R.id.txt_overview)
-            Picasso.get()
-                .load(Utils.getPosterURL(season.posterPath))
-                .placeholder(R.drawable.img_film)
-                .error(R.drawable.img_film)
-                .into(imgPoster)
+            ImageLoader.loadImage(Utils.getPosterURL(season.posterPath), imgPoster)
             txtTitle.text = season.name
             txtOverview.text = season.overview
             wrapperSeasons.addView(card)
@@ -127,5 +109,15 @@ class TVShowDetailActivity : AppCompatActivity(), ShowDetailView {
     
     override fun showProgressBar(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun onBackPressed() {
+        supportFinishAfterTransition()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        showDetailPresenter.cancelRequests()
     }
 }

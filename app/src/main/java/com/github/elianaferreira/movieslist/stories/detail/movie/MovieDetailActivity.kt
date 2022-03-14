@@ -4,27 +4,26 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
-import com.github.elianaferreira.movieslist.models.*
-import com.github.elianaferreira.movieslist.utils.RequestManager
-import com.squareup.picasso.Picasso
 import android.graphics.Color
+import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.ActionMode
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.elianaferreira.movieslist.BuildConfig
-import com.github.elianaferreira.movieslist.stories.detail.tvshow.GenresAdapter
+import com.github.elianaferreira.movieslist.stories.detail.movie.di.DaggerMovieDetailComponent
+import com.github.elianaferreira.movieslist.stories.detail.movie.di.MovieDetailModule
 import com.github.elianaferreira.movieslist.stories.list.Movie
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerView
+import javax.inject.Inject
 
 
 class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener,
@@ -36,25 +35,30 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
 
     private lateinit var progressBar: ProgressBar
     private lateinit var wrapperMovie: LinearLayout
-    private lateinit var imgMovie: ImageView
-    private lateinit var txtTitle: TextView
-    private lateinit var txtOverview: TextView
-    private lateinit var rvGenres: RecyclerView
-    private lateinit var ratingBar: RatingBar
-    private lateinit var txtRating: TextView
-    private lateinit var txtLanguages: TextView
+    private lateinit var wrapperHeader: RelativeLayout
     private lateinit var errorLayout: LinearLayout
     private lateinit var trailerPlayer: LinearLayout
+    private lateinit var swipeRelativeLayout: SwipeRefreshLayout
 
     private lateinit var appCompatDelegate: AppCompatDelegate
     private lateinit var playerView: YouTubePlayerView
     private lateinit var trailerKey: String
-    private lateinit var movieDetailPresenter: MovieDetailPresenter
+
+    @Inject
+    lateinit var movieDetailPresenter: MovieDetailPresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        DaggerMovieDetailComponent.builder()
+            .movieDetailModule(MovieDetailModule(this))
+            .build()
+            .inject(this)
+
         setContentView(R.layout.activity_movie_detail)
+        movieDetailPresenter.setView(this)
 
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -67,11 +71,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         appCompatDelegate.onCreate(savedInstanceState)
         appCompatDelegate.setContentView(R.layout.activity_movie_detail)
 
-        val request = RequestManager(this)
-
-        movieDetailPresenter = MovieDetailPresenterImpl(this, request)
-
-        val movie = intent.getSerializableExtra(PARAM_MOVIE) as Movie
+        val movie = intent.getParcelableExtra<Movie>(PARAM_MOVIE)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = ""
@@ -79,16 +79,11 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         appCompatDelegate.setSupportActionBar(toolbar)
         appCompatDelegate.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        swipeRelativeLayout = findViewById(R.id.refresh_layout)
         progressBar = findViewById(R.id.progress_bar)
         wrapperMovie = findViewById(R.id.wrapper_movie)
+        wrapperHeader = findViewById(R.id.wrapper_header)
         wrapperMovie.visibility = View.GONE
-        imgMovie = findViewById(R.id.img_movie)
-        txtTitle = findViewById(R.id.tv_movie)
-        txtOverview = findViewById(R.id.tv_overview)
-        rvGenres = findViewById(R.id.rv_genres)
-        ratingBar = findViewById(R.id.item_rate)
-        txtRating = findViewById(R.id.item_rate_value)
-        txtLanguages = findViewById(R.id.txt_languages)
         errorLayout = findViewById(R.id.error_layout)
         trailerPlayer = findViewById(R.id.player_trailer)
 
@@ -97,7 +92,13 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         trailerPlayer.addView(playerView)
 
-        movieDetailPresenter.getMovieDetail(movie.id.toString())
+        movieDetailPresenter.getMovieDetail(movie?.id.toString())
+
+        Utils.setColorToSwipeRefreh(swipeRelativeLayout)
+
+        swipeRelativeLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            movieDetailPresenter.getMovieDetail(movie?.id.toString())
+        })
     }
 
     override fun onInitializationSuccess(
@@ -160,8 +161,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         if (youTubeInitializationResult?.isUserRecoverableError == true) {
             youTubeInitializationResult.getErrorDialog(this, 0).show()
         } else {
-            val errorMessage = "There was an error initializing the YoutubePlayer ($youTubeInitializationResult)"
-            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+            Utils.showErrorMessage(this, getString(R.string.youtube_player_error))
         }
 
     }
@@ -185,27 +185,10 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     }
 
     override fun showMovieDetail(movieDetail: MovieDetail) {
-        Picasso.get()
-            .load(Utils.getPosterURL(movieDetail.backdropPath))
-            .placeholder(R.drawable.img_film)
-            .error(R.drawable.img_film)
-            .into(imgMovie)
-
-        txtTitle.text = movieDetail.title
-        txtOverview.text = movieDetail.overview
-
-        val rate = movieDetail.voteAverage
-        val rateCount = movieDetail.voteCount
-        ratingBar.rating = rate.toFloat()
-        txtRating.text = "$rate ($rateCount)"
-
-        rvGenres.layoutManager = GridLayoutManager(this, 3)
-        rvGenres.adapter = GenresAdapter(Utils.getGenresNames(movieDetail.genres))
-        txtLanguages.text = Utils.getLanguagesConcat(movieDetail.spokenLanguages)
-
+        Utils.loadDataIntoMovieHeader(this@MovieDetailActivity, movieDetail.title, movieDetail, wrapperHeader)
         wrapperMovie.visibility = View.VISIBLE
-
         movieDetailPresenter.getTrailerPath(movieDetail)
+        errorLayout.visibility = View.GONE
     }
 
     override fun showTrailer(path: String) {
@@ -215,6 +198,7 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
 
     override fun showProgressBar(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        swipeRelativeLayout.isRefreshing = false
     }
 
     override fun showErrorMessage() {
@@ -223,5 +207,14 @@ class MovieDetailActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
 
     override fun showTrailerView(show: Boolean) {
         trailerPlayer.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    override fun onBackPressed() {
+        finishAfterTransition()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        movieDetailPresenter.cancelRequests()
     }
 }

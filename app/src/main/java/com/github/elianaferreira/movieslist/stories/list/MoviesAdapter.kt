@@ -1,16 +1,21 @@
 package com.github.elianaferreira.movieslist.stories.list
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.github.elianaferreira.movieslist.R
+import com.github.elianaferreira.movieslist.utils.ImageLoader
 import com.github.elianaferreira.movieslist.utils.Utils
 import com.github.elianaferreira.viewholder.GenericViewHolder
-import com.squareup.picasso.Picasso
 
-class MoviesAdapter(private val isForMovies: Boolean, private val dataSet: List<Movie>, private val callback: (Movie) -> Unit): RecyclerView.Adapter<GenericViewHolder>(), Filterable {
+class MoviesAdapter(
+    private val isForMovies: Boolean,
+    private val dataSet: List<Movie>,
+    private val callback: (Movie, View) -> Unit):
+        RecyclerView.Adapter<GenericViewHolder>(), Filterable {
 
     private var filteredList: List<Movie> = dataSet
 
@@ -21,23 +26,22 @@ class MoviesAdapter(private val isForMovies: Boolean, private val dataSet: List<
     }
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
+        val context: Context = holder.view.context
+
         val movie = filteredList[position]
         val title = if (isForMovies) movie.title else movie.name
         holder.get(R.id.item_title, TextView::class.java).text = title
         val date = if (isForMovies) movie.releaseDate else movie.firstAirDate
-        holder.get(R.id.item_description, TextView::class.java).text = "Release: $date"
+        holder.get(R.id.item_description, TextView::class.java).text = context.getString(R.string.release_date, date)
         val rate = movie.voteAverage
         val rateCount = movie.voteCount
         holder.get(R.id.item_rate, RatingBar::class.java).rating = rate.toFloat()
-        holder.get(R.id.item_rate_value, TextView::class.java).text = "$rate ($rateCount)"
+        holder.get(R.id.item_rate_value, TextView::class.java).text = context.getString(R.string.rate, rate.toString(), rateCount.toString())
 
-        Picasso.get()
-            .load(Utils.getPosterURL(movie.posterPath))
-            .placeholder(R.drawable.img_film)
-            .error(R.drawable.img_film)
-            .into(holder.get(R.id.img_cinema, ImageView::class.java))
+        ImageLoader.loadImage(Utils.getPosterURL(movie.posterPath),
+            holder.get(R.id.img_cinema, ImageView::class.java))
 
-        holder.view.setOnClickListener(View.OnClickListener { callback(movie) })
+        holder.view.setOnClickListener(View.OnClickListener { callback(movie, holder.view) })
     }
 
     override fun getItemCount(): Int {
@@ -51,7 +55,7 @@ class MoviesAdapter(private val isForMovies: Boolean, private val dataSet: List<
                 filteredList = if (searchValue.isEmpty()) {
                     dataSet
                 } else {
-                    dataSet.filter { if (isForMovies) it.title.lowercase().contains(searchValue.lowercase()) else it.name.lowercase().contains(searchValue.lowercase()) }
+                    dataSet.filter { if (isForMovies) it.title?.lowercase()!!.contains(searchValue.lowercase()) else it.name?.lowercase()!!.contains(searchValue.lowercase()) }
                 }
                 val filterResults = FilterResults()
                 filterResults.values = filteredList
@@ -71,6 +75,14 @@ class MoviesAdapter(private val isForMovies: Boolean, private val dataSet: List<
     fun addData(moreMovies: List<Movie>) {
         val mutableList = filteredList.toMutableList()
         mutableList.addAll(moreMovies)
+        filteredList = mutableList.toList()
+        notifyDataSetChanged()
+    }
+
+
+    fun clearData() {
+        val mutableList = filteredList.toMutableList()
+        mutableList.clear()
         filteredList = mutableList.toList()
         notifyDataSetChanged()
     }

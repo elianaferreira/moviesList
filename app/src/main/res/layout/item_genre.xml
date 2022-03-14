@@ -4,7 +4,7 @@
     android:id="@+id/item_genre"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/sample_genre"
+    android:text="@tools:sample/lorem"
     android:background="@drawable/rounded_box"
     android:padding="@dimen/medium_margin"
     android:textColor="@color/black"
